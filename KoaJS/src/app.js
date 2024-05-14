@@ -1,14 +1,22 @@
 import Koa from 'koa'
 import Router from 'koa-router'
-import userRoutes from './routes/user.route.js'
+import { koaBody } from 'koa-body'
 
+import bookRoutes from './routes/bookRoutes.js'
+import productRoutes from './routes/productRoutes.js'
+
+const PORT = 8080
 const app = new Koa()
+const routes = new Router()
 app.proxy = true
-const router = new Router()
-app.use(router.routes())
 
-router.use('/api/users', userRoutes.routes())
+app.use(koaBody())
+app.use(routes.routes())
+app.use(routes.allowedMethods())
 
-app.listen(3000, () => {
-    console.log('Server running on http://localhost:3000')
+routes.use('/api/books', bookRoutes.routes())
+routes.use('/api/products', productRoutes.routes())
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`)
 })
