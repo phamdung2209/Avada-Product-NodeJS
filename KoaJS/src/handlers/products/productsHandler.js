@@ -128,3 +128,49 @@ export const deleteProduct = async (ctx) => {
         }
     }
 }
+
+// ??????
+export const getProductById = async (ctx) => {
+    try {
+        const { id } = ctx.params
+        const { name, price } = ctx.query
+        let product = []
+
+        if (id && (!name || !price)) {
+            product = products.find((product) => product.id === id)
+            if (!product) {
+                throw new Error('Product not found')
+            }
+
+            return (ctx.body = product)
+        }
+
+        if (name) {
+            product = products.filter((product) => product.name === name)
+
+            if (!product) {
+                throw new Error('Product not found')
+            }
+
+            return (ctx.body = product)
+        }
+
+        if (price) {
+            product = products.filter((product) => product.price === price)
+
+            if (!product) {
+                throw new Error('Product not found')
+            }
+
+            return (ctx.body = product)
+        }
+
+        ctx.body = {
+            error: 'Product not found',
+        }
+    } catch (error) {
+        ctx.body = {
+            error: error.message,
+        }
+    }
+}
