@@ -37,9 +37,10 @@ const getComments = async () => {
 }
 
 const mapData = async () => {
-    const users = await getUsers()
-    const posts = await getPosts()
-    const comments = await getComments()
+    const data = await Promise.all([getUsers(), getPosts(), getComments()])
+    const users = data[0]
+    const posts = data[1]
+    const comments = data[2]
 
     const result = users.map((user) => {
         const userPosts = posts.filter((post) => post.userId === user.id)
