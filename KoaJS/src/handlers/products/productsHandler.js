@@ -78,3 +78,31 @@ export const createProduct = async (ctx) => {
         }
     }
 }
+
+export const updateProduct = async (ctx) => {
+    try {
+        const { id } = ctx.params
+        const product = products.find((product) => product.id === id)
+        if (!product) {
+            throw new Error('Product not found')
+        }
+        // const uuid = Math.random().toString(36).substr(2, 9)
+        const newData = {
+            createdAt: new Date(),
+            id,
+            ...ctx.request.body,
+        }
+
+        const index = products.findIndex((product) => product.id === id)
+        products[index] = newData
+        fs.writeFileSync('./src/database/products.json', JSON.stringify(products))
+
+        return (ctx.body = {
+            message: 'Update product success',
+        })
+    } catch (error) {
+        ctx.body = {
+            error: error.message,
+        }
+    }
+}
