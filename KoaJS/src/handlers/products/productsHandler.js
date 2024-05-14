@@ -106,3 +106,25 @@ export const updateProduct = async (ctx) => {
         }
     }
 }
+
+export const deleteProduct = async (ctx) => {
+    try {
+        const { id } = ctx.params
+        const product = products.find((product) => product.id === id)
+        if (!product) {
+            throw new Error('Product not found')
+        }
+
+        const index = products.findIndex((product) => product.id === id)
+        products.splice(index, 1)
+        fs.writeFileSync('./src/database/products.json', JSON.stringify(products))
+
+        return (ctx.body = {
+            message: 'Delete product success',
+        })
+    } catch (error) {
+        ctx.body = {
+            error: error.message,
+        }
+    }
+}

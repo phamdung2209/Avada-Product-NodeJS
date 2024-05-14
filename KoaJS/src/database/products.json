@@ -9998,15 +9998,5 @@
         "color": [0.57, 0.67, 0.25, 0.78],
         "createdAt": "2023-10-03T10:37:33.308Z",
         "image": "https://loremflickr.com/640/480"
-    },
-    {
-        "createdAt": "2024-05-14T08:38:18.319Z",
-        "id": "r2suxrma9",
-        "name": "Dummy",
-        "price": "Dummy",
-        "description": "Dummy",
-        "product": "Dummy",
-        "color": [1, 1, 1, 1],
-        "image": "https://loremflickr.com/640/480"
     }
 ]
