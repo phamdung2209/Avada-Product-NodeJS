@@ -1,4 +1,6 @@
 import { getAll } from '../../database/productRepository.js'
+import products from '../../database/products.json' assert { type: 'json' }
+import * as fs from 'fs'
 
 export const getProducts = async (ctx) => {
     try {
@@ -56,4 +58,23 @@ const orderByProduct = (products, sort) => {
     }
 
     return products
+}
+
+export const createProduct = async (ctx) => {
+    try {
+        const uuid = Math.random().toString(36).substr(2, 9)
+        const product = {
+            id: uuid,
+            createdAt: new Date(),
+            ...ctx.request.body,
+        }
+
+        products.push(product)
+
+        return (ctx.body = product)
+    } catch (error) {
+        ctx.body = {
+            error: error.message,
+        }
+    }
 }
