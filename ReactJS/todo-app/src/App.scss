@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.button {
+    .Polaris-Checkbox__ChoiceLabel {
+        @apply p-0 max-h-5
+    }
+
+    @apply rounded-[4px] hover:opacity-90 active:opacity-100 text-sm
+}
+
+.button--small {
+    @apply py-[5px] px-3 gap-[10px]
+}
+
+.button--medium {
+    @apply py-2 px-3 gap-[2px]
+}
+
+.button--large {
+    @apply py-2 px-4 gap-[2px]
+}
+
+.button--outline {
+    @apply bg-transparent border border-[#BBBFC3];
+}
+
+.button--deleted {
+    @apply bg-[#D82C0D] text-white border border-[#D82C0D]
+}
+
+.button--add {
+    @apply bg-[#008060] text-white border border-[#008060]
+}

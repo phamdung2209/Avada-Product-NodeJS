@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import '@shopify/polaris/build/esm/styles.css'
-
-import './App.scss'
+import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 

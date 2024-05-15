@@ -1,17 +1,14 @@
 {
-    "name": "todo-app",
+    "name": "basic-todo",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@shopify/polaris": "^13.3.0",
-        "@shopify/polaris-icons": "^9.0.1",
         "@testing-library/jest-dom": "^5.17.0",
         "@testing-library/react": "^13.4.0",
         "@testing-library/user-event": "^13.5.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-scripts": "5.0.1",
-        "sass": "^1.77.1",
         "web-vitals": "^2.1.4"
     },
     "scripts": {
@@ -41,7 +38,6 @@
     "devDependencies": {
         "babel-plugin-module-resolver": "^5.0.2",
         "customize-cra": "^1.0.0",
-        "react-app-rewired": "^2.2.1",
-        "tailwindcss": "^3.4.3"
+        "react-app-rewired": "^2.2.1"
     }
 }
