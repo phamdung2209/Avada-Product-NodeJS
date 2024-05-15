@@ -37,17 +37,51 @@ const getComments = async () => {
 }
 
 const mapData = async () => {
-    const data = await Promise.all([getUsers(), getPosts(), getComments()])
-    const users = data[0]
-    const posts = data[1]
-    const comments = data[2]
+    //     const data = await Promise.all([getUsers(), getPosts(), getComments()])
+    //     const users = data[0]
+    //     const posts = data[1]
+    //     const comments = data[2]
+
+    //     const result = users.map((user) => {
+    //         const userPosts = posts.filter((post) => post.userId === user.id)
+    //         userPosts.forEach((post) => delete post.userId)
+
+    //         const userComments = comments.filter((comment) => comment.postId === user.id)
+    //         userComments.forEach((comment) => delete comment.postId)
+
+    //         return {
+    //             ...user,
+    //             posts: userPosts,
+    //             comments: userComments,
+    //         }
+    //     })
+
+    //     return result
+
+    /** ------- Optimized version ------- */
+
+    const [users, posts, comments] = await Promise.all([getUsers(), getPosts(), getComments()])
+
+    const postsMap = new Map()
+    const commentsMap = new Map()
+
+    posts.forEach((post) => {
+        if (!postsMap.has(post.userId)) {
+            postsMap.set(post.userId, [])
+        }
+        postsMap.get(post.userId).push(post)
+    })
+
+    comments.forEach((comment) => {
+        if (!commentsMap.has(comment.postId)) {
+            commentsMap.set(comment.postId, [])
+        }
+        commentsMap.get(comment.postId).push(comment)
+    })
 
     const result = users.map((user) => {
-        const userPosts = posts.filter((post) => post.userId === user.id)
-        userPosts.forEach((post) => delete post.userId)
-
-        const userComments = comments.filter((comment) => comment.postId === user.id)
-        userComments.forEach((comment) => delete comment.postId)
+        const userPosts = postsMap.get(user.id) ?? []
+        const userComments = userPosts.flatMap((post) => commentsMap.get(post.id) ?? [])
 
         return {
             ...user,
