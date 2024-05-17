@@ -1,6 +1,5 @@
 import enTranslations from '@shopify/polaris/locales/en.json'
 import { AppProvider, Page, Box, Text, LegacyCard } from '@shopify/polaris'
-
 import Header from './components/Header'
 import Button from './components/Button'
 import TodoList from './components/TodoList'
@@ -13,14 +12,14 @@ function App() {
             <Page>
                 <Box className="flex items-center justify-between mb-8">
                     <Text variant="headingLg" fontWeight="regular">
-                        Todos
+                        Products
                     </Text>
                     {/* <Button title="Create Todo" large={true} add={true} /> */}
                     <CreateTodo />
                 </Box>
 
                 <Box className="mx-3 flex items-center justify-between mb-4">
-                    <Text variant="bodyLg">Showing 2 todos</Text>
+                    <Text variant="bodyLg">Showing 2 product</Text>
 
                     <Button title="Select" outline={true} medium={true} checkBox />
                 </Box>
