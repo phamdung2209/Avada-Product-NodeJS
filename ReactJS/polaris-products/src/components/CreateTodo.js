@@ -1,5 +1,5 @@
 import { Box, Modal } from '@shopify/polaris'
-import React, { useCallback, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import Button from './Button'
 
 import { readFileAsDataURL } from '~/ultils/functions'
@@ -21,11 +21,11 @@ const CreateTodo = () => {
     const handleClose = useCallback(() => setIsOpenModal(!isOpenModal), [isOpenModal])
     const activator = <Button title="Create a new product" large={true} add={true} onClick={handleClose} />
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = useCallback(async () => {
         const urlImage = await readFileAsDataURL(values.images[0])
         await createProduct({ ...values, product: 'pros', images: urlImage })
         setActionDeleteProduct((prev) => prev + 1)
-    }
+    }, [createProduct, values, setActionDeleteProduct])
 
     return (
         <Modal
@@ -51,4 +51,4 @@ const CreateTodo = () => {
     )
 }
 
-export default CreateTodo
+export default memo(CreateTodo)

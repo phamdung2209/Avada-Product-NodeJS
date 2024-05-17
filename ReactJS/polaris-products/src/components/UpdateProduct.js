@@ -1,5 +1,5 @@
 import { Box, Modal } from '@shopify/polaris'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import { useAppContext } from '~/context/AppContext'
 
 import useUpdateProduct from '~/hooks/useUpdateProduct'
@@ -61,4 +61,4 @@ const UpdateProduct = ({ selectedItems, products }) => {
     )
 }
 
-export default UpdateProduct
+export default memo(UpdateProduct)

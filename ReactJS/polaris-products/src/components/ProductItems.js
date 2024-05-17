@@ -1,6 +1,6 @@
-import { Box, LegacyCard, Pagination, ResourceItem, ResourceList, Text, Thumbnail } from '@shopify/polaris'
+import { LegacyCard, Pagination, ResourceItem, ResourceList, Thumbnail } from '@shopify/polaris'
 import { NoteIcon } from '@shopify/polaris-icons'
-import React, { useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 
 import useGetProducts from '~/hooks/useGetProducts'
 import SkeletonProduct from '~/skeletons/SkeletonProduct'
@@ -8,8 +8,10 @@ import BtnDeleteProduct from './BtnDeleteProduct'
 import UpdateProduct from './UpdateProduct'
 import FilterProduct from './FilterProduct'
 import useDebounce from '~/hooks/useDebounce'
+import ItemProduct from './ItemProduct'
 
 const ProductItems = () => {
+    console.log('Render ProductItems')
     const [sortBy, setSortBy] = useState('desc')
     const [selectedItems, setSelectedItems] = useState([])
     const [dataSearch, setDataSearch] = useState([])
@@ -33,6 +35,8 @@ const ProductItems = () => {
     }
 
     const searchValue = useDebounce(queryValue, 700)
+
+    const handleSortChange = useCallback((selected) => setSortBy(selected), [])
 
     return (
         <LegacyCard>
@@ -61,7 +65,7 @@ const ProductItems = () => {
                         { label: 'Name', value: 'name' },
                         { label: 'ID', value: 'id' },
                     ]}
-                    onSortChange={(selected) => setSortBy(selected)}
+                    onSortChange={handleSortChange}
                     renderItem={(item) => {
                         const { id, image, name, price, description, createdAt } = item
 
@@ -71,17 +75,13 @@ const ProductItems = () => {
                                 media={<Thumbnail source={image ?? NoteIcon} alt="Black choker necklace" />}
                                 accessibilityLabel={`View details for ${name}`}
                             >
-                                <Box padding="4">
-                                    <Text variant="bodyMd" fontWeight="bold" as="h3">
-                                        {name} - {id}
-                                    </Text>
-                                    <Text variant="bodySm">${price}</Text>
-                                    <Text variant="bodySm">{description}</Text>
-
-                                    <Text variant="bodySm" muted>
-                                        {createdAt}
-                                    </Text>
-                                </Box>
+                                <ItemProduct
+                                    id={id}
+                                    name={name}
+                                    price={price}
+                                    description={description}
+                                    createdAt={createdAt}
+                                />
                             </ResourceItem>
                         )
                     }}
@@ -103,4 +103,4 @@ const ProductItems = () => {
     )
 }
 
-export default ProductItems
+export default memo(ProductItems)

@@ -1,5 +1,5 @@
 import { Box, LegacyFilters, TextField } from '@shopify/polaris'
-import React, { useEffect } from 'react'
+import React, { memo, useEffect } from 'react'
 import useDebounce from '~/hooks/useDebounce'
 import useSearchProducts from '~/hooks/useSearchProducts'
 
@@ -44,4 +44,4 @@ const FilterProduct = ({ setDataSearch, queryValue, setQueryValue }) => {
     )
 }
 
-export default FilterProduct
+export default memo(FilterProduct)

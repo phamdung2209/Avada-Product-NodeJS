@@ -4,7 +4,7 @@ import { useThemeMode } from '~/context/ThemeMode'
 
 const Header = () => {
     const { toggleThemeMode } = useThemeMode()
-
+    console.log('render header')
     return (
         <Box shadow="200" paddingInline={400} position="fixed" width="100%" background="bg-surface" zIndex="1">
             <InlineStack align="space-between" blockAlign="center">

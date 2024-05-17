@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import toast from 'react-hot-toast'
 
 const useCreateProducts = () => {
     const [loading, setLoading] = useState(false)
 
-    const createProduct = async (values) => {
+    const createProduct = useCallback(async (values) => {
         try {
             setLoading(true)
             const res = await fetch('http://localhost:8080/api/products/add', {
@@ -17,13 +18,13 @@ const useCreateProducts = () => {
             if (data.error) {
                 throw new Error(data.error)
             }
-            console.log('data', data)
         } catch (error) {
             console.log('error', error)
+            toast('An error occurred, please try again later!', { icon: '🔥' })
         } finally {
             setLoading(false)
         }
-    }
+    }, [])
 
     return { createProduct, loading }
 }

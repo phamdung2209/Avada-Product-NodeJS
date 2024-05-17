@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 
 const useUpdateProduct = () => {
     const [loading, setLoading] = useState(false)
 
-    const updateProduct = async (values) => {
+    const updateProduct = useCallback(async (values) => {
         setLoading(true)
         try {
             const response = await fetch(`http://localhost:8080/api/products/update/${values.id}`, {
@@ -26,7 +26,7 @@ const useUpdateProduct = () => {
         } finally {
             setLoading(false)
         }
-    }
+    }, [])
 
     return { loading, updateProduct }
 }

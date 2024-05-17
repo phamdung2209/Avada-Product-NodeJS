@@ -1,5 +1,5 @@
 import { Form, FormLayout, Grid, Modal, TextField } from '@shopify/polaris'
-import React from 'react'
+import React, { memo } from 'react'
 import DropImages from './DropImages'
 
 const ModalContainer = ({ handleSubmit, product, values, setValues }) => {
@@ -78,4 +78,4 @@ const ModalContainer = ({ handleSubmit, product, values, setValues }) => {
     )
 }
 
-export default ModalContainer
+export default memo(ModalContainer)

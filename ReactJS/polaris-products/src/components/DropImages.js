@@ -1,6 +1,6 @@
 import { DropZone, LegacyCard, LegacyStack, Text, Thumbnail } from '@shopify/polaris'
 import { NoteIcon } from '@shopify/polaris-icons'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 
 const DropImages = ({ setImages, image }) => {
     const [files, setFiles] = useState([])
@@ -65,4 +65,4 @@ const DropImages = ({ setImages, image }) => {
     )
 }
 
-export default DropImages
+export default memo(DropImages)

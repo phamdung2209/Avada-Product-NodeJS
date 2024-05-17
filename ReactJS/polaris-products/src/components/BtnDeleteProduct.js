@@ -1,5 +1,5 @@
 import { Modal } from '@shopify/polaris'
-import React, { useCallback, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import useDeleteProducts from '~/hooks/useDeleteProducts'
 
 const BtnDeleteProduct = ({ selectedItems, setSelectedItems }) => {
@@ -39,4 +39,4 @@ const BtnDeleteProduct = ({ selectedItems, setSelectedItems }) => {
     )
 }
 
-export default BtnDeleteProduct
+export default memo(BtnDeleteProduct)

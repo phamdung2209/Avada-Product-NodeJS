@@ -1,5 +1,5 @@
 import { Checkbox } from '@shopify/polaris'
-import React, { useCallback, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 
 const Button = ({
     title,
@@ -41,4 +41,4 @@ const Button = ({
     )
 }
 
-export default Button
+export default memo(Button)

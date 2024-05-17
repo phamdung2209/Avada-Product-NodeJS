@@ -1,5 +1,5 @@
 import { BlockStack, Box, SkeletonTabs, Spinner } from '@shopify/polaris'
-import React from 'react'
+import React, { memo } from 'react'
 
 const SkeletonProduct = () => {
     return (
@@ -14,4 +14,4 @@ const SkeletonProduct = () => {
     )
 }
 
-export default SkeletonProduct
+export default memo(SkeletonProduct)
