@@ -1,0 +1,30 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "avada-dungpv"
+client_id = "d81abe4b72cc2b52353e2e55c3c14f1a"
+application_url = "https://appendix-certificate-healthy-constitute.trycloudflare.com/auth/shopify"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://appendix-certificate-healthy-constitute.trycloudflare.com/auth/shopify/callback",
+  "https://appendix-certificate-healthy-constitute.trycloudflare.com/authSa/shopify/callback",
+  "https://appendix-certificate-healthy-constitute.trycloudflare.com/auth/shopify/embed/callback",
+  "https://localhost:3000/auth/shopify/callback",
+  "https://localhost:3000/authSa/shopify/callback",
+  "https://localhost:3000/auth/shopify/embed/callback"
+]
+
+[webhooks]
+api_version = "2024-04"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "avada-dungpv.myshopify.com"

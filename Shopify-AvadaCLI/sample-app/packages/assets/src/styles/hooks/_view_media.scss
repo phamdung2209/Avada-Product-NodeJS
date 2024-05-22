@@ -1,0 +1,91 @@
+.Mageplaza-Popup__Container-overlay {
+  .Container-Mobile-content {
+    width: 90%;
+    padding: 0 8%;
+  }
+
+  .Container-Desktop-content {
+    width: 72%;
+    padding: 0 2.2%;
+  }
+
+  ._mobileWidth-content {
+    width: 55%;
+  }
+
+  .Mageplaza-Popup__Container-content {
+    max-height: 95vh;
+    border: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-clip: content-box, padding-box;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .Mageplaza-Popup__Arrow {
+      align-items: center;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      position: absolute;
+      top: calc(50% - 1rem);
+      transform: translateY(-50%);
+      z-index: 99999;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+
+      .Polaris-Icon {
+        width: 3rem;
+        height: 3rem;
+        display: block;
+
+        svg {
+          fill: black;
+        }
+      }
+    }
+
+    .Mageplaza-Popup__ArrowLeft {
+      left: 0;
+    }
+
+    .Mageplaza-Popup__ArrowRight {
+      right: 0;
+    }
+
+    .Mageplaza-Popup__ArrowLeft._hide {
+      display: none;
+    }
+
+    .Mageplaza-Popup__ArrowRight._hide {
+      display: none;
+    }
+
+    .Mageplaza-Popup__CloseButton {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      right: 0;
+      z-index: 1;
+
+      .Polaris-Icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: block;
+        fill: black;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+      }
+    }
+
+    .Mageplaza-Popup__CloseButton._mobile {
+      padding: 0 9%;
+    }
+
+    .Mageplaza-Popup__CloseButton._desktop {
+      padding: 0 3.3%;
+    }
+  }
+}

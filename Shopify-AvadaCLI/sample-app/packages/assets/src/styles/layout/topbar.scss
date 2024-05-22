@@ -1,0 +1,113 @@
+$small: 300px;
+
+// subscription plan badge
+.Mageplaza-AppTopbar {
+  .Polaris-TopBar {
+    background-color: var(--a-ig-primary-color);
+
+    .Polaris-TopBar__NavigationIcon {
+      .Polaris-Icon {
+        fill: white;
+      }
+    }
+
+    .Polaris-TopBar-Menu__ActivatorWrapper {
+      .Polaris-TopBar-Menu__Activator {
+        &.Polaris-TopBar-Menu__Activator[aria-expanded='true'] {
+          background-color: grey;
+        }
+
+        .Polaris-Avatar {
+          background: #39e070;
+          font-size: 2rem;
+        }
+
+        .Polaris-TopBar-UserMenu__Details {
+          .Polaris-TopBar-UserMenu__Name, .Polaris-TopBar-UserMenu__Detail {
+            color: white;
+          }
+        }
+
+        &:hover, &:focus {
+          background-color: grey;
+        }
+      }
+    }
+
+    .Avada-Pricing__Badge {
+      position: absolute;
+      left: 6.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    @media all and (max-width: 768px) {
+      .Avada-Pricing__Badge {
+        left: 5rem;
+      }
+    }
+
+    @media all and (max-width: 411px) {
+      .Avada-Pricing__Badge {
+        display: none;
+      }
+    }
+  }
+
+}
+
+
+.Polaris-TopBar__SearchField {
+  display: none;
+}
+
+.Avada-TopBar__Wrapper {
+  display: flex;
+  align-items: center;
+
+  > * {
+    &:not(:nth-child(1)) {
+      margin-left: 2rem;
+    }
+
+    &:nth-last-child(1) {
+      margin-right: 2rem;
+    }
+  }
+
+  // logo and navigation icon
+  .Avada-TopBar__Title {
+    position: absolute;
+    left: 4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    // app title color
+    a {
+      font-weight: 600;
+      color: var(--a-ig-primary-color);
+    }
+
+    > * {
+      margin-right: 1.2rem;
+    }
+  }
+
+  // top right icons
+  .Avada-TopBar__Icons {
+    margin-top: 0.4rem;
+
+    .Polaris-Button--plain:active:not(.Polaris-Button--iconOnly) > .Polaris-Button__Content {
+      background: transparent;
+    }
+
+    .Polaris-Thumbnail {
+      border: unset;
+
+      img {
+        width: 2rem;
+      }
+    }
+  }
+}

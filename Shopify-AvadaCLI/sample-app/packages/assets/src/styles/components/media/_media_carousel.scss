@@ -1,0 +1,33 @@
+.Mageplaza-Carousel {
+  .Mageplaza-Carousel__Button {
+    top: calc(50% - 1.5rem);
+    position: absolute;
+    z-index: 1;
+    cursor: pointer;
+
+    .Polaris-Button--plain {
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+    }
+    .Polaris-Icon {
+      width: 3rem;
+      height: 3rem;
+      display: block;
+      border-radius: 50%;
+      background: rgba(255,255,255, 0.5);
+
+      svg {
+        fill: black;
+      }
+    }
+  }
+  .Mageplaza-Carousel__Button._PrevButton {
+    left: 0.5rem;
+    width: 1rem;
+  }
+  .Mageplaza-Carousel__Button._NextButton {
+    right: 3rem;
+    width: 1rem;
+  }
+}

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>MP Instagram & Tiktok Feed</title>
+    <style>
+        html {
+            /*font-size: 62.5% !important;*/
+        }
+
+        body {
+            background: #f4f6f8;
+            /*font-size: 62.5%;*/
+            line-height: 2rem;
+            font-weight: 400;
+        }
+
+        .PreLoading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: -1;
+        }
+
+        @keyframes Polaris-Spinner--loading {
+            100% {
+                transform: rotate(1turn);
+            }
+        }
+
+        .PreLoading .PreLoading-Loader {
+            -webkit-filter: brightness(0) saturate(100%) invert(72%) sepia(8%) saturate(2838%) hue-rotate(130deg) brightness(92%) contrast(87%);
+            filter: brightness(0) saturate(100%) invert(72%) sepia(8%) saturate(2838%) hue-rotate(130deg) brightness(92%) contrast(87%);
+            height: 1.5rem !important;
+            width: 1.5rem !important;
+            animation: Polaris-Spinner--loading 0.5s linear infinite;
+            color: transparent;
+        }
+
+        .PreLoading p {
+            font-weight: 700;
+            font-family: -apple-system, BlinkMacSystemFont, San Francisco, Roboto,
+            Segoe UI, Helvetica Neue, sans-serif;
+            font-size: 1rem;
+            color: #424242;
+        }
+
+        .Polaris-TextStyle--variationPositive {
+            color: var(--p-text-success, #108043);
+        }
+
+        .Polaris-TextStyle--variationNegative {
+            color: var(--p-text-critical, #bf0711);
+        }
+
+        .Polaris-TextStyle--variationCode {
+            position: relative;
+            padding: 0 0.4rem;
+            border-radius: 3px;
+            background-color: var(--p-surface-subdued, #f4f6f8);
+            display: inline-block;
+            font-size: 1.15em;
+            box-shadow: inset 0 0 0 1px var(--p-border-subdued, #dfe3e8);
+        }
+
+        .Polaris-TextStyle--variationCode::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px solid transparent;
+        }
+
+        .Polaris-TextStyle--variationStrong {
+            font-weight: 600;
+        }
+
+        .Polaris-TextStyle--variationSubdued {
+            color: var(--p-text-subdued, #637381);
+        }
+
+        .Polaris-Tag {
+            display: inline-flex;
+            max-width: 100%;
+            align-items: center;
+            min-height: 2.8rem;
+            padding: 0 0.8rem;
+            background-color: var(--p-surface-neutral, #dfe3e8);
+            border-radius: var(--p-border-radius-base, 3px);
+            color: var(--p-text, #212b36);
+        }
+
+        .Polaris-Tag.Polaris-Tag--disabled {
+            transition: none;
+            background: var(--p-surface-neutral-disabled, #f4f6f8);
+            color: var(--p-text-disabled, #919eab);
+        }
+
+        .Polaris-Tag.Polaris-Tag--disabled svg {
+            fill: var(--p-icon-disabled, #919eab);
+        }
+
+        .Polaris-Tag.Polaris-Tag--removable {
+            padding-right: 0;
+        }
+
+        .Polaris-Tag.Polaris-Tag--clickable {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin: 0;
+            padding: 0;
+            background: 0 0;
+            border: none;
+            font-size: inherit;
+            line-height: inherit;
+            cursor: pointer;
+            cursor: pointer;
+            padding: 0 0.8rem;
+            background-color: #dfe3e8;
+        }
+
+        .Polaris-Tag.Polaris-Tag--clickable:focus {
+            outline: 0;
+        }
+
+        .Polaris-Tag.Polaris-Tag--clickable:active,
+        .Polaris-Tag.Polaris-Tag--clickable:focus,
+        .Polaris-Tag.Polaris-Tag--clickable:hover {
+            background: #c4cdd5;
+        }
+
+
+        .Polaris-Tag.Polaris-Tag--clickable.Polaris-Tag--newDesignLanguage {
+            background-color: var(--p-surface-neutral);
+            position: relative;
+        }
+
+        .Polaris-Tag.Polaris-Tag--clickable.Polaris-Tag--newDesignLanguage:hover {
+            background: var(--p-surface-neutral-hovered);
+        }
+
+        .Polaris-Tag.Polaris-Tag--clickable.Polaris-Tag--newDesignLanguage:focus:not(:active)::after {
+            box-shadow: 0 0 0 0.2rem var(--p-focused, #5c6ac4);
+            outline: 0.1rem solid transparent;
+        }
+
+        .Polaris-Tag.Polaris-Tag--clickable.Polaris-Tag--newDesignLanguage:active {
+            background: var(--p-surface-neutral-pressed);
+        }
+
+        .Polaris-Tag.Polaris-Tag--clickable.Polaris-Tag--newDesignLanguage:disabled {
+            background: var(--p-surface-neutral-disabled);
+        }
+
+        @media (-ms-high-contrast: active) {
+            .Polaris-Tag {
+                outline: 1px solid windowText;
+            }
+        }
+
+        .Polaris-Tag__TagText {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .Polaris-Tag__Button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin: 0;
+            padding: 0;
+            background: 0 0;
+            border: none;
+            font-size: inherit;
+            line-height: inherit;
+            cursor: pointer;
+            display: block;
+            height: 2.8rem;
+            width: 2.8rem;
+            margin-left: 0.4rem;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .Polaris-Tag__Button svg {
+            fill: #637381;
+        }
+
+        .Polaris-Tag__Button:focus {
+            outline: 0;
+        }
+
+        .Polaris-Tag__Button:active,
+        .Polaris-Tag__Button:focus,
+        .Polaris-Tag__Button:hover {
+            background: #c4cdd5;
+        }
+
+        .Polaris-Tag__Button:active svg,
+        .Polaris-Tag__Button:focus svg,
+        .Polaris-Tag__Button:hover svg {
+            fill: #212b36;
+        }
+
+        .Polaris-Tag__Button:disabled svg {
+            fill: #919eab;
+        }
+
+        .Polaris-Tag__Button:active {
+            background: rgba(145, 158, 171, 0.6);
+        }
+
+        .Polaris-Tag__Button.Polaris-Tag--newDesignLanguage {
+            position: relative;
+        }
+
+        .Polaris-Tag__Button.Polaris-Tag--newDesignLanguage svg {
+            fill: var(--p-icon);
+        }
+
+        .Polaris-Tag__Button.Polaris-Tag--newDesignLanguage:hover {
+            background: var(--p-surface-neutral-hovered);
+            outline: 0.1rem solid transparent;
+        }
+
+        .Polaris-Tag__Button.Polaris-Tag--newDesignLanguage:focus {
+            background-color: transparent;
+        }
+
+        .Polaris-Tag__Button.Polaris-Tag--newDesignLanguage:focus:not(:active)::after {
+            box-shadow: 0 0 0 0.2rem var(--p-focused, #5c6ac4);
+            outline: 0.1rem solid transparent;
+        }
+
+        .Polaris-Tag__Button.Polaris-Tag--newDesignLanguage:active {
+            background: var(--p-surface-neutral-pressed);
+        }
+
+        .Polaris-Tag__Button.Polaris-Tag--newDesignLanguage:disabled svg {
+            fill: var(--p-icon-disabled);
+        }
+    </style>
+</head>
+<body>
+<div id="app"></div>
+<div id="PreLoading" class="PreLoading">
+    <img width="150px" height="150px"
+         src="https://cdn1.avada.io/logo/branding-2022/Logo%20n%E1%BB%81n%20transparent/Brandmark_PhienBanMauChinhTrenNenSang.png"
+         alt="Avada logo"/>
+    <img class="PreLoading-Loader"
+         src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNDQgNDQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE1LjU0MiAxLjQ4N0EyMS41MDcgMjEuNTA3IDAgMCAwIC41IDIyYzAgMTEuODc0IDkuNjI2IDIxLjUgMjEuNSAyMS41IDkuODQ3IDAgMTguMzY0LTYuNjc1IDIwLjgwOS0xNi4wNzJhMS41IDEuNSAwIDAgMC0yLjkwNC0uNzU2QzM3LjgwMyAzNC43NTUgMzAuNDczIDQwLjUgMjIgNDAuNSAxMS43ODMgNDAuNSAzLjUgMzIuMjE3IDMuNSAyMmMwLTguMTM3IDUuMy0xNS4yNDcgMTIuOTQyLTE3LjY1YTEuNSAxLjUgMCAxIDAtLjktMi44NjN6IiBmaWxsPSIjOTE5RUFCIi8+PC9zdmc+Cg=="
+         alt="Preloading" draggable="false" role="status"/>
+    <br/>
+    <div id="reload-notice" style="display: none">
+        <p style="font-size: 14px; font-weight: 400">
+            If this is still loading, try hard reload your browser with <span class="Polaris-Tag">
+            <span class="Polaris-Tag__TagText">Ctrl + F5</span>
+          </span> or <a target="_blank"
+                        href="https://go.crisp.chat/chat/embed/?website_id=a8100c36-4c44-4f41-9964-bf9c2b32de34"> Chat
+            with us </a>
+        </p>
+    </div>
+</div>
+<script>
+    setTimeout(() => {
+        const loading = document.getElementById('PreLoading');
+        if (loading) {
+            document.querySelector('#reload-notice').style.display = 'block';
+        }
+    }, 7000)
+</script>
+</body>
+</html>
