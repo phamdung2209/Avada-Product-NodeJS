@@ -36,7 +36,7 @@ const CreateTodo = () => {
             title={<Box className="text-[#303030]">Add new product</Box>}
             primaryAction={{
                 content: 'Create',
-                onAction: handleSubmit,
+                onAction: async () => await handleSubmit(),
             }}
             secondaryActions={[
                 {

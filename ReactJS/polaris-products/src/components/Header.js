@@ -1,5 +1,5 @@
 import { Avatar, Box, Image, InlineStack, Text } from '@shopify/polaris'
-import React from 'react'
+import React, { memo } from 'react'
 import { useThemeMode } from '~/context/ThemeMode'
 
 const Header = () => {
@@ -25,4 +25,4 @@ const Header = () => {
     )
 }
 
-export default Header
+export default memo(Header)

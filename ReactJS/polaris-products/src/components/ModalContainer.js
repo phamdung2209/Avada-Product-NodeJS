@@ -5,7 +5,7 @@ import DropImages from './DropImages'
 const ModalContainer = ({ handleSubmit, product, values, setValues }) => {
     return (
         <Modal.Section>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={async () => await handleSubmit()}>
                 <FormLayout>
                     <Grid>
                         <Grid.Cell

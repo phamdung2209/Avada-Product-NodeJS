@@ -33,3 +33,10 @@
 .button--add {
     @apply bg-[#008060] text-white border border-[#008060]
 }
+
+.Polaris-Button--primary {
+    background-color: #007bff;
+    /* Thay đổi màu nền button */
+    color: #fff;
+    /* Thay đổi màu chữ trên button */
+}

@@ -1,26 +1,34 @@
-import { LegacyCard, Pagination, ResourceItem, ResourceList, Thumbnail } from '@shopify/polaris'
+import { Button, LegacyCard, Pagination, ResourceItem, ResourceList, Thumbnail } from '@shopify/polaris'
 import { NoteIcon } from '@shopify/polaris-icons'
-import React, { memo, useCallback, useState } from 'react'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import useGetProducts from '~/hooks/useGetProducts'
 import SkeletonProduct from '~/skeletons/SkeletonProduct'
 import BtnDeleteProduct from './BtnDeleteProduct'
-import UpdateProduct from './UpdateProduct'
 import FilterProduct from './FilterProduct'
 import useDebounce from '~/hooks/useDebounce'
 import ItemProduct from './ItemProduct'
+import useModal from '~/hooks/useModal'
+import ModalContainer from './ModalContainer'
+import { readFileAsDataURL } from '~/ultils/functions'
+import { useAppContext } from '~/context/AppContext'
+import useUpdateProduct from '~/hooks/useUpdateProduct'
 
 const ProductItems = () => {
-    console.log('Render ProductItems')
     const [sortBy, setSortBy] = useState('desc')
     const [selectedItems, setSelectedItems] = useState([])
-    const [dataSearch, setDataSearch] = useState([])
+    const searchRef = useRef(null)
+
     const [pagination, setPagination] = useState({
         page: 1,
         per_page: 5,
     })
-    const { data, loading } = useGetProducts(sortBy, pagination)
+
     const [queryValue, setQueryValue] = useState('')
+    const searchData = useDebounce(queryValue, 700)
+    const { data, loading } = useGetProducts({ sortBy, pagination, q: searchData })
+
+    const { Modals, handleOpen } = useModal()
 
     const promotedBulkActions = [
         {
@@ -30,14 +38,40 @@ const ProductItems = () => {
 
     if (selectedItems.length === 1) {
         promotedBulkActions.unshift({
-            content: <UpdateProduct selectedItems={selectedItems} products={data} />,
+            content: 'Edit product',
+            onAction: () => handleOpen(),
         })
     }
 
-    const searchValue = useDebounce(queryValue, 700)
-
     const handleSortChange = useCallback((selected) => setSortBy(selected), [])
 
+    // USE MODAL HERE
+    const [values, setValues] = useState({
+        name: '',
+        price: '0',
+        description: '',
+        images: '',
+    })
+    const { setActionDeleteProduct } = useAppContext()
+    const { updateProduct } = useUpdateProduct()
+    const product = data.find((item) => item.id === selectedItems[0])
+    const handleSubmit = async (e) => {
+        const urlImage = await readFileAsDataURL(values.images[0])
+        await updateProduct({ ...values, product: 'pros', images: urlImage, id: product.id })
+        setActionDeleteProduct((prev) => prev + 1)
+    }
+
+    useEffect(() => {
+        if (product) {
+            setValues({
+                name: product.name,
+                price: product.price,
+                description: product.description,
+                images: product.images,
+            })
+        }
+    }, [product])
+    console.log('render proItems')
     return (
         <LegacyCard>
             {loading ? (
@@ -45,18 +79,14 @@ const ProductItems = () => {
             ) : (
                 <ResourceList
                     resourceName={{ singular: 'product', plural: 'products' }}
-                    items={searchValue ? dataSearch : data}
+                    items={data}
                     selectedItems={selectedItems}
                     onSelectionChange={setSelectedItems}
                     selectable
                     loading={loading}
                     promotedBulkActions={promotedBulkActions}
                     filterControl={
-                        <FilterProduct
-                            setDataSearch={setDataSearch}
-                            queryValue={queryValue}
-                            setQueryValue={setQueryValue}
-                        />
+                        <FilterProduct queryValue={queryValue} setQueryValue={setQueryValue} ref={searchRef} />
                     }
                     sortValue={sortBy}
                     sortOptions={[
@@ -66,9 +96,7 @@ const ProductItems = () => {
                         { label: 'ID', value: 'id' },
                     ]}
                     onSortChange={handleSortChange}
-                    renderItem={(item) => {
-                        const { id, image, name, price, description, createdAt } = item
-
+                    renderItem={({ id, image, name, price, description, createdAt }) => {
                         return (
                             <ResourceItem
                                 id={id}
@@ -99,6 +127,10 @@ const ProductItems = () => {
                 hasNext
                 label="1-50 of 8,450 orders"
             />
+
+            <Modals onSubmit={async () => handleSubmit()} title="Edit product information">
+                <ModalContainer values={values} setValues={setValues} handleSubmit={handleSubmit} product={product} />
+            </Modals>
         </LegacyCard>
     )
 }

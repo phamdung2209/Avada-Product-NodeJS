@@ -2,7 +2,7 @@
 
 name = "avada-dungpv"
 client_id = "d81abe4b72cc2b52353e2e55c3c14f1a"
-application_url = "https://appendix-certificate-healthy-constitute.trycloudflare.com/auth/shopify"
+application_url = "https://li-larger-policy-vegetarian.trycloudflare.com/auth/shopify"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://appendix-certificate-healthy-constitute.trycloudflare.com/auth/shopify/callback",
-  "https://appendix-certificate-healthy-constitute.trycloudflare.com/authSa/shopify/callback",
-  "https://appendix-certificate-healthy-constitute.trycloudflare.com/auth/shopify/embed/callback",
+  "https://li-larger-policy-vegetarian.trycloudflare.com/auth/shopify/callback",
+  "https://li-larger-policy-vegetarian.trycloudflare.com/authSa/shopify/callback",
+  "https://li-larger-policy-vegetarian.trycloudflare.com/auth/shopify/embed/callback",
   "https://localhost:3000/auth/shopify/callback",
   "https://localhost:3000/authSa/shopify/callback",
   "https://localhost:3000/auth/shopify/embed/callback"

@@ -12,7 +12,7 @@ export const getProducts = async (ctx) => {
         }
 
         //  PAGINATION HERE
-        const { page = 1, per_page = 10, sortBy } = ctx.query
+        const { page, per_page, sortBy, q } = ctx.query
 
         if (page) {
             const offset = (+page - 1) * +per_page
@@ -65,7 +65,7 @@ export const getProducts = async (ctx) => {
 
             if (offset >= 0) {
                 return (ctx.body = {
-                    data: sortedData(data),
+                    data: q ? filterProducts(data, q) : sortedData(data),
                     meta: {
                         pagination: {
                             total: newProducts.length,
@@ -97,7 +97,7 @@ export const getProducts = async (ctx) => {
         }
 
         ctx.body = {
-            data: sortedData(products),
+            data: q ? filterProducts(products, q) : products,
             meta: {
                 pagination: {
                     total: products.length,
@@ -109,6 +109,21 @@ export const getProducts = async (ctx) => {
             error: error.message,
         }
     }
+}
+
+const filterProducts = (pros, q) => {
+    return pros.filter((product) => {
+        const name = product.name
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+
+        const search = q
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+        return name.includes(search)
+    })
 }
 
 const sortProducts = (products, sortBy) => {

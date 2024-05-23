@@ -1,17 +1,17 @@
-import { Box, LegacyFilters, TextField } from '@shopify/polaris'
-import React, { memo, useEffect } from 'react'
-import useDebounce from '~/hooks/useDebounce'
-import useSearchProducts from '~/hooks/useSearchProducts'
+import { Box, LegacyFilters } from '@shopify/polaris'
+import React, { forwardRef, memo, useImperativeHandle } from 'react'
 
-const FilterProduct = ({ setDataSearch, queryValue, setQueryValue }) => {
+const FilterProduct = ({ queryValue, setQueryValue }, ref) => {
     const handleQueryValueRemove = () => setQueryValue('')
+    console.log('render FilterProduct')
 
-    const searchValue = useDebounce(queryValue, 700)
-    const { loading, data } = useSearchProducts(searchValue)
-
-    useEffect(() => {
-        setDataSearch(data)
-    }, [data, setDataSearch])
+    useImperativeHandle(
+        ref,
+        () => ({
+            queryValue,
+        }),
+        [queryValue],
+    )
 
     const filters = [
         {
@@ -44,4 +44,4 @@ const FilterProduct = ({ setDataSearch, queryValue, setQueryValue }) => {
     )
 }
 
-export default memo(FilterProduct)
+export default memo(forwardRef(FilterProduct))
