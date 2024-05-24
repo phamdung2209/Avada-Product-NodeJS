@@ -8,23 +8,28 @@
     pointer-events: none;
     opacity: 0.5;
   }
+
   &.small {
     width: 28px;
     height: 17.14px;
   }
+
   .MP-Switch_Checkbox {
     opacity: 0;
     width: 0;
     height: 0;
-    &:checked + .MP-Switch_Slider {
+
+    &:checked+.MP-Switch_Slider {
       background-color: var(--a-ig-primary-color);
     }
-    &:checked + .MP-Switch_Slider:before {
+
+    &:checked+.MP-Switch_Slider:before {
       -webkit-transform: translateX(26px);
       -ms-transform: translateX(26px);
       transform: translateX(26px);
     }
-    &:checked + .small:before {
+
+    &:checked+.small:before {
       -webkit-transform: translateX(22.5px);
       -ms-transform: translateX(22.5px);
       transform: translate(22.5px, 0.4px);
@@ -54,6 +59,7 @@
       height: 14.28px;
       width: 14.28px;
     }
+
     &:before {
       position: absolute;
       content: '';

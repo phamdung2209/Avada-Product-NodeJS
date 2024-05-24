@@ -11,6 +11,7 @@ import appRoute from '@assets/const/app';
 import AppEmbeddedLayout from '@assets/layouts/EmbeddedLayout/AppEmbeddedLayout';
 import AppFullLayout from '@assets/layouts/FullLayout/AppFullLayout';
 import PropTypes from 'prop-types';
+
 /**
  *
  * @param isEmbedApp
@@ -18,43 +19,43 @@ import PropTypes from 'prop-types';
  * @constructor
  */
 export default function App({isEmbedApp = true}) {
-  if (isEmbedApp) {
-    return (
-      <AppProvider i18n={translations} linkComponent={ReactRouterLink}>
-        <Router history={history}>
-          <Suspense fallback={<div></div>}>
-            <AppBridgeProvider>
-              <AppEmbeddedLayout>
-                <ErrorBoundary>
-                  <Routes prefix={appRoute.embed} />
-                </ErrorBoundary>
-              </AppEmbeddedLayout>
-            </AppBridgeProvider>
-          </Suspense>
-        </Router>
-      </AppProvider>
-    );
-  }
+    if (isEmbedApp) {
+        return (
+            <AppProvider i18n={translations} linkComponent={ReactRouterLink}>
+                <Router history={history}>
+                    <Suspense fallback={<div></div>}>
+                        <AppBridgeProvider>
+                            <AppEmbeddedLayout>
+                                <ErrorBoundary>
+                                    <Routes prefix={appRoute.embed} />
+                                </ErrorBoundary>
+                            </AppEmbeddedLayout>
+                        </AppBridgeProvider>
+                    </Suspense>
+                </Router>
+            </AppProvider>
+        );
+    }
 
-  return (
-    <AppProvider
-      i18n={translations}
-      linkComponent={ReactRouterLink}
-      features={{newDesignLanguage: true}}
-    >
-      <Router history={history}>
-        <Suspense fallback={<div></div>}>
-          <AppFullLayout routePrefix={appRoute.standalone}>
-            <ErrorBoundary>
-              <Routes prefix={appRoute.standalone} />
-            </ErrorBoundary>
-          </AppFullLayout>
-        </Suspense>
-      </Router>
-    </AppProvider>
-  );
+    return (
+        <AppProvider
+            i18n={translations}
+            linkComponent={ReactRouterLink}
+            features={{newDesignLanguage: true}}
+        >
+            <Router history={history}>
+                <Suspense fallback={<div></div>}>
+                    <AppFullLayout routePrefix={appRoute.standalone}>
+                        <ErrorBoundary>
+                            <Routes prefix={appRoute.standalone} />
+                        </ErrorBoundary>
+                    </AppFullLayout>
+                </Suspense>
+            </Router>
+        </AppProvider>
+    );
 }
 
 App.propTypes = {
-  isEmbedApp: PropTypes.bool
+    isEmbedApp: PropTypes.bool
 };

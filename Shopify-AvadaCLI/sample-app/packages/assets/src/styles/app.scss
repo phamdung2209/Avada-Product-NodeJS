@@ -12,6 +12,7 @@ body:has(.Avada__FullLayout) {
 body[data-lock-scrolling] {
   overflow: auto hidden;
 }
+
 div#app,
 html.p-theme-light {
   scrollbar-width: none;
@@ -44,4 +45,20 @@ html.p-theme-light {
 
 .Polaris-Page {
   width: 100%;
+}
+
+#AppFrameTopBar {
+  .Polaris-TopBar {
+    background-color: #fff !important;
+
+    .Polaris-TopBar-Menu__Activator--userMenu {
+      background-color: #fff !important;
+    }
+
+    .Polaris-Text--root {
+      color: #202223 !important;
+    }
+  }
+
+
 }
