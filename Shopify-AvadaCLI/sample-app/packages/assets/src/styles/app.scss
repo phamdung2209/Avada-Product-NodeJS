@@ -9,6 +9,10 @@ body:has(.Avada__FullLayout) {
   overflow: unset !important;
 }
 
+.Polaris-Frame__Content {
+  background-color: #fff;
+}
+
 body[data-lock-scrolling] {
   overflow: auto hidden;
 }
@@ -59,6 +63,30 @@ html.p-theme-light {
       color: #202223 !important;
     }
   }
+}
 
+// desktop-position
+.desktop-position {
+  border: 3px solid #dfe3e8;
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  height: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 
+  &:hover {
+    border-color: var(--a-ig-primary-color);
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+
+  div {
+    width: 50%;
+    height: 50%;
+    border-radius: 3px;
+    background: var(--p-color-gray);
+  }
 }
