@@ -10,11 +10,11 @@ import {verifyRequest} from '@avada/core';
 const api = new App();
 api.proxy = true;
 render(api, {
-  cache: true,
-  debug: false,
-  layout: false,
-  root: path.resolve(__dirname, '../../views'),
-  viewExt: 'html'
+    cache: true,
+    debug: false,
+    layout: false,
+    root: path.resolve(__dirname, '../../views'),
+    viewExt: 'html'
 });
 api.use(createErrorHandler());
 api.use(verifyRequest());

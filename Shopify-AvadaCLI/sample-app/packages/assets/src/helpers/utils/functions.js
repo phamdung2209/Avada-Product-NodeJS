@@ -17,7 +17,7 @@ export const extractTime = date => {
     if (diffInMinutes < 1) {
         return 'Just now';
     } else if (diffInMinutes < 60) {
-        return `Sent ${diffInMinutes}m ago`;
+        return `Just ${diffInMinutes}m ago`;
     } else {
         const options = {
             weekday: 'short',

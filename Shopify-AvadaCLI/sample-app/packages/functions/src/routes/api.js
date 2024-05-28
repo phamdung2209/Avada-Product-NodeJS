@@ -2,11 +2,13 @@ import Router from 'koa-router';
 import * as shopController from '@functions/controllers/shopController';
 import * as subscriptionController from '@functions/controllers/subscriptionController';
 import jsonType from '@functions/middleware/jsonType';
+import Shopify from 'shopify-api-node';
+
 import {getSettings, updatedSettings} from '../controllers/settingsController';
 import {getNotifications} from '../controllers/notificationsController';
-import Shopify from 'shopify-api-node';
 import {getCurrentUserShopId} from '@avada/core/build/authentication';
-import {getShopById} from '../repositories/shopRepository';
+import {getShopByDomain, getShopById} from '../repositories/shopRepository';
+import {getShopByShopifyDomain} from '@avada/core';
 
 export default function getRoutes(prefix = '/api') {
     const router = new Router({
@@ -25,20 +27,24 @@ export default function getRoutes(prefix = '/api') {
     router.get('/orders', async ctx => {
         const shopId = getCurrentUserShopId(ctx);
         const shopData = await getShopById(shopId);
+        const dataShop = await getShopByDomain(shopData.domain);
+        const dataShopOwnwer = await getShopByShopifyDomain(shopData.domain);
+        const shopify = new Shopify({
+            shopName: shopData.domain,
+            accessToken: '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'
+        });
 
-        // const shopify = new Shopify({
-        //     shopName: shopData.shop,
-        //     accessToken: shopData.accessToken,
-        //     apiVersion: '2022-07'
-        // });
-
-        // const orders = await shopify.order.list();
+        const orders = await shopify.order.list();
+        const products = await shopify.product.list();
 
         ctx.body = {
             shopData,
             shopId,
-            // orders
-            shop: ctx.state.user.shop.shopifyDomain
+            orders,
+            shop: ctx.state.user.shop.shopifyDomain,
+            dataShop,
+            dataShopOwnwer,
+            products
         };
     });
 

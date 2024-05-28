@@ -15,7 +15,7 @@ const useGetNotifications = () => {
             }
             setData(res);
 
-            const data = await fetchAuthenticatedApi('/orders');
+            const data = await fetchAuthenticatedApi('/webhook/orders');
             console.log('Orders', data);
         } catch (error) {
             console.error('Error in getNotifications', error.message);

@@ -2,7 +2,7 @@
 
 name = "Avada Training"
 client_id = "ecde5a18c3f7ecba5796619c0d8536de"
-application_url = "https://def-soccer-forming-conventions.trycloudflare.com/auth/shopify"
+application_url = "https://respond-controls-wars-series.trycloudflare.com/auth/shopify"
 embedded = true
 
 [access_scopes]
@@ -12,9 +12,9 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://def-soccer-forming-conventions.trycloudflare.com/auth/shopify/callback",
-  "https://def-soccer-forming-conventions.trycloudflare.com/authSa/shopify/callback",
-  "https://def-soccer-forming-conventions.trycloudflare.com/auth/shopify/embed/callback",
+  "https://respond-controls-wars-series.trycloudflare.com/auth/shopify/callback",
+  "https://respond-controls-wars-series.trycloudflare.com/authSa/shopify/callback",
+  "https://respond-controls-wars-series.trycloudflare.com/auth/shopify/embed/callback",
   "https://localhost:3000/auth/shopify/callback",
   "https://localhost:3000/authSa/shopify/callback",
   "https://localhost:3000/auth/shopify/embed/callback"
