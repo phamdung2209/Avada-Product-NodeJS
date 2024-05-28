@@ -90,3 +90,19 @@ html.p-theme-light {
     background: var(--p-color-gray);
   }
 }
+
+// timing-item 
+.timing-item {
+  .Polaris-TextField {
+    width: 80px;
+  }
+
+  .Polaris-InlineGrid {
+    display: flex;
+    justify-content: space-between;
+
+    &>div:first-child {
+      width: 100%;
+    }
+  }
+}

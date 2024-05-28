@@ -13,23 +13,23 @@ const api = new App();
 api.proxy = true;
 
 api.use(
-  verifyEmbedRequest({
-    returnHeader: true,
-    apiKey: shopifyConfig.apiKey,
-    scopes: shopifyConfig.scopes,
-    secret: shopifyConfig.secret,
-    hostName: appConfig.baseUrl,
-    isEmbeddedApp: true,
-    accessTokenKey: shopifyConfig.accessTokenKey
-  })
+    verifyEmbedRequest({
+        returnHeader: true,
+        apiKey: shopifyConfig.apiKey,
+        scopes: shopifyConfig.scopes,
+        secret: shopifyConfig.secret,
+        hostName: appConfig.baseUrl,
+        isEmbeddedApp: true,
+        accessTokenKey: shopifyConfig.accessTokenKey
+    })
 );
 
 render(api, {
-  cache: true,
-  debug: false,
-  layout: false,
-  root: path.resolve(__dirname, '../../views'),
-  viewExt: 'html'
+    cache: true,
+    debug: false,
+    layout: false,
+    root: path.resolve(__dirname, '../../views'),
+    viewExt: 'html'
 });
 api.use(createErrorHandler());
 

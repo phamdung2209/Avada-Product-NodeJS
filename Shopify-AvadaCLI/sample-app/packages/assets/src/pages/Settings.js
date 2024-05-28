@@ -1,9 +1,28 @@
-import {Layout, LegacyCard, Page, Tabs} from '@shopify/polaris';
-import React, {memo} from 'react';
+import {Layout, LegacyCard, Page} from '@shopify/polaris';
+import React, {memo, useRef} from 'react';
 import ProductItem from '../components/ProductItem';
 import RightPanel from '../components/Settings/RightPanel';
+import {fetchAuthenticatedApi} from '../helpers';
 
 const Settings = () => {
+    const settingsRef = useRef(null);
+
+    const handleSaveData = async () => {
+        const settings = settingsRef.current?.settings;
+        const res = await fetchAuthenticatedApi('/settings', {
+            method: 'PUT',
+            body: settings
+        });
+
+        if (res instanceof Error) {
+            shopify.toast.show('An error occurred while saving settings');
+
+            return;
+        }
+
+        // shopify.toast.show('Settings saved');
+    };
+
     return (
         <Page
             fullWidth
@@ -12,9 +31,7 @@ const Settings = () => {
             primaryAction={{
                 content: 'Save',
                 disabled: false,
-                onAction: () => {
-                    console.log('Save');
-                }
+                onAction: handleSaveData
             }}
         >
             <Layout>
@@ -36,7 +53,7 @@ const Settings = () => {
 
                 <Layout.Section>
                     <LegacyCard>
-                        <RightPanel />
+                        <RightPanel ref={settingsRef} />
                     </LegacyCard>
                 </Layout.Section>
             </Layout>

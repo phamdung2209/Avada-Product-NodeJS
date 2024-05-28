@@ -12,13 +12,13 @@ const shopInfosRef = firestore.collection('shopInfos');
  * @return {Promise<FirebaseFirestore.DocumentData>}
  */
 export async function getShopInfoByShopId(id) {
-  const docs = await shopInfosRef
-    .where('shopId', '==', id)
-    .limit(1)
-    .get();
-  if (docs.empty) {
-    return null;
-  }
-  const [doc] = docs.docs;
-  return presentDataAndFormatDate(doc);
+    const docs = await shopInfosRef
+        .where('shopId', '==', id)
+        .limit(1)
+        .get();
+    if (docs.empty) {
+        return null;
+    }
+    const [doc] = docs.docs;
+    return presentDataAndFormatDate(doc);
 }

@@ -1,26 +1,31 @@
 import {Box, LegacyCard, Select, Text, TextField} from '@shopify/polaris';
-import React, {useState} from 'react';
+import React, {memo} from 'react';
 
-const RightPanelTrigger = () => {
-    const [selected, setSelected] = useState(0);
+const RightPanelTrigger = ({settings, setSettings}) => {
+    const {allowShow = 'all', includedUrls, excludedUrls} = settings;
 
-    const options = [
-        {label: 'All pages', value: 'all-pages'},
-        {label: 'Specific pages', value: 'specific-pages'}
+    const OPTIONS = [
+        {label: 'All pages', value: 'all'},
+        {label: 'Specific pages', value: 'specific'}
     ];
+
     return (
         <Box>
             <LegacyCard.Section title="PAGES RESTRICTION">
-                <Select options={options} value={selected} onChange={setSelected} />
+                <Select
+                    options={OPTIONS}
+                    value={allowShow}
+                    onChange={e => setSettings({...settings, allowShow: e})}
+                />
             </LegacyCard.Section>
 
-            {selected === 'specific-pages' && (
+            {allowShow === 'specific' && (
                 <LegacyCard.Section title="Included pages">
                     <TextField
                         placeholder="https://example.com/page1"
                         multiline={3}
-                        value=""
-                        onChange={() => {}}
+                        value={includedUrls}
+                        onChange={e => setSettings({...settings, includedUrls: e})}
                     />
 
                     <Text tone="disabled">
@@ -33,8 +38,8 @@ const RightPanelTrigger = () => {
                 <TextField
                     placeholder="https://example.com/page1"
                     multiline={3}
-                    value=""
-                    onChange={() => {}}
+                    value={excludedUrls}
+                    onChange={e => setSettings({...settings, excludedUrls: e})}
                 />
 
                 <Text tone="disabled">
@@ -45,4 +50,4 @@ const RightPanelTrigger = () => {
     );
 };
 
-export default RightPanelTrigger;
+export default memo(RightPanelTrigger);
