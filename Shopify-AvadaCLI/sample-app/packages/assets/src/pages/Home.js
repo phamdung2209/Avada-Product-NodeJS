@@ -1,14 +1,5 @@
-import {
-    Layout,
-    Text,
-    Page,
-    LegacyStack,
-    Card,
-    LegacyCard,
-    InlineStack,
-    Button
-} from '@shopify/polaris';
-import React from 'react';
+import { Layout, Text, Page, LegacyCard, InlineStack, Button } from '@shopify/polaris'
+import React from 'react'
 
 const Home = () => {
     return (
@@ -24,7 +15,7 @@ const Home = () => {
                             <Button
                                 primary
                                 onClick={() => {
-                                    console.log('Enable button clicked');
+                                    console.log('Enable button clicked')
                                 }}
                             >
                                 Enable
@@ -34,7 +25,9 @@ const Home = () => {
                 </Layout.Section>
             </Layout>
         </Page>
-    );
-};
+    )
+}
 
-export default Home;
+Home.displayName = 'Home'
+
+export default Home

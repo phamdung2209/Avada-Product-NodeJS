@@ -29,7 +29,6 @@ export const getNotifications = async ctx => {
 
         const shopify = new Shopify({
             shopName: shopifyDomain,
-            // accessToken: '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'
             accessToken
         });
 

@@ -2,7 +2,7 @@
 
 name = "Avada Training"
 client_id = "ecde5a18c3f7ecba5796619c0d8536de"
-application_url = "https://recorders-ware-asbestos-cambodia.trycloudflare.com/auth/shopify"
+application_url = "https://gossip-henry-mozambique-reserve.trycloudflare.com/auth/shopify"
 embedded = true
 
 [access_scopes]
@@ -12,9 +12,9 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://recorders-ware-asbestos-cambodia.trycloudflare.com/auth/shopify/callback",
-  "https://recorders-ware-asbestos-cambodia.trycloudflare.com/authSa/shopify/callback",
-  "https://recorders-ware-asbestos-cambodia.trycloudflare.com/auth/shopify/embed/callback",
+  "https://gossip-henry-mozambique-reserve.trycloudflare.com/auth/shopify/callback",
+  "https://gossip-henry-mozambique-reserve.trycloudflare.com/authSa/shopify/callback",
+  "https://gossip-henry-mozambique-reserve.trycloudflare.com/auth/shopify/embed/callback",
   "https://localhost:3000/auth/shopify/callback",
   "https://localhost:3000/authSa/shopify/callback",
   "https://localhost:3000/auth/shopify/embed/callback"

@@ -1,31 +1,31 @@
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from 'react'
 
-import {fetchAuthenticatedApi} from '../../helpers';
+import { fetchAuthenticatedApi } from '../../helpers'
 
 const useGetNotifications = () => {
-    const [loading, setLoading] = useState(false);
-    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false)
+    const [data, setData] = useState([])
 
     const getNotifications = useCallback(async () => {
-        setLoading(true);
+        setLoading(true)
         try {
-            const res = await fetchAuthenticatedApi('/notifications');
+            const res = await fetchAuthenticatedApi('https://localhost:3000/apiSa/notifications')
             if (res.error) {
-                throw new Error(res.error);
+                throw new Error(res.error)
             }
-            setData(res);
+            setData(res)
         } catch (error) {
-            console.error('Error in getNotifications', error.message);
+            console.error('Error in getNotifications', error.message)
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    }, []);
+    }, [])
 
     useEffect(() => {
-        getNotifications();
-    }, []);
+        getNotifications()
+    }, [])
 
-    return {loading, data};
-};
+    return { loading, data }
+}
 
-export default useGetNotifications;
+export default useGetNotifications

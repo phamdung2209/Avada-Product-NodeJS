@@ -1,9 +1,11 @@
 import App from 'koa'
+
 import * as errorService from '../services/errorService'
-import router from '@functions/routes/webhookRoutes'
+import router from '@functions/routes/clientApiRoutes'
+import cors from '@koa/cors'
 
 const app = new App()
-
+app.use(cors())
 app.proxy = true
 
 app.use(router.allowedMethods())

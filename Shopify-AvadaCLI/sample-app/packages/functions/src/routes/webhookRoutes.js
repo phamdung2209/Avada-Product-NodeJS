@@ -1,10 +1,10 @@
-import {getNotifications} from '@functions/controllers/webhookController';
-import Router from 'koa-router';
+import { getNotifications } from '@functions/controllers/webhookController'
+import Router from 'koa-router'
 
 const router = new Router({
-    prefix: '/webHook'
-});
+    prefix: '/webHook',
+})
 
-router.post('/order/new', getNotifications);
+router.post('/order/new', getNotifications)
 
-export default router;
+export default router

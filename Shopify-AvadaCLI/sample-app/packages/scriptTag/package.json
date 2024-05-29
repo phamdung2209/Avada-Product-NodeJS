@@ -16,5 +16,19 @@
         "babel-loader": "^8.0.6",
         "babel-preset-es2015": "^6.24.1",
         "webpack": "^4.41.2"
+    },
+    "dependencies": {
+        "i": "^0.3.7",
+        "npm": "^10.8.0",
+        "preact": "^10.22.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
+    },
+    "proxy": {
+        "/apiSa": {
+            "target": "https://localhost:3000",
+            "secure": false,
+            "changeOrigin": true
+        }
     }
 }

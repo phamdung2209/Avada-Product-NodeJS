@@ -68,6 +68,10 @@
                 "function": "webHook"
             },
             {
+                "source": "/client-api/**",
+                "function": "clientApi"
+            },
+            {
                 "source": "**",
                 "destination": "/standalone.html"
             }

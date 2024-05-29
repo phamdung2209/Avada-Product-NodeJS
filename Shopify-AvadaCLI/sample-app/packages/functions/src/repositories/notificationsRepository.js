@@ -21,3 +21,24 @@ export const getAllNotifications = async () => {
         return null;
     }
 };
+
+export const getNotificationsByShopId = async shopId => {
+    try {
+        const docs = await notificationsRef.where('shopId', '==', shopId).get();
+        if (docs.empty) {
+            return null;
+        }
+
+        return docs.docs.map(doc => ({
+            id: doc.id,
+            timeAgo: moment(doc.data().timestamp).fromNow(),
+            ...doc.data()
+        }));
+    } catch (error) {
+        console.log(
+            'Error in getNotificationsByShopId (notificationsRepository.js)',
+            error.message
+        );
+        return null;
+    }
+};
