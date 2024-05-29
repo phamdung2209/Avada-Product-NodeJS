@@ -9,7 +9,7 @@ import {
 import {getAppInfo} from '../services/shopifyService';
 import {updateMetaField} from '../services/shopify/shopifyMetaFieldService';
 import {authentication} from '@avada/core';
-import {isEmpty, isUndefined} from '@avada/utils';
+import {isEmpty} from '@avada/utils';
 import {v4 as uuidv4} from 'uuid';
 
 export async function getOne(ctx) {

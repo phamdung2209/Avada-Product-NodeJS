@@ -1,9 +1,11 @@
 import {BlockStack, Icon, InlineStack, ResourceItem, Text, Thumbnail} from '@shopify/polaris';
+import PropTypes from 'prop-types';
 import {CheckSmallIcon} from '@shopify/polaris-icons';
 import React, {memo} from 'react';
+
 import {extractTime, formatDate} from '../../helpers/utils/functions';
 
-const ProductItem = ({id, country, productImage, timestamp, productName}) => {
+const ProductItem = ({id, country, productImage, timestamp, productName, timeAgo}) => {
     return (
         <ResourceItem
             id={id}
@@ -19,7 +21,8 @@ const ProductItem = ({id, country, productImage, timestamp, productName}) => {
                         Purchased {productName}
                     </Text>
                     <InlineStack gap={300}>
-                        {timestamp && <Text>{extractTime(timestamp)}</Text>}
+                        {/* {timestamp && <Text>{extractTime(timestamp)}</Text>} */}
+                        <Text>{timeAgo}</Text>
                         <InlineStack>
                             <Icon source={CheckSmallIcon} tone="base" />
                             by AVADA
@@ -31,5 +34,15 @@ const ProductItem = ({id, country, productImage, timestamp, productName}) => {
         </ResourceItem>
     );
 };
+
+ProductItem.propTypes = {
+    id: PropTypes.number.isRequired,
+    country: PropTypes.string,
+    productImage: PropTypes.string,
+    timestamp: PropTypes.string.isRequired,
+    productName: PropTypes.string.isRequired,
+    timeAgo: PropTypes.string
+};
+ProductItem.displayName = 'ProductItem';
 
 export default memo(ProductItem);

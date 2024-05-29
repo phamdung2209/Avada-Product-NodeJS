@@ -8,7 +8,8 @@ import {getSettings, updatedSettings} from '../controllers/settingsController';
 import {getNotifications} from '../controllers/notificationsController';
 import {getCurrentUserShopId} from '@avada/core/build/authentication';
 import {getShopByDomain, getShopById} from '../repositories/shopRepository';
-import {getShopByShopifyDomain} from '@avada/core';
+import {getShopByShopifyDomain, prepareShopData} from '@avada/core';
+import shopifyConfig from '../config/shopify';
 
 export default function getRoutes(prefix = '/api') {
     const router = new Router({
@@ -24,29 +25,6 @@ export default function getRoutes(prefix = '/api') {
     router.get('/settings', getSettings);
     router.put('/settings', updatedSettings);
     router.get('/notifications', getNotifications);
-    router.get('/orders', async ctx => {
-        const shopId = getCurrentUserShopId(ctx);
-        const shopData = await getShopById(shopId);
-        const dataShop = await getShopByDomain(shopData.domain);
-        const dataShopOwnwer = await getShopByShopifyDomain(shopData.domain);
-        const shopify = new Shopify({
-            shopName: shopData.domain,
-            accessToken: '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'
-        });
-
-        const orders = await shopify.order.list();
-        const products = await shopify.product.list();
-
-        ctx.body = {
-            shopData,
-            shopId,
-            orders,
-            shop: ctx.state.user.shop.shopifyDomain,
-            dataShop,
-            dataShopOwnwer,
-            products
-        };
-    });
 
     return router;
 }

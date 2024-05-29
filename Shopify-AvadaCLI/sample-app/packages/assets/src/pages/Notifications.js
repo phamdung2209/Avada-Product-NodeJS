@@ -74,6 +74,8 @@ const Notifications = () => {
     );
 };
 
+Notifications.displayName = 'Notifications';
+
 export default memo(Notifications);
 
 const renderResourceItem = items => <ProductItem {...items} />;

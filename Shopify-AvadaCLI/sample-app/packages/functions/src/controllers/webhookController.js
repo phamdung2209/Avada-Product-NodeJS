@@ -1,5 +1,7 @@
+import {prepareShopData} from '@avada/core';
 import Firestore from '@google-cloud/firestore/build/src';
 import Shopify from 'shopify-api-node';
+import shopifyConfig from '../config/shopify';
 
 const firestore = new Firestore();
 const notificationsRef = firestore.collection('notifications');
@@ -10,10 +12,6 @@ export const getNotifications = async ctx => {
         const data = ctx.req.body;
 
         const shopifyDomain = ctx.get('X-Shopify-Shop-Domain');
-        const shopify = new Shopify({
-            shopName: shopifyDomain,
-            accessToken: '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'
-        });
 
         const shopData = await shopsRef.where('shopifyDomain', '==', shopifyDomain).get();
         if (shopData.empty) {
@@ -22,6 +20,18 @@ export const getNotifications = async ctx => {
 
             return;
         }
+
+        const {accessToken} = prepareShopData(
+            ctx,
+            shopData.docs[0].data(),
+            shopifyConfig.accessTokenKey
+        );
+
+        const shopify = new Shopify({
+            shopName: shopifyDomain,
+            // accessToken: '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'
+            accessToken
+        });
 
         const shopId = shopData.docs[0].id;
         const docsProducts = await shopify.product.list();
@@ -32,6 +42,7 @@ export const getNotifications = async ctx => {
 
         if (isExistOrder) {
             const notifyData = await notificationsRef.where('id', '==', newOrderId).get();
+
             if (notifyData.empty) {
                 await notificationsRef.add({
                     id: data.id ?? 'abc',

@@ -1,5 +1,8 @@
+import {prepareShopData} from '@avada/core';
 import {Firestore} from '@google-cloud/firestore';
 import Shopify from 'shopify-api-node';
+import shopifyConfig from '../config/shopify';
+import {SETTINGS} from '@functions/const/const';
 
 /**
  * @param {object} ctx
@@ -14,28 +17,19 @@ export async function installApp(ctx) {
     console.log('================installApp================');
     try {
         const shopifyDomain = ctx.state.shopify.shop;
-        const shopify = new Shopify({
-            shopName: shopifyDomain,
-            accessToken: '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'
-        });
-
-        const SETTINGS = {
-            allowShow: 'all',
-            displayDuration: 1,
-            excludedUrls: 'https://example.com',
-            firstDelay: 1,
-            hideTimeAgo: false,
-            id: '',
-            includedUrls: 'https://example.com',
-            maxPopsDisplay: 1,
-            popsInterval: 1,
-            position: 1,
-            shopId: '1',
-            truncateProductName: false
-        };
-
         const shopData = await shopsRef.where('domain', '==', shopifyDomain).get();
         const shopId = shopData.docs[0].id;
+
+        const {accessToken} = prepareShopData(
+            ctx,
+            shopData.docs[0].data(),
+            shopifyConfig.accessTokenKey
+        );
+
+        const shopify = new Shopify({
+            shopName: shopifyDomain,
+            accessToken
+        });
 
         if (shopData.empty) {
             console.log('Shop not found');
