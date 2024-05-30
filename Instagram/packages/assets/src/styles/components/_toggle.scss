@@ -1,0 +1,77 @@
+.MP-Switch {
+  position: relative;
+  display: inline-block;
+  width: 39px;
+  height: 25px;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  &.small {
+    width: 28px;
+    height: 17.14px;
+  }
+  .MP-Switch_Checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    &:checked + .MP-Switch_Slider {
+      background-color: var(--a-ig-primary-color);
+    }
+    &:checked + .MP-Switch_Slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+    &:checked + .small:before {
+      -webkit-transform: translateX(22.5px);
+      -ms-transform: translateX(22.5px);
+      transform: translate(22.5px, 0.4px);
+    }
+  }
+
+  .MP-Switch_Slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    border-radius: 15px;
+
+    &.small::before {
+      position: absolute;
+      content: '';
+      bottom: 2px;
+      background-color: white;
+      border-radius: 50%;
+      -webkit-transition: 0.3s;
+      transition: 0.3s;
+      height: 14.28px;
+      width: 14.28px;
+    }
+    &:before {
+      position: absolute;
+      content: '';
+      height: 21px;
+      width: 21px;
+      bottom: 2px;
+      background-color: white;
+      border-radius: 50%;
+      -webkit-transition: 0.3s;
+      transition: 0.3s;
+    }
+
+    &.right:before {
+      left: -10px;
+    }
+
+    &.left:before {
+      left: 2px;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "instagram"
+client_id = "fa4defbddc375a442a94cd8d8a418491"
+application_url = "https://graham-thesis-displaying-school.trycloudflare.com/auth/shopify"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+use_legacy_install_flow = true
+
+[auth]
+redirect_urls = [
+  "https://graham-thesis-displaying-school.trycloudflare.com/auth/shopify/callback",
+  "https://graham-thesis-displaying-school.trycloudflare.com/authSa/shopify/callback",
+  "https://graham-thesis-displaying-school.trycloudflare.com/auth/shopify/embed/callback",
+  "https://localhost:3000/auth/shopify/callback",
+  "https://localhost:3000/authSa/shopify/callback",
+  "https://localhost:3000/auth/shopify/embed/callback"
+]
+
+[webhooks]
+api_version = "2024-04"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "avada-dungpv.myshopify.com"

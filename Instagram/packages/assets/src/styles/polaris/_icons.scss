@@ -1,0 +1,29 @@
+.Polaris-Button--plain svg,
+.Polaris-Icon--colorBase svg,
+.Polaris-Icon--colorSubdued svg {
+  fill: var(--p-icon);
+}
+.Polaris-Icon--colorSuccess svg {
+  fill: var(--p-icon-success);
+}
+.Polaris-Icon--colorWarning svg {
+  fill: var(--p-icon-warning);
+}
+.Polaris-Icon--colorCritical svg {
+  fill: var(--p-icon-critical);
+}
+.Polaris-Icon--colorHighlight svg {
+  fill: var(--p-icon-highlight);
+}
+.Polaris-Icon--colorPrimary svg {
+  fill: var(--a-ig-primary-color);
+}
+.Polaris-Icon--hasBackdrop::before {
+  background-color: #f6f6f6;
+}
+
+.PreLoading {
+  .Polaris-Spinner svg {
+    --p-border-highlight: var(--a-ig-primary-color);
+  }
+}

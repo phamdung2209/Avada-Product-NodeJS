@@ -1,0 +1,47 @@
+@import '~@shopify/polaris/build/esm/styles.css';
+@import 'colors';
+@import 'polaris/icons';
+@import "components/app_news";
+@import "components/toggle";
+@import "hooks/view_media";
+
+body:has(.Avada__FullLayout) {
+  overflow: unset !important;
+}
+
+body[data-lock-scrolling] {
+  overflow: auto hidden;
+}
+div#app,
+html.p-theme-light {
+  scrollbar-width: none;
+  overflow-x: hidden;
+}
+
+.Avada-Frame {
+  display: flex;
+  height: calc(100vh - 5.6rem);
+}
+
+.Polaris-Header-Title__TitleWithMetadataWrapper {
+  display: flex;
+  align-items: center;
+
+  .Polaris-Header-Title__TitleMetadata {
+    margin-top: 0;
+  }
+}
+
+.Polaris-Modal-Dialog__Container {
+  .Polaris-Modal-Header {
+    align-items: center;
+
+    .Polaris-Modal-CloseButton {
+      margin-left: 1rem;
+    }
+  }
+}
+
+.Polaris-Page {
+  width: 100%;
+}

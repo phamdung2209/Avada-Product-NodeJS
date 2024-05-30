@@ -1,0 +1,136 @@
+.Mageplaza-PopupPreview {
+  position: relative;
+  max-height: 80vh;
+  &._mobile {
+    height: 50vh;
+  }
+
+  .PopupPreview__Author-name {
+    user-select: none;
+    margin-left: .5rem;
+
+    .Polaris-Button--removeUnderline {
+      text-decoration: none;
+      font-weight: bold;
+      color: rgba(32, 34, 35, 1)
+    }
+  }
+
+  .PopupPreview__AuthorMobile {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding: .5rem;
+    cursor: pointer;
+  }
+
+  .PopupPreview-Content {
+    position: relative;
+
+    .PopupPreview-Content__Media {
+      height: 100%;
+      float: left;
+      display: flex;
+      justify-content: center;
+      background-color: black;
+      align-items: center;
+      z-index: 1;
+      overflow: hidden;
+
+      .Mageplaza-Carousel {
+        height: 100%;
+      }
+
+      &._mobile {
+        height: 33vh;
+        width: 100%;
+        position: relative;
+      }
+
+      &._desktop {
+        width: 60%;
+        position: absolute;
+      }
+    }
+
+    .PopupPreview-Content__Info {
+      position: relative;
+
+      &._desktop {
+        display: inline-block;
+        width: 40%;
+        margin-left: 60%;
+        height: 80vh;
+      }
+
+      &._mobile {
+        width: 100%;
+      }
+
+      .Content__Info--author {
+        font-weight: bold;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: .1rem solid rgba(211, 211, 211, .7);
+        height: 6rem;
+
+        &._desktop {
+          display: flex;
+        }
+      }
+
+      .Content__Info--caption {
+        padding: .5rem;
+        word-wrap: break-word;
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: calc(80vh - 11rem);
+
+        &._mobile {
+          max-height: 40vh;
+        }
+      }
+
+      .Content__Info--footer {
+        bottom: 0;
+        width: 100%;
+        border-top: .1rem solid rgba(211, 211, 211, .7);
+        display: flex;
+        justify-content: space-between;
+        user-select: none;
+        height: 4rem;
+
+        &._desktop {
+          position: absolute;
+          padding: 1rem;
+        }
+
+        &._mobile {
+          position: relative;
+          padding: .5rem;
+        }
+
+        .Info--footer--date {
+          margin: 0;
+          font-size: 1.4rem;
+        }
+
+        .Info--footer--branding {
+          font-size: 1.4rem;
+          user-select: none;
+
+          .Info--footer--brandingLink {
+            text-decoration: none;
+            font-weight: bold;
+            color: var(--a-ig-primary-color);
+          }
+        }
+      }
+    }
+  }
+
+  .PopupPreview--hidden {
+    display: none;
+    user-select: none;
+  }
+}

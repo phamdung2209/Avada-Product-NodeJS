@@ -1,0 +1,78 @@
+.Mageplaza-MediaItem__Container {
+  user-select: none;
+  .Mageplaza-MediaItem__Actions {
+    position: relative;
+    z-index: 1;
+    .Mageplaza-MediaItem__Checkbox {
+      position: absolute;
+      left: .5rem;
+      top: .3rem;
+    }
+    .Mageplaza-MediaItem__Delete {
+      position: absolute;
+      right: .5rem;
+      top: .5rem
+    }
+  }
+  .Mageplaza-MediaItem {
+    cursor: pointer;
+    position: relative;
+
+    .Mageplaza-MediaItem__MediaType {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin: 0 0 -5px;
+      opacity: .8;
+    }
+
+    .Mageplaza-MediaItem__MediaTiktokIconPlay {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      margin: 0 0 -5px;
+      opacity: .8;
+    }
+    .Mageplaza-MediaItem__WidgetTiktokIconPlay {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      margin: 0 0 -5px;
+      opacity: .8;
+    }
+
+    .Mageplaza-MediaItem__MediaOverlay {
+      text-align: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      opacity: 0;
+      background: rgba(0, 0, 0, .56);
+      transition: 1s cubic-bezier(.075, .82, .165, 1);
+      padding: 16px;
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      align-items: center;
+
+      .Polaris-Caption {
+        margin: .5rem;
+        font-size: 1.5rem;
+        color: white;
+        user-select: none;
+      }
+
+      &._tiktokWidgetPage{
+        border-radius: 12px;
+      }
+    }
+
+    &:hover, &:focus {
+      .Mageplaza-MediaItem__MediaOverlay {
+        opacity: 1;
+      }
+    }
+  }
+}

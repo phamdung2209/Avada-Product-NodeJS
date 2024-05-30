@@ -1,0 +1,6 @@
+type="frontend"
+port=5000
+auth_callback_path=["/auth/shopify/callback", "/authSa/shopify/callback", "/auth/shopify/embed/callback"]
+[commands]
+dev = "npm run watch"
+build = "npm run production"

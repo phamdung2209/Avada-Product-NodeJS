@@ -1,0 +1,39 @@
+.Avada-Frame__Content {
+  flex: 1 1;
+  //padding-left: 6.8rem;
+  -webkit-transition: padding .3s ease 75ms;
+  -moz-transition: padding .3s ease 75ms;
+  -o-transition: padding .3s ease 75ms;
+  transition: padding .3s ease 75ms;
+
+  &.Avada-Frame__Content--isExpanded {
+    padding-left: 24rem;
+  }
+}
+
+.Avada-Frame__Content--embed {
+  flex: 1 1;
+  -webkit-transition: padding .3s ease 75ms;
+  -moz-transition: padding .3s ease 75ms;
+  -o-transition: padding .3s ease 75ms;
+  transition: padding .3s ease 75ms;
+
+  &.Avada-Frame__Content--isExpanded {
+    padding-left: 24rem;
+  }
+}
+
+// truncate menu title when collapsing
+.Polaris-Navigation {
+  .Polaris-Navigation__Item {
+    align-items: center;
+    overflow: hidden;
+    font-weight: 600;
+
+    .Polaris-Navigation__Text {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}

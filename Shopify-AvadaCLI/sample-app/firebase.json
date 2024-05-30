@@ -32,6 +32,7 @@
     "hosting": {
         "cleanUrls": true,
         "trailingSlash": false,
+        "site": "avada-app-8a22b",
         "public": "static",
         "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
         "rewrites": [
