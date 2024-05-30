@@ -1,31 +1,31 @@
-import {BlockStack, Box, Checkbox, Grid, InlineGrid, LegacyCard, Text} from '@shopify/polaris';
-import React, {memo, useState} from 'react';
-import DesktopPosition from './DesktopPosition';
-import TimingItem from './TimingItem';
+import { BlockStack, Box, Checkbox, Grid, InlineGrid, LegacyCard, Text } from '@shopify/polaris'
+import React, { memo, useState } from 'react'
+import DesktopPosition from './DesktopPosition'
+import TimingItem from './TimingItem'
 
-const RightPanelDisplay = ({settings, setSettings}) => {
+const RightPanelDisplay = ({ settings, setSettings }) => {
     const {
         position = 4,
         displayDuration = 1,
         firstDelay = 1,
         popsInterval = 1,
-        maxPopsDisplay = 1
-    } = settings;
+        maxPopsDisplay = 1,
+    } = settings
 
     const OPTIONS_DISPLAY = [
         {
             id: 0,
             label: 'Hide time ago',
-            key: 'hideTimeAgo'
+            key: 'hideTimeAgo',
         },
         {
             id: 1,
             label: 'Truncate content text',
             helpText:
                 "If your product name is long for one line, it will be truncated to 'Product na...'",
-            key: 'truncateProductName'
-        }
-    ];
+            key: 'truncateProductName',
+        },
+    ]
 
     const TIMING_ITEMS = [
         {
@@ -33,21 +33,21 @@ const RightPanelDisplay = ({settings, setSettings}) => {
             title: 'Display duration',
             description: 'How long each pop will display on your page.',
             keyValue: 'displayDuration',
-            value: displayDuration
+            value: displayDuration,
         },
         {
             id: 1,
             title: 'Time before the first pop',
             description: 'The delay time before the first notification.',
             keyValue: 'firstDelay',
-            value: firstDelay
+            value: firstDelay,
         },
         {
             id: 2,
             title: 'Gap time between two pops',
             description: 'The time interval between tow popup notifications.',
             keyValue: 'popsInterval',
-            value: popsInterval
+            value: popsInterval,
         },
         {
             id: 3,
@@ -55,28 +55,28 @@ const RightPanelDisplay = ({settings, setSettings}) => {
             description:
                 'The maximum number of popups are allowed to show after page loading. Maxium number is 80.',
             keyValue: 'maxPopsDisplay',
-            value: maxPopsDisplay
-        }
-    ];
+            value: maxPopsDisplay,
+        },
+    ]
 
     const OPTIONS_POSITION = [
         {
             id: 0,
-            idxPosition: 4
+            idxPosition: 4,
         },
         {
             id: 1,
-            idxPosition: 3
+            idxPosition: 3,
         },
         {
             id: 2,
-            idxPosition: 1
+            idxPosition: 1,
         },
         {
             id: 3,
-            idxPosition: 2
-        }
-    ];
+            idxPosition: 2,
+        },
+    ]
 
     return (
         <>
@@ -85,11 +85,11 @@ const RightPanelDisplay = ({settings, setSettings}) => {
                     <>
                         <Text>Desktop Position</Text>
                         <InlineGrid gap="400" columns={4}>
-                            {OPTIONS_POSITION.map(option => (
+                            {OPTIONS_POSITION.map((option) => (
                                 <DesktopPosition
                                     desktopPosition={position ?? 4}
-                                    setDesktopPosition={id =>
-                                        setSettings(prev => ({...prev, position: id}))
+                                    setDesktopPosition={(id) =>
+                                        setSettings((prev) => ({ ...prev, position: id }))
                                     }
                                     idxPosition={option.idxPosition}
                                     key={option.id}
@@ -99,14 +99,14 @@ const RightPanelDisplay = ({settings, setSettings}) => {
                         <Text tone="disabled">The display position of the pop on your website</Text>
                     </>
 
-                    {OPTIONS_DISPLAY.map(option => (
+                    {OPTIONS_DISPLAY.map((option) => (
                         <Checkbox
                             label={option.label}
                             key={option.id}
                             helpText={option.helpText}
                             checked={settings[option.key]}
-                            onChange={checked =>
-                                setSettings(prev => ({...prev, [option.key]: checked}))
+                            onChange={(checked) =>
+                                setSettings((prev) => ({ ...prev, [option.key]: checked }))
                             }
                         />
                     ))}
@@ -119,7 +119,7 @@ const RightPanelDisplay = ({settings, setSettings}) => {
                         xl: 2,
                         md: 2,
                         sm: 1,
-                        xs: 1
+                        xs: 1,
                     }}
                 >
                     {TIMING_ITEMS.map((item, idx) => (
@@ -130,12 +130,13 @@ const RightPanelDisplay = ({settings, setSettings}) => {
                             keyValue={item.keyValue}
                             value={item.value}
                             setSettings={setSettings}
+                            id={item.id}
                         />
                     ))}
                 </Grid>
             </LegacyCard.Section>
         </>
-    );
-};
+    )
+}
 
-export default memo(RightPanelDisplay);
+export default memo(RightPanelDisplay)

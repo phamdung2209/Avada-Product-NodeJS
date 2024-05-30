@@ -1,27 +1,27 @@
-import {Layout, LegacyCard, Page} from '@shopify/polaris';
-import React, {memo, useRef} from 'react';
-import ProductItem from '../components/ProductItem';
-import RightPanel from '../components/Settings/RightPanel';
-import {fetchAuthenticatedApi} from '../helpers';
+import { Layout, LegacyCard, Page } from '@shopify/polaris'
+import React, { memo, useRef } from 'react'
+import ProductItem from '../components/ProductItem'
+import RightPanel from '../components/Settings/RightPanel'
+import { fetchAuthenticatedApi } from '../helpers'
 
 const Settings = () => {
-    const settingsRef = useRef(null);
+    const settingsRef = useRef(null)
 
     const handleSaveData = async () => {
-        const settings = settingsRef.current?.settings;
+        const settings = settingsRef.current?.settings
         const res = await fetchAuthenticatedApi('/settings', {
             method: 'PUT',
-            body: settings
-        });
+            body: settings,
+        })
 
         if (res instanceof Error) {
-            shopify.toast.show('An error occurred while saving settings');
+            shopify.toast.show('An error occurred while saving settings')
 
-            return;
+            return
         }
 
         // shopify.toast.show('Settings saved');
-    };
+    }
 
     return (
         <Page
@@ -31,14 +31,14 @@ const Settings = () => {
             primaryAction={{
                 content: 'Save',
                 disabled: false,
-                onAction: handleSaveData
+                onAction: handleSaveData,
             }}
         >
             <Layout>
                 <Layout.Section variant="oneThird">
                     <LegacyCard>
                         <ProductItem
-                            id={'1'}
+                            id={1}
                             createdAt={'10-1'}
                             thumbnailUrl={
                                 'https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg'
@@ -58,7 +58,7 @@ const Settings = () => {
                 </Layout.Section>
             </Layout>
         </Page>
-    );
-};
+    )
+}
 
-export default memo(Settings);
+export default memo(Settings)

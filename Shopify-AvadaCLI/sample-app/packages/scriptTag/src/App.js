@@ -1,35 +1,25 @@
-import React, { useCallback } from 'react'
+import React, { useState } from 'react'
 import ToastMessage from './components/ToastMessage'
-import useGetSettings from './components/hooks/useGetSettings'
+import useGetSettings from './hooks/useGetSettings'
+import useDisplayNotify from './hooks/useDisplayNotify'
 
 const App = () => {
     const { loading, data } = useGetSettings()
-    console.log('data', data)
+    const [currentNotifyIdx, setCurrentNotifyIdx] = useState(-1)
 
-    const notifyNewest = useCallback(
-        data?.notifications?.reduce((acc, curr) => {
-            if (!acc) {
-                return curr
-            }
-
-            if (new Date(acc.timestamp) < new Date(curr.timestamp)) {
-                return curr
-            }
-
-            return acc
-        }, null),
-        [data?.notifications],
-    )
+    useDisplayNotify({ loading, data, currentNotifyIdx, setCurrentNotifyIdx })
 
     return (
-        <div
-            style={{
-                backgroundColor: 'lightgray',
-            }}
-        >
-            {!loading && data && notifyNewest && (
-                <ToastMessage notifications={notifyNewest} setting={data.setting} />
-            )}
+        <div style={{ backgroundColor: 'lightgray' }}>
+            {!loading &&
+                data &&
+                currentNotifyIdx >= 0 &&
+                (data?.notifications[currentNotifyIdx] ? (
+                    <ToastMessage
+                        notification={data?.notifications[currentNotifyIdx]}
+                        setting={data?.setting}
+                    />
+                ) : null)}
         </div>
     )
 }

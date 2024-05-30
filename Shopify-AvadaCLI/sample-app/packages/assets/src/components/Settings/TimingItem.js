@@ -1,7 +1,8 @@
-import {BlockStack, Box, InlineGrid, RangeSlider, Text, TextField} from '@shopify/polaris';
-import React from 'react';
+import { BlockStack, Box, InlineGrid, RangeSlider, Text, TextField } from '@shopify/polaris'
+import React from 'react'
+import PropTypes from 'prop-types'
 
-const TimingItem = ({title, description, value, setSettings, keyValue}) => {
+const TimingItem = ({ id, title, description, value, setSettings, keyValue }) => {
     return (
         <BlockStack className="timing-item">
             <Text>{title}</Text>
@@ -11,22 +12,22 @@ const TimingItem = ({title, description, value, setSettings, keyValue}) => {
                     <RangeSlider
                         value={value}
                         min={0}
-                        max={10}
-                        onChange={value => {
-                            setSettings(prev => ({...prev, [keyValue]: value}));
+                        max={id === 3 ? 80 : 10}
+                        onChange={(value) => {
+                            setSettings((prev) => ({ ...prev, [keyValue]: value }))
                         }}
                     />
                     <TextField
                         style={{
-                            maxWidth: '100px'
+                            maxWidth: '100px',
                         }}
                         // prefix="Second(s)"
                         value={value}
-                        max={10}
+                        max={id === 3 ? 80 : 10}
                         min={0}
                         type="number"
-                        onChange={value => {
-                            setSettings(prev => ({...prev, [keyValue]: value}));
+                        onChange={(value) => {
+                            setSettings((prev) => ({ ...prev, [keyValue]: value }))
                         }}
                     />
                 </InlineGrid>
@@ -34,7 +35,17 @@ const TimingItem = ({title, description, value, setSettings, keyValue}) => {
                 <Text tone="disabled">{description}</Text>
             </Box>
         </BlockStack>
-    );
-};
+    )
+}
 
-export default TimingItem;
+TimingItem.propTypes = {
+    id: PropTypes.number,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    value: PropTypes.number,
+    setSettings: PropTypes.func,
+    keyValue: PropTypes.string,
+}
+TimingItem.displayName = 'TimingItem'
+
+export default TimingItem

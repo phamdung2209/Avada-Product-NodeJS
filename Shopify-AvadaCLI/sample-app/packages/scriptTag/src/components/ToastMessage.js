@@ -1,9 +1,27 @@
-import React from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
-const ToastMessage = ({ notifications, setting }) => {
-    const { firstName, city, country, productImage, productName, timeAgo } = notifications
-    const { position, displayDuration, hideTimeAgo } = setting
+const ToastMessage = ({ notification, setting }) => {
+    const { firstName, city, country, productImage, productName, timeAgo } = notification
+    const { position, displayDuration, hideTimeAgo, popsInterval } = setting
+    const [visible, setVisible] = useState(true)
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setVisible(false)
+        }, displayDuration * 1000)
+
+        const timerPopsInterval = setTimeout(() => {
+            setVisible(true)
+        }, popsInterval * 1000)
+
+        return () => {
+            clearTimeout(timer)
+            clearTimeout(timerPopsInterval)
+        }
+    }, [displayDuration, notification])
+
+    if (!visible) return null
 
     return (
         <div
@@ -120,4 +138,4 @@ ToastMessage.propTypes = {
     setting: PropTypes.object,
 }
 
-export default ToastMessage
+export default memo(ToastMessage)

@@ -1,11 +1,11 @@
-import {BlockStack, Icon, InlineStack, ResourceItem, Text, Thumbnail} from '@shopify/polaris';
-import PropTypes from 'prop-types';
-import {CheckSmallIcon} from '@shopify/polaris-icons';
-import React, {memo} from 'react';
+import { BlockStack, Icon, InlineStack, ResourceItem, Text, Thumbnail } from '@shopify/polaris'
+import PropTypes from 'prop-types'
+import { CheckSmallIcon } from '@shopify/polaris-icons'
+import React, { memo } from 'react'
 
-import {extractTime, formatDate} from '../../helpers/utils/functions';
+import { extractTime, formatDate } from '../../helpers/utils/functions'
 
-const ProductItem = ({id, country, productImage, timestamp, productName, timeAgo}) => {
+const ProductItem = ({ id, country, productImage, timestamp, productName, timeAgo }) => {
     return (
         <ResourceItem
             id={id}
@@ -32,17 +32,17 @@ const ProductItem = ({id, country, productImage, timestamp, productName, timeAgo
                 <Text tone="base">From: {formatDate(timestamp)}</Text>
             </InlineStack>
         </ResourceItem>
-    );
-};
+    )
+}
 
 ProductItem.propTypes = {
     id: PropTypes.number.isRequired,
     country: PropTypes.string,
     productImage: PropTypes.string,
-    timestamp: PropTypes.string.isRequired,
-    productName: PropTypes.string.isRequired,
-    timeAgo: PropTypes.string
-};
-ProductItem.displayName = 'ProductItem';
+    timestamp: PropTypes.string,
+    productName: PropTypes.string,
+    timeAgo: PropTypes.string,
+}
+ProductItem.displayName = 'ProductItem'
 
-export default memo(ProductItem);
+export default memo(ProductItem)
