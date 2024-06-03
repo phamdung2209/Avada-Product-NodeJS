@@ -14,13 +14,9 @@ const Settings = () => {
             body: settings,
         })
 
-        if (res instanceof Error) {
-            shopify.toast.show('An error occurred while saving settings')
-
+        if (!res.success) {
             return
         }
-
-        // shopify.toast.show('Settings saved');
     }
 
     return (
@@ -37,17 +33,7 @@ const Settings = () => {
             <Layout>
                 <Layout.Section variant="oneThird">
                     <LegacyCard>
-                        <ProductItem
-                            id={1}
-                            createdAt={'10-1'}
-                            thumbnailUrl={
-                                'https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg'
-                            }
-                            name={'name'}
-                            description={'des'}
-                            publicBy={'10-1'}
-                            updatedAt={'11-1'}
-                        />
+                        <ProductItem />
                     </LegacyCard>
                 </Layout.Section>
 

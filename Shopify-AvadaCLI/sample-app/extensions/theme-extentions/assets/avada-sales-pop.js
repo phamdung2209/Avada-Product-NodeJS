@@ -1,5 +1,5 @@
 ;(async () => {
-    const BASE_URL = 'http://localhost:5000/scripttag'
+    const BASE_URL = 'https://avada.local.com/scripttag'
 
     const scriptElement = document.createElement('script')
     scriptElement.type = 'text/javascript'

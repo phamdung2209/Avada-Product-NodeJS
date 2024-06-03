@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import ToastMessage from './components/ToastMessage'
 import useGetSettings from './hooks/useGetSettings'
 import useDisplayNotify from './hooks/useDisplayNotify'
@@ -26,4 +26,4 @@ const App = () => {
 
 App.displayName = 'App'
 
-export default App
+export default memo(App)

@@ -1,6 +1,6 @@
 const appRoute = {
-  embed: '/embed',
-  standalone: ''
-};
+    embed: '/embed',
+    standalone: '',
+}
 
-export default appRoute;
+export default appRoute

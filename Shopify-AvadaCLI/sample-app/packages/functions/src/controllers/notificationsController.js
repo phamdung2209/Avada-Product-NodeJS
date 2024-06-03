@@ -12,10 +12,14 @@ export const getNotifications = async (ctx) => {
             throw new Error('No notifications found')
         }
 
-        ctx.body = notifications
+        ctx.body = {
+            success: true,
+            data: notifications,
+        }
     } catch (error) {
         console.log('Error in getNotifications (settingsController.js)', error.message)
         ctx.body = {
+            success: false,
             error: error.message,
         }
     }
@@ -42,6 +46,7 @@ export const getDataClient = async (ctx) => {
         }
 
         ctx.body = {
+            success: true,
             data: {
                 notifications,
                 setting,
@@ -50,6 +55,7 @@ export const getDataClient = async (ctx) => {
     } catch (error) {
         console.log('Error in getNotifyByShopifyDomain (settingsController.js)', error.message)
         ctx.body = {
+            success: false,
             error: error.message,
         }
     }

@@ -1,8 +1,8 @@
-import {Tabs} from '@shopify/polaris';
-import React, {forwardRef, memo, useEffect, useImperativeHandle, useState} from 'react';
-import RightPanelDisplay from './RightPanelDisplay';
-import RightPanelTrigger from './RightPanelTrigger';
-import {fetchAuthenticatedApi} from '../../helpers';
+import { Tabs } from '@shopify/polaris'
+import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } from 'react'
+import RightPanelDisplay from './RightPanelDisplay'
+import RightPanelTrigger from './RightPanelTrigger'
+import { fetchAuthenticatedApi } from '../../helpers'
 
 const RightPanel = (props, ref) => {
     const [settings, setSettings] = useState({
@@ -17,38 +17,38 @@ const RightPanel = (props, ref) => {
         popsInterval: 1,
         position: 1,
         shopId: '1',
-        truncateProductName: false
-    });
-    const [activeTab, setActiveTab] = useState(0);
+        truncateProductName: false,
+    })
+    const [activeTab, setActiveTab] = useState(0)
 
     useEffect(() => {
         const getData = async () => {
-            const res = await fetchAuthenticatedApi('/settings');
+            const res = await fetchAuthenticatedApi('/settings')
 
             if (res.error) {
-                console.error('Error getting settings', res.error);
-                return;
+                // or if (!res.success)
+                console.error('Error getting settings', res.error)
+                return
             }
+            setSettings(res.data)
+        }
 
-            setSettings(res);
-        };
-
-        getData();
-    }, []);
+        getData()
+    }, [])
 
     useImperativeHandle(
         ref,
         () => ({
-            settings
+            settings,
         }),
-        [settings]
-    );
+        [settings],
+    )
 
     return (
         <Tabs
             tabs={[
-                {id: 0, content: 'Display'},
-                {id: 1, content: 'Trigger'}
+                { id: 0, content: 'Display' },
+                { id: 1, content: 'Trigger' },
             ]}
             selected={activeTab}
             onSelect={setActiveTab}
@@ -67,7 +67,7 @@ const RightPanel = (props, ref) => {
                 </>
             )}
         </Tabs>
-    );
-};
+    )
+}
 
-export default memo(forwardRef(RightPanel));
+export default memo(forwardRef(RightPanel))

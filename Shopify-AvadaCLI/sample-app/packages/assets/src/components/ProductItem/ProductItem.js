@@ -3,16 +3,21 @@ import PropTypes from 'prop-types'
 import { CheckSmallIcon } from '@shopify/polaris-icons'
 import React, { memo } from 'react'
 
-import { extractTime, formatDate } from '../../helpers/utils/functions'
+import { formatDate } from '../../helpers/utils/functions'
 
-const ProductItem = ({ id, country, productImage, timestamp, productName, timeAgo }) => {
+const ProductItem = ({
+    id = 1,
+    country = 'Viet Nam',
+    productImage = 'https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg',
+    timestamp = '2024-05-27T23:08:33-04:00',
+    productName = 'Sport Shoes',
+    timeAgo = '1 hour ago',
+}) => {
     return (
         <ResourceItem
             id={id}
-            // name={name}
-            // description={description}
             media={<Thumbnail source={productImage} alt="" />}
-            accessibilityLabel={`View details for`}
+            // accessibilityLabel={`View details for`}
         >
             <InlineStack align="space-between" blockAlign="start">
                 <BlockStack>
@@ -21,7 +26,6 @@ const ProductItem = ({ id, country, productImage, timestamp, productName, timeAg
                         Purchased {productName}
                     </Text>
                     <InlineStack gap={300}>
-                        {/* {timestamp && <Text>{extractTime(timestamp)}</Text>} */}
                         <Text>{timeAgo}</Text>
                         <InlineStack>
                             <Icon source={CheckSmallIcon} tone="base" />

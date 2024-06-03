@@ -9,11 +9,11 @@ const useGetNotifications = () => {
     const getNotifications = useCallback(async () => {
         setLoading(true)
         try {
-            const res = await fetchAuthenticatedApi('https://localhost:3000/apiSa/notifications')
+            const res = await fetchAuthenticatedApi('/notifications')
             if (res.error) {
                 throw new Error(res.error)
             }
-            setData(res)
+            setData(res.data)
         } catch (error) {
             console.error('Error in getNotifications', error.message)
         } finally {

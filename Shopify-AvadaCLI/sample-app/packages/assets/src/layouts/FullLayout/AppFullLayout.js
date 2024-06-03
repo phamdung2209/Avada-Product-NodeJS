@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, { useCallback, useRef, useState } from 'react'
 import {
     Avatar,
     BlockStack,
@@ -9,16 +9,16 @@ import {
     Navigation,
     TextContainer,
     Toast,
-    TopBar
-} from '@shopify/polaris';
-import {ArrowLeftIcon, BugIcon, PersonExitIcon, ViewIcon} from '@shopify/polaris-icons';
-import isStaging from '@assets/helpers/isStaging';
-import BadgeBranch from '@assets/components/BadgeBranch';
-import getNavigations from '@assets/config/navigations';
-import {useHistory, withRouter} from 'react-router-dom';
-import {useStore} from '@assets/reducers/storeReducer';
-import {closeToast, logout} from '@assets/actions/storeActions';
-import PropTypes from 'prop-types';
+    TopBar,
+} from '@shopify/polaris'
+import { ArrowLeftIcon, BugIcon, PersonExitIcon, ViewIcon } from '@shopify/polaris-icons'
+import isStaging from '@assets/helpers/isStaging'
+import BadgeBranch from '@assets/components/BadgeBranch'
+import getNavigations from '@assets/config/navigations'
+import { useHistory, withRouter } from 'react-router-dom'
+import { useStore } from '@assets/reducers/storeReducer'
+import { closeToast, logout } from '@assets/actions/storeActions'
+import PropTypes from 'prop-types'
 
 /**
  *
@@ -27,38 +27,38 @@ import PropTypes from 'prop-types';
  * @returns {Element}
  * @constructor
  */
-function AppFullLayout({children, location}) {
-    const {state, dispatch} = useStore();
-    const {shop, loading, toast} = state;
+function AppFullLayout({ children, location }) {
+    const { state, dispatch } = useStore()
+    const { shop, loading, toast } = state
 
-    const history = useHistory();
-    const skipToContentRef = useRef(null);
-    const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
-    const [userMenuActive, setUserMenuActive] = useState(false);
+    const history = useHistory()
+    const skipToContentRef = useRef(null)
+    const [mobileNavigationActive, setMobileNavigationActive] = useState(false)
+    const [userMenuActive, setUserMenuActive] = useState(false)
 
     const toggleMobileNavigationActive = useCallback(
         () => setMobileNavigationActive(!mobileNavigationActive),
-        [mobileNavigationActive]
-    );
+        [mobileNavigationActive],
+    )
 
     const toggleUserMenuActive = useCallback(() => setUserMenuActive(!userMenuActive), [
-        userMenuActive
-    ]);
+        userMenuActive,
+    ])
 
     const handleLogout = async () => {
-        await logout(dispatch);
-    };
+        await logout(dispatch)
+    }
     const userMenuActions = [
         {
             items: [
                 {
                     content: 'Log out',
                     icon: PersonExitIcon,
-                    onAction: handleLogout
-                }
-            ]
-        }
-    ];
+                    onAction: handleLogout,
+                },
+            ],
+        },
+    ]
 
     const userMenuMarkup = (
         <TopBar.UserMenu
@@ -69,7 +69,7 @@ function AppFullLayout({children, location}) {
             open={userMenuActive}
             onToggle={toggleUserMenuActive}
         />
-    );
+    )
 
     const topBarMarkup = (
         <TopBar
@@ -86,14 +86,14 @@ function AppFullLayout({children, location}) {
             }
             onNavigationToggle={toggleMobileNavigationActive}
         />
-    );
+    )
 
-    const navigations = getNavigations(location, history);
+    const navigations = getNavigations(location, history)
     const navigationMarkup = (
         <Navigation location="/">
             <Navigation.Section items={navigations} />
         </Navigation>
-    );
+    )
 
     return (
         <Frame
@@ -103,11 +103,10 @@ function AppFullLayout({children, location}) {
             onNavigationDismiss={toggleMobileNavigationActive}
             skipToContentTarget={skipToContentRef.current}
             logo={{
-                topBarSource:
-                    'https://s3-alpha-sig.figma.com/img/66f5/d160/93cd24e048cf62f7be519066a8949e25?Expires=1717372800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=hT7sCAooMHG~nQoybs7~VCQo5zxubSKIGJxtR9L~bG13HyauWlPMGa~BSKbs4sk4MjZXEh85g3tpvTxIaat2l4uBQdZLhaS81K7~uJ4MtqN4gMwPlXyxOObVAqFJckSWvk3T7x7xeQ~5jyfGE2CpWsJxloOKQSurqocTgPu3v3ABYa6WidXNZN8lEuuDpjnmCMBf2~sfhcrWWdJ~MlkWb8eBMQFLIWQT4HP0T8Azq2UzChbAqd5qsTvLaF5iqqNnrw2CcfGmJPdy423ifv~VfJddAepx0Ad9MqtewXgAmfFYUx9wtCyHCV0Njn2bOpIdSLsMg5OMQc9fhsrMV8zqww__',
-                width: 86,
-                url: '#',
-                accessibilityLabel: 'Avada'
+                topBarSource: 'https://mageplaza-training-docs.web.app/img/logo.png',
+                width: 50,
+                url: '/',
+                accessibilityLabel: 'Avada',
             }}
         >
             <div className="Avada__FullLayout">
@@ -117,11 +116,11 @@ function AppFullLayout({children, location}) {
                 {toast && <Toast onDismiss={() => closeToast(dispatch)} {...toast} />}
             </div>
         </Frame>
-    );
+    )
 }
 
 AppFullLayout.propTypes = {
     children: PropTypes.object,
-    location: PropTypes.object
-};
-export default withRouter(AppFullLayout);
+    location: PropTypes.object,
+}
+export default withRouter(AppFullLayout)

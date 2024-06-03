@@ -2,7 +2,7 @@
 
 name = "Avada Training"
 client_id = "ecde5a18c3f7ecba5796619c0d8536de"
-application_url = "https://ozone-graduation-ips-ld.trycloudflare.com/auth/shopify"
+application_url = "https://odd-copyright-thehun-cultural.trycloudflare.com/auth/shopify"
 embedded = true
 
 [access_scopes]
@@ -12,9 +12,9 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://ozone-graduation-ips-ld.trycloudflare.com/auth/shopify/callback",
-  "https://ozone-graduation-ips-ld.trycloudflare.com/authSa/shopify/callback",
-  "https://ozone-graduation-ips-ld.trycloudflare.com/auth/shopify/embed/callback",
+  "https://odd-copyright-thehun-cultural.trycloudflare.com/auth/shopify/callback",
+  "https://odd-copyright-thehun-cultural.trycloudflare.com/authSa/shopify/callback",
+  "https://odd-copyright-thehun-cultural.trycloudflare.com/auth/shopify/embed/callback",
   "https://localhost:3000/auth/shopify/callback",
   "https://localhost:3000/authSa/shopify/callback",
   "https://localhost:3000/auth/shopify/embed/callback"
@@ -25,3 +25,7 @@ api_version = "2024-04"
 
 [pos]
 embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "avada-dungpv.myshopify.com"

@@ -9,7 +9,7 @@ const useGetSettings = () => {
         setLoading(true)
         try {
             const res = await fetch(
-                `https://localhost:3000//client-api/shopify-domain?shopifyDomain=${shopifyDomain}`,
+                `https://avada.local.com/client-api/shopify-domain?shopifyDomain=${shopifyDomain}`,
             )
             const data = await res.json()
             if (res.error) {

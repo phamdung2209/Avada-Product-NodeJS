@@ -12,7 +12,7 @@
         "shell": "firebase functions:shell",
         "start": "avada app:serve",
         "logs": "firebase functions:log",
-        "emulators": "cross-env GOOGLE_APPLICATION_CREDENTIALS=C:\\Users\\ACER\\Documents\\Avada-Product\\Tutorial\\Instagram\\packages\\functions\\serviceAccountKey.json firebase emulators:start --only hosting,functions",
+        "emulators": "cross-env GOOGLE_APPLICATION_CREDENTIALS=serviceAccountKey.json firebase emulators:start --only hosting,functions",
         "predeploy": "yarn workspace @avada/assets run production && yarn workspace @avada/functions run production  && yarn workspace @avada/scripttag run production",
         "eslint-fix": "npm --prefix packages/assets/ run eslint-fix && npm --prefix packages/functions/ run eslint-fix",
         "start-dev-embed": "npm run timeout && echo 'backend build running...' && concurrently \"yarn workspace @avada/functions run watch\" \"npm --prefix packages/scripttag/ run webpack-watch\"",
@@ -26,8 +26,7 @@
         "deploy-shopify": "shopify app deploy",
         "deploy-shopify-reset": "shopify app deploy --reset",
         "make:ssl": "avada make:ssl",
-        "timeout": "delay 3",
-        "accService": "set GOOGLE_APPLICATION_CREDENTIALS=serviceAccountKey.json firebase serve"
+        "timeout": "delay 3"
     },
     "devDependencies": {
         "babel-jest": "^24.9.0",
@@ -37,14 +36,16 @@
         "eslint-config-prettier": "^6.2.0",
         "eslint-plugin-prettier": "^3.1.0",
         "eslint-plugin-react": "^7.16.0",
+        "firebase-tools": "^12.9.1",
         "jest": "^24.9.0",
-        "prettier": "^1.18.2",
-        "firebase-tools": "^12.9.1"
+        "prettier": "^1.18.2"
     },
     "dependencies": {
         "@avada/console": "^0.0.27-alpha.4",
         "@avada/shopify-app": "3.48.1",
         "@avada/shopify-cli": "3.48.0",
-        "concurrently": "^7.6.0"
+        "classnames": "^2.5.1",
+        "concurrently": "^7.6.0",
+        "moment": "^2.30.1"
     }
 }

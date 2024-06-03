@@ -61,6 +61,10 @@
                 "function": "clientApi"
             },
             {
+                "source": "/ig/me/**",
+                "function": "igInfo"
+            },
+            {
                 "source": "/embed/**",
                 "destination": "/embed.html"
             },

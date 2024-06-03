@@ -16,7 +16,10 @@ redirect_urls = [
   "https://collaborative-rings-playlist-commit.trycloudflare.com/auth/shopify/embed/callback",
   "https://localhost:3000/auth/shopify/callback",
   "https://localhost:3000/authSa/shopify/callback",
-  "https://localhost:3000/auth/shopify/embed/callback"
+  "https://localhost:3000/auth/shopify/embed/callback",
+  "https://avada.local.com/auth/shopify/callback",
+  "https://avada.local.com/authSa/shopify/callback",
+  "https://avada.local.com/auth/shopify/embed/callback",
 ]
 
 [webhooks]

@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
-import {api} from '@assets/helpers';
-import queryString from 'query-string';
-import {handleError} from '@assets/services/errorService';
+import { useEffect, useState } from 'react'
+import { api } from '@assets/helpers'
+import queryString from 'query-string'
+import { handleError } from '@assets/services/errorService'
 
 /**
  * useFetchApi hook for fetch data from api with url
@@ -18,52 +18,58 @@ export default function useFetchApi({
     defaultData = [],
     initLoad = true,
     presentData = null,
-    initQueries = {}
+    initQueries = {},
 }) {
-    const [loading, setLoading] = useState(initLoad);
-    const [fetched, setFetched] = useState(false);
-    const [data, setData] = useState(defaultData);
-    const [additionalData, setAdditionalData] = useState({});
-    const [pageInfo, setPageInfo] = useState({});
-    const [count, setCount] = useState(0);
+    const [loading, setLoading] = useState(initLoad)
+    const [fetched, setFetched] = useState(false)
+    const [data, setData] = useState(defaultData)
+    const [additionalData, setAdditionalData] = useState({})
+    const [pageInfo, setPageInfo] = useState({})
+    const [count, setCount] = useState(0)
 
     async function fetchApi(apiUrl, params = null, keepPreviousData = false) {
         try {
-            setLoading(true);
-            const path = apiUrl || url;
-            const separateChar = path.includes('?') ? '&' : '?';
-            const query = params ? separateChar + queryString.stringify(params) : '';
-            const resp = await api(path + query);
-            if (resp.hasOwnProperty('pageInfo')) setPageInfo(resp.pageInfo);
-            if (resp.hasOwnProperty('count')) setCount(resp.count);
+            setLoading(true)
+            const path = apiUrl || url
+            const separateChar = path.includes('?') ? '&' : '?'
+            const query = params ? separateChar + queryString.stringify(params) : ''
+            const resp = await api(path + query)
+            if (resp.hasOwnProperty('pageInfo')) setPageInfo(resp.pageInfo)
+            if (resp.hasOwnProperty('count')) setCount(resp.count)
             if (resp.hasOwnProperty('additionalData')) {
-                setAdditionalData(resp.additionalData);
+                setAdditionalData(resp.additionalData)
+            }
+            const x = {
+                success: true,
+                data: settings,
+                pageInfo: {},
+                count: 99,
             }
             if (resp.hasOwnProperty('data')) {
-                let newData = presentData ? presentData(resp.data) : resp.data;
+                let newData = presentData ? presentData(resp.data) : resp.data
                 if (!Array.isArray(newData)) {
-                    newData = {...defaultData, ...newData};
+                    newData = { ...defaultData, ...newData }
                 }
-                setData(prev => {
+                setData((prev) => {
                     if (!keepPreviousData) {
-                        return newData;
+                        return newData
                     }
-                    return Array.isArray(newData) ? [...prev, ...newData] : {...prev, ...newData};
-                });
+                    return Array.isArray(newData) ? [...prev, ...newData] : { ...prev, ...newData }
+                })
             }
         } catch (e) {
-            handleError(e);
+            handleError(e)
         } finally {
-            setLoading(false);
-            setFetched(true);
+            setLoading(false)
+            setFetched(true)
         }
     }
 
     useEffect(() => {
         if (initLoad && !fetched) {
-            fetchApi(url, initQueries).then(() => {});
+            fetchApi(url, initQueries).then(() => {})
         }
-    }, []);
+    }, [])
 
     return {
         fetchApi,
@@ -75,6 +81,6 @@ export default function useFetchApi({
         setCount,
         loading,
         fetched,
-        setFetched
-    };
+        setFetched,
+    }
 }
