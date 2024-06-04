@@ -1,58 +1,64 @@
-import { useAppContext } from '@assets/context/AppContext'
-import {
-    Button,
-    Form,
-    FormLayout,
-    InlineStack,
-    LegacyCard,
-    Select,
-    TextField,
-} from '@shopify/polaris'
+import axios from 'axios'
+import { Button, Form, InlineStack, LegacyCard, Link, Text } from '@shopify/polaris'
 import { LogoInstagramIcon } from '@shopify/polaris-icons'
 import React, { memo, useCallback } from 'react'
 
-const LeftPanel = () => {
+import Separator from '@assets/components/Separator'
+import { useAppContext } from '@assets/context/AppContext'
+import useGetMe from '@assets/hooks/ig/useGetMe'
+import FormControl from './FormControl'
+
+const LeftPanel = ({ getMedia, loading }) => {
+    const { data: me, loading: loadingIgMe } = useGetMe()
     const { isConnectIG, setIsConnectIG } = useAppContext()
 
     const handleLoginWithFB = useCallback(async () => {
-        setIsConnectIG(!isConnectIG)
+        window.open('https://ig.local.com/ig/me/auth/instagram', 'popup')
     }, [isConnectIG])
+
+    const handleChangeAccount = useCallback(() => {
+        window.open('https://ig.local.com/ig/me/auth/instagram', 'popup')
+    }, [])
+
+    const handleDisconnect = useCallback(async () => {
+        await axios.post('/ig/me/logout')
+        setIsConnectIG(false)
+    }, [])
+
+    const handleSync = useCallback(() => {
+        getMedia()
+    }, [])
 
     return (
         <>
             <LegacyCard sectioned>
-                <Button
-                    icon={LogoInstagramIcon}
-                    textAlign="center"
-                    variant="primary"
-                    onClick={handleLoginWithFB}
-                >
-                    Connect with Instagram
-                </Button>
+                {isConnectIG && me ? (
+                    <InlineStack blockAlign="center">
+                        <Text fontWeight="bold">Connected to @{me.username}</Text>
+                        <Separator backgroundColor="#999" width="2px" height="15px" />
+
+                        <Link onClick={handleChangeAccount}>Change account</Link>
+                        <Separator backgroundColor="#999" width="1.5px" height="15px" />
+
+                        <Link onClick={handleDisconnect}>Disconnect</Link>
+                        <Separator backgroundColor="#999" width="1.5px" height="15px" />
+                        <Link onClick={handleSync}>{loading ? 'Syncing...' : 'Sync'}</Link>
+                    </InlineStack>
+                ) : (
+                    <Button
+                        icon={LogoInstagramIcon}
+                        textAlign="center"
+                        variant="primary"
+                        onClick={handleLoginWithFB}
+                        loading={loadingIgMe}
+                    >
+                        Connect with Instagram
+                    </Button>
+                )}
             </LegacyCard>
 
             <LegacyCard sectioned>
-                <Form>
-                    <FormLayout>
-                        <TextField label="Feed title" type="text" />
-                        <TextField label="Post spacing" type="number" />
-                        <Select
-                            label="Post layout"
-                            options={[
-                                { label: 'Grid', value: 'grid' },
-                                { label: 'List', value: 'list' },
-                            ]}
-                        />
-                        <InlineStack align="space-between" blockAlign="end" wrap={false} gap={400}>
-                            <TextField label="Number of rows" type="number" />
-                            <TextField label="Number of columns" type="number" />
-                        </InlineStack>
-
-                        <Button textAlign="center" variant="primary" fullWidth>
-                            Save feed
-                        </Button>
-                    </FormLayout>
-                </Form>
+                <FormControl />
             </LegacyCard>
         </>
     )
