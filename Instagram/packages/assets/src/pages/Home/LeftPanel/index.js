@@ -13,11 +13,11 @@ const LeftPanel = ({ getMedia, loading }) => {
     const { isConnectIG, setIsConnectIG } = useAppContext()
 
     const handleLoginWithFB = useCallback(async () => {
-        window.open('https://ig.local.com/ig/me/auth/instagram', 'popup')
+        window.open('https://ig.local.com/ig/me/auth/instagram', '_self')
     }, [isConnectIG])
 
     const handleChangeAccount = useCallback(() => {
-        window.open('https://ig.local.com/ig/me/auth/instagram', 'popup')
+        window.open('https://ig.local.com/ig/me/auth/instagram', '_self')
     }, [])
 
     const handleDisconnect = useCallback(async () => {

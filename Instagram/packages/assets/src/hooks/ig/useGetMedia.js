@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
-import axios from 'axios'
 
 import { useAppContext } from '@assets/context/AppContext'
 import useGetMe from './useGetMe'
+import * as request from '@assets/helpers/utils/httpRequest'
 
 const useGetMedia = () => {
     const [loading, setLoading] = useState(false)
@@ -13,13 +13,13 @@ const useGetMedia = () => {
     const getMedia = useCallback(async () => {
         setLoading(true)
         try {
-            const res = await axios.post('/ig/me/media')
+            const res = await request.post('/ig/me/media')
 
             if (res.error) {
                 throw new Error(res.error)
             }
 
-            setData(res?.data.data)
+            setData(res?.data.slice(0, 30))
         } catch (error) {
             console.log('Error in getMedia: ', error.message)
 
@@ -36,7 +36,7 @@ const useGetMedia = () => {
         } else {
             getMedia()
         }
-    }, [igMe, isConnectIG])
+    }, [isConnectIG])
 
     return { loading, data, getMedia }
 }

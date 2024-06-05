@@ -65,6 +65,10 @@
                 "function": "igInfo"
             },
             {
+                "source": "/client/**",
+                "function": "client"
+            },
+            {
                 "source": "/embed/**",
                 "destination": "/embed.html"
             },

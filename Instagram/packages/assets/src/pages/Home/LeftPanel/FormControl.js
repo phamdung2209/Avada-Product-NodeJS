@@ -1,43 +1,28 @@
 import { Button, Form, FormLayout, InlineStack, Select, TextField } from '@shopify/polaris'
-import React, { memo, useCallback, useState } from 'react'
+import React, { memo, useCallback } from 'react'
 import axios from 'axios'
 
 import { useAppContext } from '@assets/context/AppContext'
-import useGetSettings from '@assets/hooks/ig/useGetSettings'
-import { SETTINGS } from '@assets/helpers/constants'
 
 const FormControl = () => {
-    const { data, loading } = useGetSettings()
-
     const { valueSettings, setValueSettings } = useAppContext()
-
-    // const [values, setValues] = useState(() => {
-    //     if (!data) {
-    //         return SETTINGS
-    //     }
-
-    //     return {
-    //         title: data.title,
-    //         spacing: data.spacing,
-    //         layout: data.layout,
-    //         numberRows: data.numberRows,
-    //         numberColumns: data.numberColumns,
-    //     }
-    // })
 
     const handleSaveFeed = useCallback(async () => {
         try {
-            const res = await axios.post('/api/ig/settings', valueSettings)
+            const res = await axios.post('/ig/me/settings', valueSettings)
+
             if (res.data.error) {
                 throw new Error(res.data.error)
             }
 
             // TOAST MESSAGE SUCCESS HERE
+            alert(res.data.message)
         } catch (error) {
             console.log('Error in handleSaveFeed: ', error.message)
             // TOAST MESSAGE ERROR HERE
+            alert(error.message)
         }
-    }, [])
+    }, [valueSettings])
 
     return (
         <Form>

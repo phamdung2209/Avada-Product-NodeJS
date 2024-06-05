@@ -1,0 +1,36 @@
+{
+    "name": "@avada/scripttag",
+    "version": "0.0.1",
+    "scripts": {
+        "lint": "eslint .",
+        "eslint-fix": "./node_modules/.bin/eslint --fix .",
+        "webpack": "cross-env NODE_ENV=production ENVIRONMENT=production ./node_modules/.bin/webpack --hide-modules --config=webpack.config.js",
+        "webpack-dev": "cross-env NODE_ENV=development ENVIRONMENT=development ./node_modules/.bin/webpack --hide-modules --config=webpack.config.js",
+        "webpack-watch": "cross-env NODE_ENV=development ENVIRONMENT=development ./node_modules/.bin/webpack --config=webpack.config.js --watch",
+        "start": "http-server"
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.7.4",
+        "@babel/preset-env": "^7.7.4",
+        "babel-core": "^6.26.3",
+        "babel-loader": "^8.0.6",
+        "babel-preset-es2015": "^6.24.1",
+        "css-loader": "^3.6.0",
+        "style-loader": "^1.0.0",
+        "webpack": "^4.41.2"
+    },
+    "dependencies": {
+        "@babel/core": "^7.24.6",
+        "@babel/preset-react": "^7.24.6",
+        "@shopify/polaris": "^12.6.0",
+        "@shopify/polaris-icons": "^8.0.0",
+        "babel-loader": "^9.1.3",
+        "classnames": "^2.5.1",
+        "css-loader": "^7.1.2",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "sass": "^1.77.4",
+        "sass-loader": "^14.2.1",
+        "style-loader": "^4.0.0"
+    }
+}

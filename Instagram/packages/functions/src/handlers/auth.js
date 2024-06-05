@@ -51,6 +51,7 @@ app.use(
         successRedirect: '/embed/',
         hostName: appConfig.baseUrl,
         isEmbeddedApp: true,
+        afterLogin: installationService.installApp,
     }).routes(),
 )
 

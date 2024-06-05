@@ -1,3 +1,4 @@
+import { SETTING } from '@functions/const/const'
 import { getIgMe } from '@functions/controllers/IgController'
 import { Firestore } from '@google-cloud/firestore'
 
@@ -11,11 +12,6 @@ export const asyncMedia = async (data, user) => {
         let media = []
 
         if (!data.length) {
-            // const ownerMedia = await mediasRef.where('userId', '==', user.id).get()
-            // ownerMedia.forEach((doc) => {
-            //     media.push(doc.data())
-            // })
-
             return media
         } else {
             const docsMedia = await mediasRef.get()
@@ -146,6 +142,73 @@ export const getSettingByUserId = async (user_id) => {
         return setting.docs[0].data()
     } catch (error) {
         console.log('Error in getSettingByUserId: ', error.message)
+        return {
+            success: false,
+            error: error.message,
+        }
+    }
+}
+
+export const updateFeedSettings = async (
+    { title, layout, spacing, numberRows, numberColumns },
+    userId,
+) => {
+    try {
+        const setting = await settingsRef.where('userId', '==', userId).get()
+        if (setting.empty) {
+            await settingsRef.add({
+                title,
+                layout,
+                spacing,
+                numberRows,
+                numberColumns,
+                userId,
+            })
+        } else {
+            await settingsRef.doc(setting.docs[0].id).update({
+                title,
+                layout,
+                spacing,
+                numberRows,
+                numberColumns,
+            })
+        }
+
+        return {
+            success: true,
+            message: 'Settings is updated!',
+        }
+    } catch (error) {
+        console.log('Error in updateFeedSettings: ', error.message)
+        return {
+            success: false,
+            error: error.message,
+        }
+    }
+}
+
+export const asyncSettings = async (shopId) => {
+    try {
+        const docUsers = await usersRef.get()
+        const users = docUsers.docs.map((doc) => doc.data())
+
+        users.forEach(async (user) => {
+            const setting = await settingsRef.where('userId', '==', user.id).get()
+            if (setting.empty) {
+                await settingsRef.add({
+                    ...SETTING,
+                    userId: user.id,
+                    shopId,
+                })
+            }
+        })
+
+        return {
+            success: true,
+            message: 'Settings is added!',
+        }
+    } catch (error) {
+        console.log('Error in asyncSettings: ', error.message)
         return {
             success: false,
             error: error.message,

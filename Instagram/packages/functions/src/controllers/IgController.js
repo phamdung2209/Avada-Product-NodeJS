@@ -5,6 +5,7 @@ import {
     asyncMedia,
     getSettingByUserId,
     getUserById,
+    updateFeedSettings,
     updateIgMe,
 } from '@functions/repositories/IgRepository'
 import axios from 'axios'
@@ -29,26 +30,6 @@ export const getMedia = async (ctx) => {
         }
     } catch (error) {
         console.log('Error in getMedia: ', error.message)
-        ctx.body = {
-            success: false,
-            error: error.message,
-        }
-    }
-}
-
-export const getMe = async (ctx) => {
-    try {
-        const user = await asyncIgMe()
-        if (!user) {
-            throw new Error('No user found')
-        }
-
-        ctx.body = {
-            success: true,
-            data: user,
-        }
-    } catch (error) {
-        console.log('Error in getMe: ', error.message)
         ctx.body = {
             success: false,
             error: error.message,
@@ -207,6 +188,28 @@ export const getSettings = async (ctx) => {
         })
     } catch (error) {
         console.log('Error in getSettings: ', error.message)
+        ctx.body = {
+            success: false,
+            error: error.message,
+        }
+    }
+}
+
+export const updateSettings = async (ctx) => {
+    try {
+        const { id } = ctx.user
+        const user = getUserById({ user_id: id })
+        if (user.error) throw new Error(user.error)
+
+        const update = await updateFeedSettings(ctx.req.body, id)
+        if (update.error) throw new Error(update.error)
+
+        ctx.body = {
+            success: true,
+            message: update.message,
+        }
+    } catch (error) {
+        console.log('Error in updateSettings: ', error.message)
         ctx.body = {
             success: false,
             error: error.message,
