@@ -48,23 +48,6 @@ export const asyncMedia = async (data, user) => {
     }
 }
 
-export const asyncIgMe = async () => {
-    try {
-        const data = await getIgMe()
-        let user = await usersRef.where('id', '==', data.id).get()
-
-        if (user.empty) {
-            await usersRef.add(data)
-            return data
-        }
-
-        return user.docs[0].data()
-    } catch (error) {
-        console.log('Error in getIgMe: ', error.message)
-        return null
-    }
-}
-
 export const updateIgMe = async ({ user_id, accessTokenHash, permissions, username }) => {
     try {
         const user = await usersRef.where('id', '==', user_id).get()

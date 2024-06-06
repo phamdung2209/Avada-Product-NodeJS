@@ -1,15 +1,15 @@
+import axios from 'axios'
+import jwt from 'jsonwebtoken'
+
 import generateJWT from '@functions/helpers/utils/generateJWT'
 import { decryptToken, encryptToken } from '@functions/helpers/utils/ig/hashToken'
 import {
-    asyncIgMe,
     asyncMedia,
     getSettingByUserId,
     getUserById,
     updateFeedSettings,
     updateIgMe,
 } from '@functions/repositories/IgRepository'
-import axios from 'axios'
-import jwt from 'jsonwebtoken'
 
 export const getMedia = async (ctx) => {
     try {
@@ -21,6 +21,8 @@ export const getMedia = async (ctx) => {
                 access_token: user?.access_token,
             },
         })
+
+        // HANDLE STATUS 401 - REFRESH TOKEN
 
         const media = await asyncMedia(data.data.data, user)
 
