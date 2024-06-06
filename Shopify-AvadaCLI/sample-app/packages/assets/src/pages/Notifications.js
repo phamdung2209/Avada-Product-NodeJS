@@ -19,6 +19,7 @@ const Notifications = () => {
     const [sortValue, setSortValue] = useState('DATE_MODIFIED_DESC');
     const {data, loading} = useGetNotifications();
 
+  //TODO: Cac config luu vao config/notificationConfig, cac page khac tuong tu
     const SORTOPTIONS = [
         {label: 'Newest update', value: 'DATE_MODIFIED_DESC'},
         {label: 'Oldest update', value: 'DATE_MODIFIED_ASC'},
@@ -60,6 +61,7 @@ const Notifications = () => {
                 )}
             </LegacyCard>
 
+           //TODO: su dung ResourceList pagination
             <Box padding={'1000'}>
                 <InlineStack align="center">
                     <Pagination
