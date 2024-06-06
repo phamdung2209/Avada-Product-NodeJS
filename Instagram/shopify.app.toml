@@ -2,7 +2,7 @@
 
 name = "instagram"
 client_id = "a185f2b72b360a900c149072accf83c1"
-application_url = "https://ls-lesser-apartments-unix.trycloudflare.com/auth/shopify"
+application_url = "https://talented-bluetooth-great-survey.trycloudflare.com/auth/shopify"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://ls-lesser-apartments-unix.trycloudflare.com/auth/shopify/callback",
-  "https://ls-lesser-apartments-unix.trycloudflare.com/authSa/shopify/callback",
-  "https://ls-lesser-apartments-unix.trycloudflare.com/auth/shopify/embed/callback",
+  "https://talented-bluetooth-great-survey.trycloudflare.com/auth/shopify/callback",
+  "https://talented-bluetooth-great-survey.trycloudflare.com/authSa/shopify/callback",
+  "https://talented-bluetooth-great-survey.trycloudflare.com/auth/shopify/embed/callback",
   "https://localhost:3000/auth/shopify/callback",
   "https://localhost:3000/authSa/shopify/callback",
   "https://localhost:3000/auth/shopify/embed/callback"
