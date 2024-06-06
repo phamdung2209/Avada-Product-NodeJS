@@ -17,7 +17,10 @@ import useGetNotifications from '../hooks/notifications/useGetNotifications';
 const Notifications = () => {
     const [selectedItems, setSelectedItems] = useState([]);
     const [sortValue, setSortValue] = useState('DATE_MODIFIED_DESC');
-    const {data, loading} = useGetNotifications();
+  /**
+   * TODO: useFetchApi
+   */
+  const {data, loading} = useGetNotifications();
 
   //TODO: Cac config luu vao config/notificationConfig, cac page khac tuong tu
     const SORTOPTIONS = [

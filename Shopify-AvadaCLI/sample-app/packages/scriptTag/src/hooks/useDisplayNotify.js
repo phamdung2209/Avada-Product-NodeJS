@@ -2,6 +2,9 @@ import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 const useDisplayNotify = ({ loading, data, currentNotifyIdx, setCurrentNotifyIdx }) => {
+  /**
+   * Toi uu logic phan nay
+   */
     useEffect(() => {
         if (!loading && data?.notifications.length && currentNotifyIdx < 0) {
             const timerFirstDelay = setTimeout(() => {

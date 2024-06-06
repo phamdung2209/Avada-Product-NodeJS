@@ -13,7 +13,9 @@ const Settings = () => {
             method: 'PUT',
             body: settings,
         })
-
+      /**
+       * TODO: them toast message
+       */
         if (!res.success) {
             return
         }

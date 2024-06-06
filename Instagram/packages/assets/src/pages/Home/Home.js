@@ -6,6 +6,9 @@ import RightPanel from './RightPanel'
 import useGetMedia from '@assets/hooks/ig/useGetMedia'
 
 const Home = () => {
+  /**
+   * TODO: su dung use fetch api
+   */
     const { loading, getMedia, data } = useGetMedia()
 
     return (

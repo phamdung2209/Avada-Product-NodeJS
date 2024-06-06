@@ -7,6 +7,9 @@ import { useAppContext } from '@assets/context/AppContext'
 const FormControl = () => {
     const { valueSettings, setValueSettings } = useAppContext()
 
+  /**
+   * Su dung hook use edit api
+   */
     const handleSaveFeed = useCallback(async () => {
         try {
             const res = await axios.post('/ig/me/settings', valueSettings)
@@ -31,6 +34,7 @@ const FormControl = () => {
                     label="Feed title"
                     type="text"
                     value={valueSettings.title}
+                    //TODO: Sua setValueSettings thanh handleSettingChange('title', value)
                     onChange={(value) => setValueSettings({ ...valueSettings, title: value })}
                 />
                 <TextField
@@ -42,6 +46,7 @@ const FormControl = () => {
                 />
                 <Select
                     label="Post layout"
+                    //TODO: options nay viet ra file config
                     options={[
                         { label: 'Grid', value: 'grid' },
                         { label: 'List', value: 'list' },

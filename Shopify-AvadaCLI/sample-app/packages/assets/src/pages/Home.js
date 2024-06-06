@@ -2,6 +2,9 @@ import { Layout, Text, Page, LegacyCard, InlineStack, Button } from '@shopify/po
 import React from 'react'
 
 const Home = () => {
+  /**
+   * Status nay dung de check check xem media co dc hien thi o storefront hay khong
+   */
     return (
         <Page title="Home" fullWidth>
             <Layout>
