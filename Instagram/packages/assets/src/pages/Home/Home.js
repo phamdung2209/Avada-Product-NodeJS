@@ -1,5 +1,5 @@
 import { Layout, Page } from '@shopify/polaris'
-import React, { memo, useEffect } from 'react'
+import React, { memo } from 'react'
 
 import LeftPanel from './LeftPanel'
 import RightPanel from './RightPanel'

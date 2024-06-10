@@ -7,6 +7,12 @@ export const getDataClient = async (ctx) => {
         const { shopifyDomain } = ctx.request.query
 
         if (!shopifyDomain) {
+          /**
+           * ctx.body = {
+           *             success: false,
+           *             error: <message>,
+           *           }
+           */
             throw new Error('Shopify domain is required')
         }
 
