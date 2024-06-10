@@ -40,7 +40,7 @@ const ProductItem = ({
 }
 
 ProductItem.propTypes = {
-    id: PropTypes.number.isRequired,
+    id: PropTypes.number,
     country: PropTypes.string,
     productImage: PropTypes.string,
     timestamp: PropTypes.string,

@@ -1,80 +1,42 @@
-import { SETTING } from '@functions/const/const'
+import { SETTING } from '@functions/config/settingDefault'
 import { getIgMe } from '@functions/controllers/IgController'
 import { Firestore } from '@google-cloud/firestore'
 
 const firestore = new Firestore()
 const usersRef = firestore.collection('users')
 const mediasRef = firestore.collection('medias')
-const settingsRef = firestore.collection('settings')
 
-export const asyncMedia = async (data, user) => {
+export const syncMedia = async (data = [], user, shopId = '') => {
     try {
         let media = []
 
-        if (!data.length) {
-            return media
-        } else {
-            const docsMedia = await mediasRef.get()
-
-            if (docsMedia.empty) {
-                const dataCanPush = data.map((item) => {
-                    item.userId = user.id
-                    return item
-                })
-
-                dataCanPush.forEach(async (item) => {
-                    await mediasRef.add(item)
-                    media.push(item)
-                })
-
-                return dataCanPush
+        const docs = data.reduce((acc, cur, idx) => {
+            if (idx % 10 === 0) {
+                acc.push([cur])
             } else {
-                data.forEach(async (item) => {
-                    if (!docsMedia.docs.some((doc) => doc.data().id === item.id)) {
-                        item.userId = user.id
-                        await mediasRef.add(item)
-                        await media.push(item)
-                    } else {
-                        await media.push(item)
-                    }
-                })
+                acc[acc.length - 1].push(cur)
             }
-        }
+
+            return acc
+        }, [])
+
+        docs.forEach(async (doc) => {
+            const mediaRef = await mediasRef.add({
+                userId: user.id,
+                shopId,
+                data: doc,
+            })
+
+            media.push({
+                id: mediaRef.id,
+                data: doc,
+            })
+        })
 
         return media
     } catch (error) {
         console.log('Error in getMedia: ', error.message)
         return []
-    }
-}
-
-export const updateIgMe = async ({ user_id, accessTokenHash, permissions, username }) => {
-    try {
-        const user = await usersRef.where('id', '==', user_id).get()
-        if (user.empty) {
-            await usersRef.add({
-                id: user_id,
-                accessTokenHash,
-                permissions,
-                username,
-            })
-        } else {
-            await usersRef.doc(user.docs[0].id).update({
-                accessTokenHash,
-                permissions,
-                username,
-            })
-        }
-
-        return {
-            success: true,
-            message: 'User updated',
-        }
-    } catch (error) {
-        return {
-            success: false,
-            error: error.message,
-        }
     }
 }
 
@@ -97,101 +59,79 @@ export const getMe = async ({ user_id }) => {
     }
 }
 
-export const getUserById = async ({ user_id }) => {
+export const userCallback = async ({
+    user_id,
+    accessTokenHash,
+    permissions,
+    username,
+    expires_in,
+}) => {
     try {
-        const user = await usersRef.where('id', '==', user_id).get()
-
-        if (user.empty) {
-            throw new Error('No user found')
+        // Delete all users
+        const deleteUsers = await deleteAllUsers()
+        if (!deleteUsers.success) {
+            throw new Error(deleteUsers.error)
         }
 
-        return user.docs[0].data()
-    } catch (error) {
-        console.log('Error in getUserById: ', error.message)
-        return {
-            success: false,
-            error: error.message,
-        }
-    }
-}
-
-export const getSettingByUserId = async (user_id) => {
-    try {
-        const setting = await settingsRef.where('userId', '==', user_id).get()
-        if (setting.empty) {
-            throw new Error('No setting found')
-        }
-
-        return setting.docs[0].data()
-    } catch (error) {
-        console.log('Error in getSettingByUserId: ', error.message)
-        return {
-            success: false,
-            error: error.message,
-        }
-    }
-}
-
-export const updateFeedSettings = async (
-    { title, layout, spacing, numberRows, numberColumns },
-    userId,
-) => {
-    try {
-        const setting = await settingsRef.where('userId', '==', userId).get()
-        if (setting.empty) {
-            await settingsRef.add({
-                title,
-                layout,
-                spacing,
-                numberRows,
-                numberColumns,
-                userId,
-            })
-        } else {
-            await settingsRef.doc(setting.docs[0].id).update({
-                title,
-                layout,
-                spacing,
-                numberRows,
-                numberColumns,
-            })
-        }
-
-        return {
-            success: true,
-            message: 'Settings is updated!',
-        }
-    } catch (error) {
-        console.log('Error in updateFeedSettings: ', error.message)
-        return {
-            success: false,
-            error: error.message,
-        }
-    }
-}
-
-export const asyncSettings = async (shopId) => {
-    try {
-        const docUsers = await usersRef.get()
-        const users = docUsers.docs.map((doc) => doc.data())
-
-        users.forEach(async (user) => {
-            const setting = await settingsRef.where('userId', '==', user.id).get()
-            if (setting.empty) {
-                await settingsRef.add({
-                    ...SETTING,
-                    userId: user.id,
-                    shopId,
-                })
-            }
+        // create user use set
+        await usersRef.doc('' + user_id).set({
+            accessTokenHash,
+            permissions,
+            username,
+            expires_in,
+            createdAt: new Date().toISOString(),
         })
 
         return {
             success: true,
-            message: 'Settings is added!',
+            message: 'User created',
         }
     } catch (error) {
-        console.log('Error in asyncSettings: ', error.message)
+        console.log('Error in userCallback: ', error.message)
+        return {
+            success: false,
+            error: error.message,
+        }
+    }
+}
+
+export const deleteAllUsers = async () => {
+    try {
+        const batch = firestore.batch()
+
+        const { docs } = await usersRef.get()
+        docs.forEach((doc) => batch.delete(doc.ref))
+        await batch.commit()
+
+        return {
+            success: true,
+            message: 'All users deleted',
+        }
+    } catch (error) {
+        console.log('Error in deleteAllUsers: ', error.message)
+        return {
+            success: false,
+            error: error.message,
+        }
+    }
+}
+
+export const getUser = async () => {
+    try {
+        const docUsers = await usersRef.get()
+        if (docUsers.empty) {
+            throw new Error('No user found')
+        }
+
+        return {
+            success: true,
+            data: {
+                ...docUsers.docs[0].data(),
+                id: docUsers.docs[0].id,
+            },
+        }
+    } catch (error) {
+        console.log('Error in getUser: ', error.message)
         return {
             success: false,
             error: error.message,

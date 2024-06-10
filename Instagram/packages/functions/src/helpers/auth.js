@@ -6,7 +6,7 @@
  * @return {string}
  */
 export function getCurrentShop(ctx) {
-  return getCurrentUser(ctx).shopID;
+    return getCurrentUser(ctx).shopID
 }
 
 /**
@@ -16,5 +16,5 @@ export function getCurrentShop(ctx) {
  * @returns {IUserContext}
  */
 export function getCurrentUser(ctx) {
-  return ctx.state.user;
+    return ctx.state.user
 }

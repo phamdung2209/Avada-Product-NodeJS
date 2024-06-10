@@ -1,4 +1,4 @@
-import { asyncSettings } from '@functions/repositories/IgRepository'
+import { asyncSettings } from '@functions/repositories/settingRepository'
 import { getShopByDomain } from '@functions/repositories/shopRepository'
 
 /**

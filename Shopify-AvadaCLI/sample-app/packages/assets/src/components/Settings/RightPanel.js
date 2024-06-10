@@ -3,22 +3,10 @@ import React, { forwardRef, memo, useEffect, useImperativeHandle, useState } fro
 import RightPanelDisplay from './RightPanelDisplay'
 import RightPanelTrigger from './RightPanelTrigger'
 import { fetchAuthenticatedApi } from '../../helpers'
+import { SETTINGS } from '@assets/config/settings'
 
 const RightPanel = (props, ref) => {
-    const [settings, setSettings] = useState({
-        allowShow: 'all',
-        displayDuration: 1,
-        excludedUrls: 'https://example.com',
-        firstDelay: 1,
-        hideTimeAgo: false,
-        id: '',
-        includedUrls: 'https://example.com',
-        maxPopsDisplay: 1,
-        popsInterval: 1,
-        position: 1,
-        shopId: '1',
-        truncateProductName: false,
-    })
+    const [settings, setSettings] = useState(SETTINGS)
     const [activeTab, setActiveTab] = useState(0)
 
     useEffect(() => {

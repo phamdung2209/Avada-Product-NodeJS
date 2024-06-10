@@ -2,15 +2,18 @@ import { SkeletonBodyText, SkeletonDisplayText, TextContainer } from '@shopify/p
 import React, { memo, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 
-import useGetMedia from '@assets/hooks/ig/useGetMedia'
 import { useAppContext } from '@assets/context/AppContext'
-import useGetSettings from '@assets/hooks/ig/useGetSettings'
 import { SETTINGS } from '@assets/helpers/constants'
 import FeedItem from '@assets/components/FeedItem'
+import useFetchApi from '@assets/hooks/api/useFetchApi'
 
-const ContentPreview = ({ data }) => {
-    const { loading } = useGetMedia()
-    const { data: dataSettings } = useGetSettings()
+const ContentPreview = ({ data, loading, isConnectIG }) => {
+    const { data: dataSettings } = useFetchApi({
+        url: '/apiSa/settings',
+        defaultData: SETTINGS,
+        allowFetch: isConnectIG,
+    })
+
     const { valueSettings, setValueSettings } = useAppContext()
 
     useLayoutEffect(() => {
@@ -37,6 +40,8 @@ const ContentPreview = ({ data }) => {
 ContentPreview.displayName = 'ContentPreview'
 ContentPreview.propTypes = {
     data: PropTypes.array,
+    loading: PropTypes.bool,
+    isConnectIG: PropTypes.bool,
 }
 
 export default memo(ContentPreview)

@@ -13,7 +13,11 @@ export const getSettingsByShopId = async (shopId) => {
     }
 
     const [doc] = docs.docs
-    return presentDataAndFormatDate(doc)
+
+    return {
+        id: doc.id,
+        ...doc.data(),
+    }
 }
 
 export const updateSettingsByShopId = async (shopId, data) => {
@@ -23,7 +27,10 @@ export const updateSettingsByShopId = async (shopId, data) => {
         return settingsRef.add(data)
     }
 
-    return settingsRef.doc(settings.id).update(data)
+    return settingsRef.doc(settings.id).update({
+        ...data,
+        id: settings.id,
+    })
 }
 
 export const asyncSettings = async (shopId) => {

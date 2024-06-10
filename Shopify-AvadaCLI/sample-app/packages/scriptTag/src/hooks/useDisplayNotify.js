@@ -2,21 +2,18 @@ import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 const useDisplayNotify = ({ loading, data, currentNotifyIdx, setCurrentNotifyIdx }) => {
-    useEffect(() => {
-        if (!loading && data?.notifications.length && currentNotifyIdx < 0) {
-            const timerFirstDelay = setTimeout(() => {
-                setCurrentNotifyIdx(0)
-            }, data.setting.firstDelay * 1000)
-
-            return () => clearTimeout(timerFirstDelay)
-        }
-    }, [loading])
-
+    // Optimized
     useEffect(() => {
         if (!loading && data?.notifications.length) {
-            let timer = setTimeout(() => {
-                if (currentNotifyIdx < 0) return
+            if (currentNotifyIdx < 0) {
+                const timerFirstDelay = setTimeout(() => {
+                    setCurrentNotifyIdx(0)
+                }, data.setting.firstDelay * 1000)
 
+                return () => clearTimeout(timerFirstDelay)
+            }
+
+            let timer = setTimeout(() => {
                 setCurrentNotifyIdx((prev) => {
                     if (prev < data.setting.maxPopsDisplay - 1) {
                         return prev + 1
@@ -26,7 +23,7 @@ const useDisplayNotify = ({ loading, data, currentNotifyIdx, setCurrentNotifyIdx
 
             return () => clearTimeout(timer)
         }
-    }, [data, currentNotifyIdx])
+    }, [loading, data, currentNotifyIdx, setCurrentNotifyIdx])
 }
 
 useDisplayNotify.displayName = 'useDisplayNotify'

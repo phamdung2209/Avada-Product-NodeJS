@@ -6,7 +6,7 @@
                 "assets/*"
             ],
             "~/functions/*": [
-                "functions/src/*"
+                "functions/*"
             ]
         }
     }

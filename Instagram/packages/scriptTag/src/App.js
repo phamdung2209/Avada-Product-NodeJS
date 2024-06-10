@@ -1,23 +1,25 @@
 import React, { memo } from 'react'
 import useGetDataClient from './hooks/useGetDataClient'
 import FeedItem from '~/assets/src/components/FeedItem'
-import { Page, SkeletonBodyText, SkeletonDisplayText, TextContainer } from '@shopify/polaris'
+import { Loading } from './assets/svg'
 
 const App = () => {
     const { loading, data } = useGetDataClient()
     const { media, setting } = data
 
     return (
-        <Page title={setting.title} fullWidth>
-            {loading ? (
-                <TextContainer>
-                    <SkeletonDisplayText size="extraLarge" />
-                    <SkeletonBodyText />
-                </TextContainer>
-            ) : (
-                <FeedItem data={media} valueSettings={setting} />
-            )}
-        </Page>
+        <>
+            <h1
+                style={{
+                    fontSize: '2.3rem',
+                    margin: '1.2rem 0',
+                }}
+            >
+                {setting?.title}
+            </h1>
+
+            {loading ? <Loading /> : <FeedItem data={media} valueSettings={setting} />}
+        </>
     )
 }
 

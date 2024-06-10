@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { api } from '@assets/helpers'
 import queryString from 'query-string'
 import { handleError } from '@assets/services/errorService'
@@ -16,9 +16,13 @@ import { handleError } from '@assets/services/errorService'
 export default function useFetchApi({
     url,
     defaultData = [],
-    initLoad = true,
+    initLoad = false,
     presentData = null,
     initQueries = {},
+    method = 'GET',
+    allowFetch = true,
+    options = {},
+    isResetData = false,
 }) {
     const [loading, setLoading] = useState(initLoad)
     const [fetched, setFetched] = useState(false)
@@ -27,23 +31,27 @@ export default function useFetchApi({
     const [pageInfo, setPageInfo] = useState({})
     const [count, setCount] = useState(0)
 
-    async function fetchApi(apiUrl, params = null, keepPreviousData = false) {
+    const fetchApi = async (apiUrl = url, params = null, keepPreviousData = false) => {
         try {
             setLoading(true)
             const path = apiUrl || url
             const separateChar = path.includes('?') ? '&' : '?'
             const query = params ? separateChar + queryString.stringify(params) : ''
-            const resp = await api(path + query)
+
+            const resp = await api({
+                url: path + query,
+                method,
+                clientConfig: {
+                    baseURL: '/',
+                    timeout: 0,
+                },
+                options,
+            })
+
             if (resp.hasOwnProperty('pageInfo')) setPageInfo(resp.pageInfo)
             if (resp.hasOwnProperty('count')) setCount(resp.count)
             if (resp.hasOwnProperty('additionalData')) {
                 setAdditionalData(resp.additionalData)
-            }
-            const x = {
-                success: true,
-                data: settings,
-                pageInfo: {},
-                count: 99,
             }
             if (resp.hasOwnProperty('data')) {
                 let newData = presentData ? presentData(resp.data) : resp.data
@@ -65,11 +73,16 @@ export default function useFetchApi({
         }
     }
 
-    useEffect(() => {
-        if (initLoad && !fetched) {
-            fetchApi(url, initQueries).then(() => {})
+    useLayoutEffect(() => {
+        if (isResetData) {
+            setData(defaultData)
+            return
         }
-    }, [])
+
+        if (!allowFetch) return
+
+        fetchApi(url, initQueries)
+    }, [allowFetch, isResetData])
 
     return {
         fetchApi,

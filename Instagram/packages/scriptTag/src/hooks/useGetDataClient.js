@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import * as request from '~/assets/src/helpers/utils/httpRequest'
+import { SETTING } from '~/functions/src/config/settingDefault'
 
 const useGetDataClient = () => {
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState({
         media: [],
-        setting: {},
+        setting: SETTING,
     })
 
     const getData = useCallback(async () => {

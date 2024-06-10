@@ -1,30 +1,24 @@
 import {
-    Box,
-    InlineStack,
     LegacyCard,
     Page,
-    Pagination,
     ResourceList,
     SkeletonBodyText,
     SkeletonDisplayText,
-    TextContainer
-} from '@shopify/polaris';
-import React, {memo, useState} from 'react';
+    TextContainer,
+} from '@shopify/polaris'
+import React, { memo, useState } from 'react'
 
-import ProductItem from '../components/ProductItem/';
-import useGetNotifications from '../hooks/notifications/useGetNotifications';
+import ProductItem from '../components/ProductItem/'
+import { RESOURCENAME, SORTOPTIONS } from '@assets/config/notify'
+import useFetchApi from '@assets/hooks/api/useFetchApi'
 
 const Notifications = () => {
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [sortValue, setSortValue] = useState('DATE_MODIFIED_DESC');
-    const {data, loading} = useGetNotifications();
+    const [selectedItems, setSelectedItems] = useState([])
+    const [sortValue, setSortValue] = useState('DATE_MODIFIED_DESC')
 
-    const SORTOPTIONS = [
-        {label: 'Newest update', value: 'DATE_MODIFIED_DESC'},
-        {label: 'Oldest update', value: 'DATE_MODIFIED_ASC'},
-        {label: 'A - Z', value: 'ALPHABETICAL_ASC'},
-        {label: 'Z - A', value: 'ALPHABETICAL_DESC'}
-    ];
+    const { data, loading } = useFetchApi({
+        url: '/apiSa/notifications',
+    })
 
     return (
         <Page fullWidth title="Notifications" subtitle="List of sales notification from Shopify">
@@ -33,10 +27,7 @@ const Notifications = () => {
                     <ResourceListSkeleton />
                 ) : (
                     <ResourceList
-                        resourceName={{
-                            plural: 'notifications',
-                            singular: 'notification'
-                        }}
+                        resourceName={RESOURCENAME}
                         selectedItems={selectedItems}
                         onSelectionChange={setSelectedItems}
                         selectable
@@ -44,41 +35,36 @@ const Notifications = () => {
                         bulkActions={[
                             {
                                 content: 'Mark as read',
-                                onAction: () => console.log('Mark as read')
-                            }
+                                onAction: () => console.log('Mark as read'),
+                            },
                         ]}
                         promotedBulkActions={[
                             {
-                                content: 's'
-                            }
+                                content: 's',
+                            },
                         ]}
                         sortValue={sortValue}
                         onSortChange={setSortValue}
                         sortOptions={SORTOPTIONS}
                         renderItem={renderResourceItem}
+                        pagination={{
+                            hasNext: true,
+                            hasPrevious: true,
+                            onNext: () => {},
+                            onPrevious: () => {},
+                        }}
                     />
                 )}
             </LegacyCard>
-
-            <Box padding={'1000'}>
-                <InlineStack align="center">
-                    <Pagination
-                        hasPrevious
-                        hasNext
-                        previousKeys={[{content: 'Previous'}]}
-                        nextKeys={[{content: 'Next'}]}
-                    />
-                </InlineStack>
-            </Box>
         </Page>
-    );
-};
+    )
+}
 
-Notifications.displayName = 'Notifications';
+Notifications.displayName = 'Notifications'
 
-export default memo(Notifications);
+export default memo(Notifications)
 
-const renderResourceItem = items => <ProductItem {...items} />;
+const renderResourceItem = (items) => <ProductItem {...items} />
 
 const ResourceListSkeleton = () => (
     <LegacyCard sectioned>
@@ -87,4 +73,4 @@ const ResourceListSkeleton = () => (
             <SkeletonBodyText />
         </TextContainer>
     </LegacyCard>
-);
+)

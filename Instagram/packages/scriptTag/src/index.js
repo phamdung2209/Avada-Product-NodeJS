@@ -7,7 +7,7 @@ import './app.scss'
 import App from './App'
 import { AppContextProvider } from '~/assets/src/context/AppContext'
 
-ReactDOM.createRoot(document.querySelector('.collection')).render(
+ReactDOM.createRoot(document.querySelector('.ig-component')).render(
     <React.StrictMode>
         <AppProvider>
             <AppContextProvider>

@@ -1,12 +1,20 @@
 import { Layout, Page } from '@shopify/polaris'
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 
 import LeftPanel from './LeftPanel'
 import RightPanel from './RightPanel'
-import useGetMedia from '@assets/hooks/ig/useGetMedia'
+import useFetchApi from '@assets/hooks/api/useFetchApi'
+import { useAppContext } from '@assets/context/AppContext'
 
 const Home = () => {
-    const { loading, getMedia, data } = useGetMedia()
+    const { isConnectIG } = useAppContext()
+
+    const { loading, data, fetchApi: getMedia } = useFetchApi({
+        url: '/apiSa/media',
+        defaultData: [],
+        allowFetch: isConnectIG,
+        isResetData: !isConnectIG,
+    })
 
     return (
         <Page fullWidth title="Main feed">
@@ -16,7 +24,7 @@ const Home = () => {
                 </Layout.Section>
 
                 <Layout.Section>
-                    <RightPanel data={data} />
+                    <RightPanel data={data} loading={loading} isConnectIG={isConnectIG} />
                 </Layout.Section>
             </Layout>
         </Page>

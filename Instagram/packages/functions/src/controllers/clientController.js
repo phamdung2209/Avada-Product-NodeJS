@@ -1,4 +1,5 @@
-import { getMediaByShopId, getSettingByShopId } from '@functions/repositories/mediaRepository'
+import { getMediaByShopId } from '@functions/repositories/mediaRepository'
+import { getSettingByShopId } from '@functions/repositories/settingRepository'
 import { getShopByDomain } from '@functions/repositories/shopRepository'
 
 export const getDataClient = async (ctx) => {
@@ -29,7 +30,7 @@ export const getDataClient = async (ctx) => {
         ctx.body = {
             success: true,
             data: {
-                media: media.data,
+                media: media.data.map((m) => m.data).flat(),
                 setting: setting.data,
             },
         }

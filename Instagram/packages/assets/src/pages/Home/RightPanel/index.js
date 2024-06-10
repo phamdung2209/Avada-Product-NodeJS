@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 
 import ContentPreview from './ContentPreview'
 
-const RightPanel = ({ data }) => {
+const RightPanel = ({ data, loading, isConnectIG }) => {
     return (
         <LegacyCard title="Preview" sectioned>
-            <ContentPreview data={data} />
+            <ContentPreview data={data} loading={loading} isConnectIG={isConnectIG} />
         </LegacyCard>
     )
 }
@@ -15,6 +15,8 @@ const RightPanel = ({ data }) => {
 RightPanel.displayName = 'RightPanel'
 RightPanel.propTypes = {
     data: PropTypes.array,
+    loading: PropTypes.bool,
+    isConnectIG: PropTypes.bool,
 }
 
 export default memo(RightPanel)

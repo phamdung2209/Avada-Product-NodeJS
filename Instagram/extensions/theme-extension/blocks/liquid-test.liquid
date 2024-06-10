@@ -1,0 +1,22 @@
+
+
+<div class="ig-component">
+    <h1>Example App Block</h1>
+    <p>{{ settings.example_text }}</p>
+</div>
+
+
+
+{% schema %}
+{
+  "name": "Example App Block",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "example_text",
+      "label": "Example Text"
+    }
+  ]
+}
+{% endschema %}

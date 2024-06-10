@@ -2,21 +2,19 @@ import { Layout, LegacyCard, Page } from '@shopify/polaris'
 import React, { memo, useRef } from 'react'
 import ProductItem from '../components/ProductItem'
 import RightPanel from '../components/Settings/RightPanel'
-import { fetchAuthenticatedApi } from '../helpers'
+import useEditApi from '@assets/hooks/api/useEditApi'
 
 const Settings = () => {
     const settingsRef = useRef(null)
 
+    const { editing, handleEdit } = useEditApi({
+        url: '/apiSa/settings',
+        fullResp: true,
+    })
+
     const handleSaveData = async () => {
         const settings = settingsRef.current?.settings
-        const res = await fetchAuthenticatedApi('/settings', {
-            method: 'PUT',
-            body: settings,
-        })
-
-        if (!res.success) {
-            return
-        }
+        await handleEdit(settings)
     }
 
     return (
@@ -25,7 +23,7 @@ const Settings = () => {
             title="Settings"
             subtitle="Decide how you notifications will display"
             primaryAction={{
-                content: 'Save',
+                content: editing ? 'Saving...' : 'Save',
                 disabled: false,
                 onAction: handleSaveData,
             }}

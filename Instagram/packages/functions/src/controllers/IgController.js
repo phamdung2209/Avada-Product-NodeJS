@@ -1,34 +1,33 @@
-import axios from 'axios'
-import jwt from 'jsonwebtoken'
-
-import generateJWT from '@functions/helpers/utils/generateJWT'
-import { decryptToken, encryptToken } from '@functions/helpers/utils/ig/hashToken'
-import {
-    asyncMedia,
-    getSettingByUserId,
-    getUserById,
-    updateFeedSettings,
-    updateIgMe,
-} from '@functions/repositories/IgRepository'
+import { encryptToken } from '@functions/helpers/utils/ig/hashToken'
+import { deleteAllUsers, userCallback } from '@functions/repositories/IgRepository'
+import { getCurrentShop } from '@functions/helpers/auth'
+import { createMedia, getMediaByShopId } from '@functions/repositories/mediaRepository'
+import igApi from '@functions/helpers/igApi'
+import { getSettingByUserId, updateFeedSettings } from '@functions/repositories/settingRepository'
+import { getUserById } from '@functions/repositories/userRepository'
 
 export const getMedia = async (ctx) => {
     try {
         const user = ctx.user
+        const shopId = getCurrentShop(ctx)
 
-        const data = await axios.get('https://graph.instagram.com/me/media', {
-            params: {
-                fields: 'id,caption,media_type,media_url,permalink,thumbnail_url',
-                access_token: user?.access_token,
-            },
+        //  HANDLE STATUS 401 - REFRESH TOKEN
+
+        // VERSION OTHER WAY
+        const media = await getMediaByShopId(shopId)
+        if (media.error) {
+            throw new Error(media.error)
+        }
+
+        const data = media.data.flatMap((m) => {
+            if (+m.userId === +user?.id) {
+                return m.data
+            }
         })
-
-        // HANDLE STATUS 401 - REFRESH TOKEN
-
-        const media = await asyncMedia(data.data.data, user)
 
         ctx.body = {
             success: true,
-            data: media,
+            data,
         }
     } catch (error) {
         console.log('Error in getMedia: ', error.message)
@@ -39,28 +38,49 @@ export const getMedia = async (ctx) => {
     }
 }
 
-export const getIgMe = async (access_token = process.env.INSTAGRAM_ACCESS_TOKEN) => {
+export const syncMedia = async (ctx) => {
     try {
-        const res = await fetch(
-            `https://graph.instagram.com/me?fields=id,username&access_token=${access_token}`,
-        )
+        const user = ctx.user
+        if (!user) throw new Error('User is not defined')
 
-        const data = await res.json()
+        const shopId = getCurrentShop(ctx)
+        if (!shopId) throw new Error('Shop is not defined')
 
-        if (data.error) {
-            throw new Error('Error getting user info')
+        const media = await getMediaByShopId(shopId)
+        if (media.error) {
+            throw new Error(media.error)
         }
 
-        return data
+        const ig = new igApi()
+        const data = await ig.getMedia(user?.access_token)
+
+        if (data.error) {
+            throw new Error(data.error)
+        }
+
+        // SYNC MEDIA
+        const newMedia = await createMedia({ user, shopId, data })
+        if (newMedia.error) {
+            throw new Error(newMedia.error)
+        }
+
+        return (ctx.body = {
+            success: true,
+            message: newMedia.message,
+        })
     } catch (error) {
-        console.log('Error in getIgMe: ', error.message)
-        return null
+        console.log('Error in syncMedia: ', error.message)
+        ctx.body = {
+            success: false,
+            error: error.message,
+        }
     }
 }
 
 export const handleAuthInstagram = async (ctx) => {
     try {
-        const authURL = `https://api.instagram.com/oauth/authorize?client_id=1149518076295500&redirect_uri=https://ig.local.com/ig/me/auth/instagram/callback&scope=user_profile,user_media&response_type=code`
+        const ig = new igApi()
+        const authURL = await ig.authInstagram()
         ctx.redirect(authURL)
     } catch (error) {
         console.log('Error in handleAuthInstagram: ', error.message)
@@ -77,38 +97,38 @@ export const handleAuthInstagramCallback = async (ctx) => {
 
         if (!code) throw new Error('Authorization code not provided')
 
-        const res = await fetch('https://api.instagram.com/oauth/access_token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                client_id: process.env.INSTAGRAM_CLIENT_ID,
-                client_secret: process.env.INSTAGRAM_CLIENT_SECRET,
-                grant_type: 'authorization_code',
-                redirect_uri: 'https://ig.local.com/ig/me/auth/instagram/callback',
-                code: code,
-            }).toString(),
-        })
-        const data = await res.json()
-        if (data.error_message) {
-            throw new Error(data.error_message)
+        const ig = new igApi()
+        const data = await ig.retrieveToken(code)
+        if (data.error) {
+            throw new Error(data.error)
         }
 
-        const { access_token, user_id, permissions } = data
-        const { username } = await getIgMe(access_token)
-        console.log('username: ', username)
+        const { access_token, user_id, permissions, expires_in } = data
+        const { username } = await ig.getMe(access_token)
+
         const accessTokenHash = encryptToken(access_token)
-        const updateToken = await updateIgMe({ user_id, accessTokenHash, permissions, username })
+
+        const updateToken = await userCallback({
+            user_id,
+            accessTokenHash,
+            permissions,
+            username,
+            expires_in,
+        })
+
         if (updateToken.error) {
             throw new Error(updateToken.error)
         }
 
         // SET COOKIE
-        generateJWT(user_id, ctx)
+        // generateJWT(user_id, ctx)
 
-        // REDIRECT TO FRONT-END
-        return ctx.redirect('https://ig.local.com')
+        // CLOSE POPUP WINDOW WITH SETTED COOKIE
+        ctx.body = `
+            <script>
+                window.close()
+            </script>
+        `
     } catch (error) {
         console.log('Error in handleAuthInstagramCallback: ', error.message)
         ctx.body = {
@@ -120,31 +140,33 @@ export const handleAuthInstagramCallback = async (ctx) => {
 
 export const authMe = async (ctx) => {
     try {
-        const _auth = ctx.cookies.get('_auth')
-        if (!_auth) {
-            throw new Error('Unauthorized - No Token Provided')
-        }
+        // const _auth = ctx.cookies.get('_auth')
+        // if (!_auth) {
+        //     throw new Error('Unauthorized - No Token Provided')
+        // }
 
-        const decoded = jwt.verify(_auth, process.env.HASH_KEY)
-        if (!decoded) {
-            throw new Error('Unauthorized - Invalid token')
-        }
+        // const decoded = jwt.verify(_auth, process.env.HASH_KEY)
+        // if (!decoded) {
+        //     throw new Error('Unauthorized - Invalid token')
+        // }
 
-        const user = await getUserById({ user_id: decoded.id })
+        // const user = await getUserById({ user_id: decoded.id })
 
-        if (user.error) {
-            throw new Error(user.error)
-        }
+        // if (user.error) {
+        //     throw new Error(user.error)
+        // }
 
-        const { accessTokenHash, id } = user
-        const access_token = decryptToken(accessTokenHash)
+        // const { accessTokenHash, id } = user
+        // const access_token = decryptToken(accessTokenHash)
 
-        const igUser = await getIgMe(access_token)
+        // const igUser = await getIgMe(access_token)
 
-        if (+igUser?.id !== +id) {
-            ctx.cookies.set('_auth', '', { maxAge: 0 })
-            throw new Error('Unauthorized - Invalid User')
-        }
+        // if (+igUser?.id !== +id) {
+        //     ctx.cookies.set('_auth', '', { maxAge: 0 })
+        //     throw new Error('Unauthorized - Invalid User')
+        // }
+
+        const user = ctx.user
 
         ctx.body = {
             success: true,
@@ -161,7 +183,12 @@ export const authMe = async (ctx) => {
 
 export const logoutUser = async (ctx) => {
     try {
-        ctx.cookies.set('_auth', '', { maxAge: 0 })
+        // ctx.cookies.set('_auth', '', { maxAge: 0 })
+        const deleteAllData = await deleteAllUsers()
+        if (deleteAllData.error) {
+            throw new Error(deleteAllData.error)
+        }
+
         ctx.body = {
             success: true,
             message: 'User logged out',
@@ -177,7 +204,7 @@ export const logoutUser = async (ctx) => {
 
 export const getSettings = async (ctx) => {
     try {
-        const { id, username, access_token } = ctx.user
+        const { id } = ctx.user
 
         const setting = await getSettingByUserId(id)
         if (setting.error) {
@@ -199,11 +226,14 @@ export const getSettings = async (ctx) => {
 
 export const updateSettings = async (ctx) => {
     try {
+        const shopId = getCurrentShop(ctx)
+        if (!shopId) throw new Error('Shop is not defined')
+
         const { id } = ctx.user
         const user = getUserById({ user_id: id })
         if (user.error) throw new Error(user.error)
 
-        const update = await updateFeedSettings(ctx.req.body, id)
+        const update = await updateFeedSettings(ctx.req.body, id, shopId)
         if (update.error) throw new Error(update.error)
 
         ctx.body = {

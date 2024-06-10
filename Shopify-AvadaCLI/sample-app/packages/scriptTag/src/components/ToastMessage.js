@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 import ProductItem from '~/assets/src/components/ProductItem'
 
 const ToastMessage = ({ notification, setting }) => {
-    const { firstName, city, country, productImage, productName, timeAgo, timestamp } = notification
-    const { position, displayDuration, hideTimeAgo, popsInterval } = setting
-    const [visible, setVisible] = useState(true)
+    const { country, productImage, productName, timeAgo, timestamp } = notification
+    const { position, displayDuration, popsInterval } = setting
+    const [visible, setVisible] = useState(() => setting.enable)
+
+    if (!visible) return null
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -22,8 +24,6 @@ const ToastMessage = ({ notification, setting }) => {
         }
     }, [displayDuration, notification])
 
-    if (!visible) return null
-
     return (
         <div
             style={{
@@ -35,8 +35,6 @@ const ToastMessage = ({ notification, setting }) => {
                 left: position === 1 || position === 4 ? '20px' : '',
                 top: position === 1 || position === 2 ? '20px' : '',
                 zIndex: '9999999',
-                // minWidth: '200px',
-                // maxWidth: '350px',
                 color: 'black',
                 transition: 'opacity 0.5s ease-in-out',
 
@@ -50,6 +48,7 @@ const ToastMessage = ({ notification, setting }) => {
                 productName={productName}
                 timeAgo={timeAgo}
                 timestamp={timestamp}
+                id={notification.id}
             />
         </div>
     )

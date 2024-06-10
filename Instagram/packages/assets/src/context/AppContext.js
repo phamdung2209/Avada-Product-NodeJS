@@ -6,7 +6,7 @@ const AppContext = createContext()
 export const useAppContext = () => useContext(AppContext)
 
 export const AppContextProvider = ({ children }) => {
-    const [isConnectIG, setIsConnectIG] = useState(true)
+    const [isConnectIG, setIsConnectIG] = useState(false)
 
     const [valueSettings, setValueSettings] = useState(SETTINGS)
 
