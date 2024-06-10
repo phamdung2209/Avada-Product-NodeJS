@@ -9,7 +9,7 @@ import useFetchApi from '@assets/hooks/api/useFetchApi'
 
 const ContentPreview = ({ data, loading, isConnectIG }) => {
     const { data: dataSettings } = useFetchApi({
-        url: '/apiSa/settings',
+        url: '/settings',
         defaultData: SETTINGS,
         allowFetch: isConnectIG,
     })

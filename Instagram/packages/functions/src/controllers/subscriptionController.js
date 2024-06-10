@@ -1,5 +1,5 @@
-import {getCurrentShop} from '@functions/helpers/auth';
-import {getShopById} from '@functions/repositories/shopRepository';
+import { getCurrentShop } from '@functions/helpers/auth'
+import { getShopById } from '@functions/repositories/shopRepository'
 
 /**
  * Get current subscription of a shop
@@ -8,6 +8,6 @@ import {getShopById} from '@functions/repositories/shopRepository';
  * @returns {Promise<void>}
  */
 export async function getSubscription(ctx) {
-  const shop = await getShopById(getCurrentShop(ctx));
-  ctx.body = {shop};
+    const shop = await getShopById(getCurrentShop(ctx))
+    ctx.body = { shop }
 }

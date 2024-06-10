@@ -1,6 +1,6 @@
 import { Button, InlineStack, LegacyCard, Link, Text } from '@shopify/polaris'
 import { LogoInstagramIcon } from '@shopify/polaris-icons'
-import React, { memo, useCallback } from 'react'
+import React, { memo, useCallback, useEffect } from 'react'
 
 import Separator from '@assets/components/Separator'
 import { useAppContext } from '@assets/context/AppContext'
@@ -12,20 +12,20 @@ import useLogin from '@assets/hooks/ig/useLogin'
 const LeftPanel = ({ getMedia, loading }) => {
     const { isConnectIG, setIsConnectIG } = useAppContext()
     const { data: me, loading: loadingIgMe, fetchApi } = useFetchApi({
-        url: '/apiSa/auth',
+        url: '/auth',
         defaultData: null,
     })
 
     useLogin(me)
 
     const { creating, handleCreate } = useCreateApi({
-        url: '/apiSa/logout',
+        url: '/logout',
         errorMsg: 'Failed to disconnect',
         successMsg: 'Disconnected successfully',
     })
 
     const { creating: syncMediaLoading, handleCreate: handleSyncMedia } = useCreateApi({
-        url: '/apiSa/media/sync',
+        url: '/media/sync',
         errorMsg: 'Failed to sync media',
         successMsg: 'Media synced successfully',
     })

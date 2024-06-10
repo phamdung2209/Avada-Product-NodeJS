@@ -10,7 +10,7 @@ const Home = () => {
     const { isConnectIG } = useAppContext()
 
     const { loading, data, fetchApi: getMedia } = useFetchApi({
-        url: '/apiSa/media',
+        url: '/media',
         defaultData: [],
         allowFetch: isConnectIG,
         isResetData: !isConnectIG,

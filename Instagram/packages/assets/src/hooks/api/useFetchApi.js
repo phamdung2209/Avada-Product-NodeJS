@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { api } from '@assets/helpers'
+import { api, fetchAuthenticatedApi } from '@assets/helpers'
 import queryString from 'query-string'
 import { handleError } from '@assets/services/errorService'
 
@@ -38,14 +38,18 @@ export default function useFetchApi({
             const separateChar = path.includes('?') ? '&' : '?'
             const query = params ? separateChar + queryString.stringify(params) : ''
 
-            const resp = await api({
-                url: path + query,
+            // const resp = await api({
+            //     url: path + query,
+            //     method,
+            //     clientConfig: {
+            //         baseURL: '/',
+            //         timeout: 0,
+            //     },
+            //     options,
+            // })
+            const resp = await fetchAuthenticatedApi(path + query, {
                 method,
-                clientConfig: {
-                    baseURL: '/',
-                    timeout: 0,
-                },
-                options,
+                ...options,
             })
 
             if (resp.hasOwnProperty('pageInfo')) setPageInfo(resp.pageInfo)

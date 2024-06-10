@@ -9,7 +9,7 @@ const FormControl = () => {
     const { valueSettings, setValueSettings } = useAppContext()
 
     const { editing, handleEdit } = useEditApi({
-        url: '/apiSa/settings',
+        url: '/settings',
         fullResp: true,
     })
 

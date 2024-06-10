@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { api } from '@assets/helpers'
+import { api, fetchAuthenticatedApi } from '@assets/helpers'
 import { useStore } from '@assets/reducers/storeReducer'
 import { setToast } from '@assets/actions/storeActions'
 import { handleError } from '@assets/services/errorService'
@@ -34,16 +34,20 @@ export default function useEditApi({
             setEditing((prev) =>
                 typeof newEditing === 'boolean' ? newEditing : { ...prev, [newEditing]: true },
             )
-            // const resp = await api(url, { body: { data }, method: 'PUT' })
 
-            const resp = await api({
-                url,
-                data,
+            // const resp = await api({
+            //     url,
+            //     data,
+            //     method: 'PUT',
+            //     clientConfig: {
+            //         baseURL: '/apiSa',
+            //         timeout: 0,
+            //     },
+            // })
+
+            const resp = await fetchAuthenticatedApi(url, {
                 method: 'PUT',
-                clientConfig: {
-                    baseURL: '/',
-                    timeout: 0,
-                },
+                body: data,
             })
 
             if (resp.success && useToast) {

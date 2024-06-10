@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { api, client } from '@assets/helpers'
+import { api, client, fetchAuthenticatedApi } from '@assets/helpers'
 import { useStore } from '@assets/reducers/storeReducer'
 import { setToast } from '@assets/actions/storeActions'
 import { handleError } from '@assets/services/errorService'
@@ -28,14 +28,19 @@ export default function useCreateApi({
         try {
             setCreating(true)
 
-            const resp = await api({
-                url,
-                data,
+            // const resp = await api({
+            //     url,
+            //     data,
+            //     method: 'POST',
+            //     clientConfig: {
+            //         baseURL: '/',
+            //         timeout: 0,
+            //     },
+            // })
+
+            const resp = await fetchAuthenticatedApi(url, {
                 method: 'POST',
-                clientConfig: {
-                    baseURL: '/',
-                    timeout: 0,
-                },
+                body: data,
             })
 
             if (resp.success) {
