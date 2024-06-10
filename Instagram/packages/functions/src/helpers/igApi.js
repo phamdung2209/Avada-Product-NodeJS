@@ -87,15 +87,17 @@ class IgApi {
         }
 
         try {
-            const data = await request.post(
-                `${IG_GRAPH_BASE_URL}/refresh_access_token`,
-                requestBody,
+            const data = await request.get(`${IG_GRAPH_BASE_URL}/refresh_access_token`, {
+                params: requestBody,
                 headers,
-            )
+            })
 
             return data
         } catch (e) {
-            return { refresh_token: false }
+            return {
+                success: false,
+                error: e.message,
+            }
         }
     }
 
