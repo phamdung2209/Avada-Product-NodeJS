@@ -148,6 +148,15 @@ class IgApi {
             }
         }
     }
+
+    async isIgMediaUrlValidTill(mediaUrl) {
+        let url = new URL(mediaUrl)
+        let urlExpiryTimestamp = parseInt(url.searchParams.get('oe') ?? '0', 16)
+
+        let tillTimestamp = Math.floor(Date.now() / 1000)
+
+        return tillTimestamp <= urlExpiryTimestamp
+    }
 }
 
 export default IgApi

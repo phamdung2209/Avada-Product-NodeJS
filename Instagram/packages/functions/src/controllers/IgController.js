@@ -10,35 +10,29 @@ import igApi from '@functions/helpers/igApi'
 import { getSettingByUserId, updateFeedSettings } from '@functions/repositories/settingRepository'
 import { getUserById } from '@functions/repositories/userRepository'
 
-const checkAndUpdateMediaUrl = async (mediaUrl, id, idDoc, user) => {
+const checkAndUpdateMediaUrl = async (mediaUrl, id, idDoc, user, dataOfIdDoc) => {
     const ig = new igApi()
 
     try {
-        const response = await fetch(mediaUrl)
-
-        if (response.status !== 200) {
-            console.log('Media URL is not working: ', mediaUrl)
-
-            const newMediaUrl = await ig.getMediaUrl(user?.access_token, id)
-            const updatedMedia = await updateMediaUrlById({
-                media_url: newMediaUrl,
-                idDoc,
-            })
-
-            if (updatedMedia.error) {
-                throw new Error(updatedMedia.error)
-            }
-
-            return newMediaUrl
-        }
-        return mediaUrl
-    } catch (error) {
-        console.log('Error fetching media URL: ', mediaUrl)
+        console.log('Media URL is not working: ', mediaUrl)
 
         const newMediaUrl = await ig.getMediaUrl(user?.access_token, id)
+        const data = dataOfIdDoc.data.map((doc) => {
+            if (doc.id === id) {
+                return {
+                    ...doc,
+                    media_url: newMediaUrl,
+                }
+            }
+
+            return { ...doc }
+        })
+
         const updatedMedia = await updateMediaUrlById({
-            media_url: newMediaUrl,
+            newMediaUrl,
             idDoc,
+            dataOfIdDoc,
+            idMedia: id,
         })
 
         if (updatedMedia.error) {
@@ -46,6 +40,9 @@ const checkAndUpdateMediaUrl = async (mediaUrl, id, idDoc, user) => {
         }
 
         return newMediaUrl
+    } catch (error) {
+        // console.log('Error fetching media URL: ', mediaUrl)
+        return mediaUrl
     }
 }
 
@@ -65,7 +62,21 @@ export const getMedia = async (ctx) => {
             const newMedia = await Promise.all(
                 m.data.map(async (d) => {
                     const { media_url, id } = d
-                    const newMediaUrl = await checkAndUpdateMediaUrl(media_url, id, m.id, user)
+
+                    const ig = new igApi()
+
+                    const isIgMediaUrlValidTill = await ig.isIgMediaUrlValidTill(media_url)
+                    if (isIgMediaUrlValidTill) return d
+
+                    const dataOfIdDocs = media.data.find((doc) => doc.id === m.id)
+
+                    const newMediaUrl = await checkAndUpdateMediaUrl(
+                        media_url,
+                        id,
+                        m.id,
+                        user,
+                        dataOfIdDocs,
+                    )
 
                     return { ...d, media_url: newMediaUrl }
                 }),

@@ -161,14 +161,25 @@ export const createMedia = async ({ user, shopId, data: { data } }) => {
     }
 }
 
-export const updateMediaUrlById = async ({ media_url, idDoc }) => {
+export const updateMediaUrlById = async ({
+    newMediaUrl,
+    idDoc,
+    dataOfIdDoc: { data = [] },
+    idMedia,
+}) => {
     try {
-        if (!media_url || !idDoc) {
-            throw new Error('Missing media_url or idDoc')
-        }
+        const dataMeida = data.map((doc) => {
+            if (doc.id === idMedia) {
+                return {
+                    ...doc,
+                    newMediaUrl,
+                }
+            }
+            return doc
+        })
 
         const media = await mediaRef.doc(idDoc).update({
-            media_url,
+            data: dataMeida,
         })
 
         if (!media) {
