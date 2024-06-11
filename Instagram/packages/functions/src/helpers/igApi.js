@@ -126,6 +126,28 @@ class IgApi {
             }
         }
     }
+
+    async getMediaUrl(access_token, mediaId) {
+        try {
+            const data = await request.get(`${IG_GRAPH_BASE_URL}/${mediaId}`, {
+                params: {
+                    fields: 'media_url',
+                    access_token,
+                },
+            })
+
+            if (!data.media_url) {
+                throw new Error('An error occurred while fetching media URL')
+            }
+
+            return data.media_url
+        } catch (error) {
+            return {
+                success: false,
+                error: error.message,
+            }
+        }
+    }
 }
 
 export default IgApi

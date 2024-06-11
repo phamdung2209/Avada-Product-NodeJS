@@ -160,3 +160,30 @@ export const createMedia = async ({ user, shopId, data: { data } }) => {
         }
     }
 }
+
+export const updateMediaUrlById = async ({ media_url, idDoc }) => {
+    try {
+        if (!media_url || !idDoc) {
+            throw new Error('Missing media_url or idDoc')
+        }
+
+        const media = await mediaRef.doc(idDoc).update({
+            media_url,
+        })
+
+        if (!media) {
+            throw new Error('Error in update media url')
+        }
+
+        return {
+            success: true,
+            message: 'Update media url success!',
+        }
+    } catch (error) {
+        console.error('Error in updateMediaUrlById: ', error.message)
+        return {
+            success: false,
+            error: error.message,
+        }
+    }
+}

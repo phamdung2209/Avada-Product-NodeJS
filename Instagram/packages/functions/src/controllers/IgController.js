@@ -1,29 +1,82 @@
 import { encryptToken } from '@functions/helpers/utils/ig/hashToken'
 import { deleteAllUsers, userCallback } from '@functions/repositories/IgRepository'
 import { getCurrentShop } from '@functions/helpers/auth'
-import { createMedia, getMediaByShopId } from '@functions/repositories/mediaRepository'
+import {
+    createMedia,
+    getMediaByShopId,
+    updateMediaUrlById,
+} from '@functions/repositories/mediaRepository'
 import igApi from '@functions/helpers/igApi'
 import { getSettingByUserId, updateFeedSettings } from '@functions/repositories/settingRepository'
 import { getUserById } from '@functions/repositories/userRepository'
+
+const checkAndUpdateMediaUrl = async (mediaUrl, id, idDoc, user) => {
+    const ig = new igApi()
+
+    try {
+        const response = await fetch(mediaUrl)
+
+        if (response.status !== 200) {
+            console.log('Media URL is not working: ', mediaUrl)
+
+            const newMediaUrl = await ig.getMediaUrl(user?.access_token, id)
+            const updatedMedia = await updateMediaUrlById({
+                media_url: newMediaUrl,
+                idDoc,
+            })
+
+            if (updatedMedia.error) {
+                throw new Error(updatedMedia.error)
+            }
+
+            return newMediaUrl
+        }
+        return mediaUrl
+    } catch (error) {
+        console.log('Error fetching media URL: ', mediaUrl)
+
+        const newMediaUrl = await ig.getMediaUrl(user?.access_token, id)
+        const updatedMedia = await updateMediaUrlById({
+            media_url: newMediaUrl,
+            idDoc,
+        })
+
+        if (updatedMedia.error) {
+            throw new Error(updatedMedia.error)
+        }
+
+        return newMediaUrl
+    }
+}
 
 export const getMedia = async (ctx) => {
     try {
         const user = ctx.user
         const shopId = getCurrentShop(ctx)
 
-        //  HANDLE STATUS 401 - REFRESH TOKEN
-
-        // VERSION OTHER WAY
         const media = await getMediaByShopId(shopId)
         if (media.error) {
             throw new Error(media.error)
         }
 
-        const data = media.data.flatMap((m) => {
-            if (+m.userId === +user?.id) {
-                return m.data
-            }
-        })
+        const processUserMedia = async (m) => {
+            if (+m.userId !== +user?.id) return null
+
+            const newMedia = await Promise.all(
+                m.data.map(async (d) => {
+                    const { media_url, id } = d
+                    const newMediaUrl = await checkAndUpdateMediaUrl(media_url, id, m.id, user)
+
+                    return { ...d, media_url: newMediaUrl }
+                }),
+            )
+
+            return { ...m, data: newMedia }
+        }
+
+        const processedMedia = await Promise.all(media.data.map(processUserMedia))
+
+        const data = processedMedia.flatMap((m) => (m ? m.data : []))
 
         ctx.body = {
             success: true,

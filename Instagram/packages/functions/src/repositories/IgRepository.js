@@ -1,44 +1,7 @@
-import { SETTING } from '@functions/config/settingDefault'
-import { getIgMe } from '@functions/controllers/IgController'
 import { Firestore } from '@google-cloud/firestore'
 
 const firestore = new Firestore()
 const usersRef = firestore.collection('users')
-const mediasRef = firestore.collection('medias')
-
-export const syncMedia = async (data = [], user, shopId = '') => {
-    try {
-        let media = []
-
-        const docs = data.reduce((acc, cur, idx) => {
-            if (idx % 10 === 0) {
-                acc.push([cur])
-            } else {
-                acc[acc.length - 1].push(cur)
-            }
-
-            return acc
-        }, [])
-
-        docs.forEach(async (doc) => {
-            const mediaRef = await mediasRef.add({
-                userId: user.id,
-                shopId,
-                data: doc,
-            })
-
-            media.push({
-                id: mediaRef.id,
-                data: doc,
-            })
-        })
-
-        return media
-    } catch (error) {
-        console.log('Error in getMedia: ', error.message)
-        return []
-    }
-}
 
 export const getMe = async ({ user_id }) => {
     try {
