@@ -1,11 +1,10 @@
 import { encryptToken } from '@functions/helpers/utils/ig/hashToken'
-import { deleteAllUsers, getUser, userCallback } from '@functions/repositories/IgRepository'
+import { deleteAllUsers, userCallback } from '@functions/repositories/IgRepository'
 import { getCurrentShop } from '@functions/helpers/auth'
 import { createMedia, getMediaByShopId } from '@functions/repositories/mediaRepository'
 import igApi from '@functions/helpers/igApi'
 import { getSettingByUserId, updateFeedSettings } from '@functions/repositories/settingRepository'
 import { getUserById } from '@functions/repositories/userRepository'
-import IgApi from '@functions/helpers/igApi'
 
 export const getMedia = async (ctx) => {
     try {

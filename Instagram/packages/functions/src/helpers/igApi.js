@@ -110,14 +110,21 @@ class IgApi {
     }
 
     async getMedia(access_token) {
-        const data = await request.get(`${IG_GRAPH_BASE_URL}/me/media`, {
-            params: {
-                fields: 'id,caption,media_type,media_url,permalink,thumbnail_url',
-                access_token,
-            },
-        })
+        try {
+            const data = await request.get(`${IG_GRAPH_BASE_URL}/me/media`, {
+                params: {
+                    fields: 'id,caption,media_type,media_url,permalink,thumbnail_url',
+                    access_token,
+                },
+            })
 
-        return data
+            return data
+        } catch (error) {
+            return {
+                success: false,
+                error: error.message,
+            }
+        }
     }
 }
 
