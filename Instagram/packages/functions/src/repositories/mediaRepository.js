@@ -1,13 +1,9 @@
-import { LIMIT_MEDIA_IN_ONE_DOC } from '@functions/const/const'
-import { presentDataAndFormatDate } from '@functions/helpers/utils/firestoreUtils'
-import * as request from '@functions/helpers/utils/httpRequest'
-import { deleteAll } from '.'
+import { Firestore } from '@google-cloud/firestore'
 
-const { Firestore } = require('@google-cloud/firestore')
+import { LIMIT_MEDIA_IN_ONE_DOC } from '@functions/const/const'
 
 const firestore = new Firestore()
 const mediaRef = firestore.collection('medias')
-const settingRef = firestore.collection('settings')
 
 export const createOne = async (ref, data) => {
     try {
@@ -76,93 +72,35 @@ export const getMediaByShopId = async (shopId) => {
     }
 }
 
-// export const createMedia = async ({ user, shopId, data: { data } }) => {
-//     try {
-//         const { docs: dataMedia } = await mediaRef.get()
-//         const media = dataMedia.map((doc) => ({
-//             id: doc.id,
-//             ...doc.data(),
-//         }))
+export const getMedia = async () => {
+    try {
+        const media = await mediaRef.get()
 
-//         const docs = data.reduce((acc, cur, idx) => {
-//             if (idx % LIMIT_MEDIA_IN_ONE_DOC === 0) {
-//                 acc.push([cur])
-//             } else {
-//                 acc[acc.length - 1].push(cur)
-//             }
-
-//             return acc
-//         }, [])
-
-//         if (!media.length) {
-//             return await createBulk(docs, {
-//                 userId: user.id,
-//                 shopId,
-//             })
-//         }
-
-//         const batch = firestore.batch()
-
-//         if (docs.length === media.length) {
-//             docs.forEach((doc, idx) => {
-//                 batch.set(mediaRef.doc(media[idx].id), {
-//                     userId: user.id,
-//                     shopId,
-//                     data: doc,
-//                 })
-//             })
-//         } else if (docs.length > media.length) {
-//             docs.forEach((doc, idx) => {
-//                 if (media[idx]) {
-//                     batch.set(mediaRef.doc(media[idx].id), {
-//                         userId: user.id,
-//                         shopId,
-//                         data: doc,
-//                     })
-//                 } else {
-//                     batch.set(mediaRef.doc(), {
-//                         userId: user.id,
-//                         shopId,
-//                         data: doc,
-//                     })
-//                 }
-//             })
-//         } else {
-//             media.forEach((doc, idx) => {
-//                 if (docs[idx]) {
-//                     batch.set(mediaRef.doc(doc.id), {
-//                         userId: user.id,
-//                         shopId,
-//                         data: docs[idx],
-//                     })
-//                 } else {
-//                     batch.delete(mediaRef.doc(doc.id))
-//                 }
-//             })
-//         }
-
-//         await batch.commit()
-
-//         return {
-//             success: true,
-//             message: 'Sync media success',
-//         }
-//     } catch (error) {
-//         console.log('Error in createMedia: ', error.message)
-//         return {
-//             success: false,
-//             error: error.message,
-//         }
-//     }
-// }
+        return {
+            success: true,
+            data:
+                media.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                })) ?? [],
+        }
+    } catch (error) {
+        console.log('Error in getMedia: ', error.message)
+        return {
+            success: false,
+            error: error.message,
+        }
+    }
+}
 
 export const createMedia = async ({ user, shopId, data: { data } }) => {
     try {
-        const { docs: dataMedia } = await mediaRef.get()
-        const media = dataMedia.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-        }))
+        const media = await getMedia()
+        if (media.error) {
+            throw new Error('Error get all media')
+        }
+
+        const { data: mediaData } = media
 
         const docs = data.reduce((acc, cur, idx) => {
             if (idx % LIMIT_MEDIA_IN_ONE_DOC === 0) {
@@ -173,38 +111,38 @@ export const createMedia = async ({ user, shopId, data: { data } }) => {
             return acc
         }, [])
 
-        // if (!media.length) {
-        //     await createBulk(docs, {
-        //         userId: user.id,
-        //         shopId,
-        //     })
-
-        //     return {
-        //         success: true,
-        //         message: 'Sync media success',
-        //     }
-        // }
-
         const batch = firestore.batch()
 
         docs.forEach((doc, idx) => {
-            if (media[idx]) {
-                batch.set(mediaRef.doc(media[idx].id), {
-                    userId: user.id,
-                    shopId,
-                    data: doc,
-                })
+            if (mediaData[idx]) {
+                batch.set(
+                    mediaRef.doc(mediaData[idx].id),
+                    {
+                        userId: user.id,
+                        shopId,
+                        data: doc,
+                    },
+                    {
+                        merge: true,
+                    },
+                )
             } else {
-                batch.set(mediaRef.doc(), {
-                    userId: user.id,
-                    shopId,
-                    data: doc,
-                })
+                batch.set(
+                    mediaRef.doc(),
+                    {
+                        userId: user.id,
+                        shopId,
+                        data: doc,
+                    },
+                    {
+                        merge: true,
+                    },
+                )
             }
         })
 
         // Delete media when data less than media
-        media.slice(docs.length).forEach((doc) => {
+        mediaData.slice(docs.length).forEach((doc) => {
             batch.delete(mediaRef.doc(doc.id))
         })
 

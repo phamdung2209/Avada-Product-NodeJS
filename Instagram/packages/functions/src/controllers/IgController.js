@@ -46,11 +46,6 @@ export const syncMedia = async (ctx) => {
         const shopId = getCurrentShop(ctx)
         if (!shopId) throw new Error('Shop is not defined')
 
-        const media = await getMediaByShopId(shopId)
-        if (media.error) {
-            throw new Error(media.error)
-        }
-
         const ig = new igApi()
         const data = await ig.getMedia(user?.access_token)
 
