@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from 'react'
-import './Popup.scss'
 import { createPortal } from 'react-dom'
+
+import './Popup.scss'
 
 const Popup = ({ children, render, onClickOutside, onClick, visible }) => {
     const [shouldRender, setShouldRender] = useState(visible)

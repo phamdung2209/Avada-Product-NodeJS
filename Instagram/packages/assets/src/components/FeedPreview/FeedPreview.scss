@@ -10,10 +10,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 
     img {
         width: 100%;
-        height: auto;
+        height: 100%;
     }
 }
 
@@ -40,6 +41,17 @@
         color: gray;
         font-size: 12px;
     }
+
+    strong {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+
+        img {
+            width: 14px;
+            height: 14px;
+        }
+    }
 }
 
 .feed-preview__caption {
@@ -50,6 +62,7 @@
     color: #005bd3;
     font-weight: 600;
     cursor: pointer;
+    word-break: break-all;
 
     &:hover {
         text-decoration: underline;
@@ -73,5 +86,16 @@
             opacity: 0.5;
             scale: 1.11;
         }
+    }
+}
+
+
+@media (max-width: 768px) {
+    .feed-preview__container {
+        flex-direction: column-reverse;
+    }
+
+    .feed-preview__content {
+        padding: 0 10px;
     }
 }

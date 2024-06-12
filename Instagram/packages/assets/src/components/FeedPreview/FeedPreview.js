@@ -1,8 +1,9 @@
 import React, { memo } from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 
 import './FeedPreview.scss'
-import moment from 'moment'
+import verified from '@assets/resources/images/verified.png'
 
 const FeedPreview = ({ data, feedOwner }) => {
     console.log('preview render')
@@ -12,6 +13,7 @@ const FeedPreview = ({ data, feedOwner }) => {
             <section className="feed-preview__image">
                 <img src={data.media_url} alt={data.caption} />
             </section>
+
             <section className="feed-preview__content">
                 <div className="feed-preview__header">
                     <img
@@ -19,7 +21,10 @@ const FeedPreview = ({ data, feedOwner }) => {
                         alt={''}
                     />
 
-                    <strong>_{feedOwner.username}</strong>
+                    <strong>
+                        _{feedOwner.username}
+                        <img src={verified} alt="verified" />
+                    </strong>
 
                     <p>
                         {moment(data.timestamp)
