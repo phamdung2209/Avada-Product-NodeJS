@@ -2,13 +2,19 @@ import { useAppContext } from '@assets/context/AppContext'
 import { useLayoutEffect } from 'react'
 
 const useLogin = (me) => {
-    const { setIsConnectIG } = useAppContext()
+    const { setState } = useAppContext()
 
     useLayoutEffect(() => {
         if (me) {
-            setIsConnectIG(true)
+            setState((prevState) => ({
+                ...prevState,
+                isConnectIG: true,
+            }))
         } else {
-            setIsConnectIG(false)
+            setState((prevState) => ({
+                ...prevState,
+                isConnectIG: false,
+            }))
         }
     }, [me])
 }

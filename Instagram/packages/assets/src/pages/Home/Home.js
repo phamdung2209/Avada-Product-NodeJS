@@ -7,7 +7,9 @@ import useFetchApi from '@assets/hooks/api/useFetchApi'
 import { useAppContext } from '@assets/context/AppContext'
 
 const Home = () => {
-    const { isConnectIG } = useAppContext()
+    const {
+        state: { isConnectIG },
+    } = useAppContext()
 
     const { loading, data, fetchApi: getMedia } = useFetchApi({
         url: '/media',
@@ -15,6 +17,8 @@ const Home = () => {
         allowFetch: isConnectIG,
         isResetData: !isConnectIG,
     })
+
+    console.log('data', data)
 
     return (
         <Page fullWidth title="Main feed">

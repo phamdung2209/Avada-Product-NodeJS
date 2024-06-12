@@ -14,25 +14,27 @@ const ContentPreview = ({ data, loading, isConnectIG }) => {
         allowFetch: isConnectIG,
     })
 
-    const { valueSettings, setValueSettings } = useAppContext()
+    const {
+        state: { valueSettings },
+        setState,
+    } = useAppContext()
 
     useLayoutEffect(() => {
-        if (!dataSettings) {
-            setValueSettings(SETTINGS)
-        } else {
-            setValueSettings({
+        setState((prevState) => ({
+            ...prevState,
+            valueSettings: {
                 title: dataSettings.title,
                 spacing: dataSettings.spacing,
                 layout: dataSettings.layout,
                 numberRows: dataSettings.numberRows,
                 numberColumns: dataSettings.numberColumns,
-            })
-        }
+            },
+        }))
     }, [dataSettings])
 
     return loading ? (
         <SuspenseContentPreview />
-    ) : data?.length ? (
+    ) : data?.media?.length ? (
         <FeedItem data={data} valueSettings={valueSettings} />
     ) : null
 }

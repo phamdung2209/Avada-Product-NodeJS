@@ -6,7 +6,10 @@ import useEditApi from '@assets/hooks/api/useEditApi'
 import { SELECT_OPTIONS } from '@assets/config/formControl'
 
 const FormControl = () => {
-    const { valueSettings, setValueSettings } = useAppContext()
+    const {
+        state: { valueSettings },
+        setState,
+    } = useAppContext()
 
     const { editing, handleEdit } = useEditApi({
         url: '/settings',
@@ -19,7 +22,10 @@ const FormControl = () => {
 
     const handleChangeSettings = useCallback(
         (key, value) => {
-            setValueSettings({ ...valueSettings, [key]: value })
+            setState((prevState) => ({
+                ...prevState,
+                valueSettings: { ...prevState.valueSettings, [key]: value },
+            }))
         },
         [valueSettings],
     )

@@ -10,6 +10,11 @@ export const AppContextProvider = ({ children }) => {
 
     const [valueSettings, setValueSettings] = useState(SETTINGS)
 
+    const [state, setState] = useState({
+        isConnectIG: false,
+        valueSettings: SETTINGS,
+    })
+
     return (
         <AppContext.Provider
             value={{
@@ -17,6 +22,8 @@ export const AppContextProvider = ({ children }) => {
                 setIsConnectIG,
                 valueSettings,
                 setValueSettings,
+                setState,
+                state,
             }}
         >
             {children}

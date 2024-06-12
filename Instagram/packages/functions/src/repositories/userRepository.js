@@ -53,3 +53,25 @@ export const getUserById = async ({ user_id }) => {
         }
     }
 }
+
+// logout all users
+export const deleteAllUsers = async () => {
+    try {
+        const batch = firestore.batch()
+
+        const { docs } = await usersRef.get()
+        docs.forEach((doc) => batch.delete(doc.ref))
+        await batch.commit()
+
+        return {
+            success: true,
+            message: 'Users deleted',
+        }
+    } catch (error) {
+        console.log('Error in deleteAllUsers: ', error.message)
+        return {
+            success: false,
+            error: error.message,
+        }
+    }
+}

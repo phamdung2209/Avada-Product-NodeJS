@@ -1,3 +1,4 @@
+import { params } from 'firebase-functions/v1'
 import * as request from './utils/httpRequest'
 
 const IG_GRAPH_BASE_URL = 'https://graph.instagram.com'
@@ -102,9 +103,12 @@ class IgApi {
     }
 
     async getMe(accessToken) {
-        const data = await request.get(
-            `${IG_GRAPH_BASE_URL}/me?fields=id,username&access_token=${accessToken}`,
-        )
+        const data = await request.get(`${IG_GRAPH_BASE_URL}/me`, {
+            params: {
+                fields: 'id,username',
+                access_token: accessToken,
+            },
+        })
 
         return data
     }
@@ -113,7 +117,7 @@ class IgApi {
         try {
             const data = await request.get(`${IG_GRAPH_BASE_URL}/me/media`, {
                 params: {
-                    fields: 'id,caption,media_type,media_url,permalink,thumbnail_url',
+                    fields: 'id,caption,media_type,media_url,permalink,timestamp,thumbnail_url',
                     access_token,
                 },
             })
@@ -131,7 +135,8 @@ class IgApi {
         try {
             const data = await request.get(`${IG_GRAPH_BASE_URL}/${mediaId}`, {
                 params: {
-                    fields: 'media_url',
+                    fields:
+                        'media_url,caption,is_shared_to_feed,id,media_type,permalink,thumbnail_url,timestamp,username',
                     access_token,
                 },
             })
@@ -147,15 +152,6 @@ class IgApi {
                 error: error.message,
             }
         }
-    }
-
-    async isIgMediaUrlValidTill(mediaUrl) {
-        let url = new URL(mediaUrl)
-        let urlExpiryTimestamp = parseInt(url.searchParams.get('oe') ?? '0', 16)
-
-        let tillTimestamp = Math.floor(Date.now() / 1000)
-
-        return tillTimestamp <= urlExpiryTimestamp
     }
 }
 

@@ -1,18 +1,13 @@
 import { getMediaByShopId } from '@functions/repositories/mediaRepository'
 import { getSettingByShopId } from '@functions/repositories/settingRepository'
 import { getShopByDomain } from '@functions/repositories/shopRepository'
+import { getUserById } from '@functions/repositories/userRepository'
 
 export const getDataClient = async (ctx) => {
     try {
         const { shopifyDomain } = ctx.request.query
 
         if (!shopifyDomain) {
-          /**
-           * ctx.body = {
-           *             success: false,
-           *             error: <message>,
-           *           }
-           */
             throw new Error('Shopify domain is required')
         }
 
@@ -32,11 +27,19 @@ export const getDataClient = async (ctx) => {
         if (media.error) {
             throw new Error(media.error)
         }
+        const user_id = media.data[0].userId
+        const user = await getUserById({ user_id })
+        if (user.error) {
+            throw new Error(user.error)
+        }
 
         ctx.body = {
             success: true,
             data: {
                 media: media.data.map((m) => m.data).flat(),
+                user: {
+                    username: user?.username,
+                },
                 setting: setting.data,
             },
         }

@@ -1,5 +1,5 @@
 import { encryptToken } from '@functions/helpers/utils/ig/hashToken'
-import { deleteAllUsers, userCallback } from '@functions/repositories/IgRepository'
+import { userCallback } from '@functions/repositories/IgRepository'
 import { getCurrentShop } from '@functions/helpers/auth'
 import {
     createMedia,
@@ -8,47 +8,13 @@ import {
 } from '@functions/repositories/mediaRepository'
 import igApi from '@functions/helpers/igApi'
 import { getSettingByUserId, updateFeedSettings } from '@functions/repositories/settingRepository'
-import { getUserById } from '@functions/repositories/userRepository'
-
-const checkAndUpdateMediaUrl = async (mediaUrl, id, idDoc, user, dataOfIdDoc) => {
-    const ig = new igApi()
-
-    try {
-        console.log('Media URL is not working: ', mediaUrl)
-
-        const newMediaUrl = await ig.getMediaUrl(user?.access_token, id)
-        const data = dataOfIdDoc.data.map((doc) => {
-            if (doc.id === id) {
-                return {
-                    ...doc,
-                    media_url: newMediaUrl,
-                }
-            }
-
-            return { ...doc }
-        })
-
-        const updatedMedia = await updateMediaUrlById({
-            newMediaUrl,
-            idDoc,
-            dataOfIdDoc,
-            idMedia: id,
-        })
-
-        if (updatedMedia.error) {
-            throw new Error(updatedMedia.error)
-        }
-
-        return newMediaUrl
-    } catch (error) {
-        // console.log('Error fetching media URL: ', mediaUrl)
-        return mediaUrl
-    }
-}
+import { deleteAllUsers, getUserById } from '@functions/repositories/userRepository'
+import { isIgMediaUrlValidTill } from '@functions/helpers/utils/functions'
 
 export const getMedia = async (ctx) => {
     try {
         const user = ctx.user
+
         const shopId = getCurrentShop(ctx)
 
         const media = await getMediaByShopId(shopId)
@@ -63,20 +29,25 @@ export const getMedia = async (ctx) => {
                 m.data.map(async (d) => {
                     const { media_url, id } = d
 
+                    const isIgMediaUrlValid = await isIgMediaUrlValidTill(media_url)
+                    if (isIgMediaUrlValid) return d
+
+                    const dataOfIdDoc = media.data.find((doc) => doc.id === m.id)
+
                     const ig = new igApi()
+                    const newMediaUrl = await ig.getMediaUrl(user?.access_token, id)
 
-                    const isIgMediaUrlValidTill = await ig.isIgMediaUrlValidTill(media_url)
-                    if (isIgMediaUrlValidTill) return d
+                    if (m.id) {
+                        const updateMedia = await updateMediaUrlById({
+                            dataOfIdDoc,
+                            idDoc: m.id,
+                            newMediaUrl,
+                        })
 
-                    const dataOfIdDocs = media.data.find((doc) => doc.id === m.id)
-
-                    const newMediaUrl = await checkAndUpdateMediaUrl(
-                        media_url,
-                        id,
-                        m.id,
-                        user,
-                        dataOfIdDocs,
-                    )
+                        if (updateMedia.error) {
+                            throw new Error(updateMedia.error)
+                        }
+                    }
 
                     return { ...d, media_url: newMediaUrl }
                 }),
@@ -91,7 +62,12 @@ export const getMedia = async (ctx) => {
 
         ctx.body = {
             success: true,
-            data,
+            data: {
+                media: data,
+                user: {
+                    username: user?.username,
+                },
+            },
         }
     } catch (error) {
         console.log('Error in getMedia: ', error.message)
@@ -179,9 +155,6 @@ export const handleAuthInstagramCallback = async (ctx) => {
             throw new Error(updateToken.error)
         }
 
-        // SET COOKIE
-        // generateJWT(user_id, ctx)
-
         // CLOSE POPUP WINDOW WITH SETTED COOKIE
         ctx.body = `
             <script>
@@ -199,32 +172,6 @@ export const handleAuthInstagramCallback = async (ctx) => {
 
 export const authMe = async (ctx) => {
     try {
-        // const _auth = ctx.cookies.get('_auth')
-        // if (!_auth) {
-        //     throw new Error('Unauthorized - No Token Provided')
-        // }
-
-        // const decoded = jwt.verify(_auth, process.env.HASH_KEY)
-        // if (!decoded) {
-        //     throw new Error('Unauthorized - Invalid token')
-        // }
-
-        // const user = await getUserById({ user_id: decoded.id })
-
-        // if (user.error) {
-        //     throw new Error(user.error)
-        // }
-
-        // const { accessTokenHash, id } = user
-        // const access_token = decryptToken(accessTokenHash)
-
-        // const igUser = await getIgMe(access_token)
-
-        // if (+igUser?.id !== +id) {
-        //     ctx.cookies.set('_auth', '', { maxAge: 0 })
-        //     throw new Error('Unauthorized - Invalid User')
-        // }
-
         const user = ctx.user
 
         const shopId = getCurrentShop(ctx)
@@ -252,7 +199,6 @@ export const authMe = async (ctx) => {
 
 export const logoutUser = async (ctx) => {
     try {
-        // ctx.cookies.set('_auth', '', { maxAge: 0 })
         const deleteAllData = await deleteAllUsers()
         if (deleteAllData.error) {
             throw new Error(deleteAllData.error)

@@ -5,52 +5,6 @@ import { LIMIT_MEDIA_IN_ONE_DOC } from '@functions/const/const'
 const firestore = new Firestore()
 const mediaRef = firestore.collection('medias')
 
-export const createOne = async (ref, data) => {
-    try {
-        const doc = await ref.add(data)
-        if (!doc) {
-            throw new Error('Error in createOne')
-        }
-
-        return {
-            success: true,
-            message: 'Document created',
-        }
-    } catch (error) {
-        console.log('Error in createOne: ', error.message)
-        return {
-            success: false,
-            error: error.message,
-        }
-    }
-}
-
-// Batch create
-export const createBulk = async (docs, data) => {
-    try {
-        // docs = [{}, {}, {}]
-        const batch = firestore.batch()
-        docs.forEach((doc) => {
-            batch.set(mediaRef.doc(), {
-                ...data,
-                data: doc,
-            })
-        })
-        await batch.commit()
-
-        return {
-            success: true,
-            message: 'Sync media success!',
-        }
-    } catch (error) {
-        console.log('Error in createBulk: ', error.message)
-        return {
-            success: false,
-            error: error.message,
-        }
-    }
-}
-
 export const getMediaByShopId = async (shopId) => {
     try {
         const media = await mediaRef.where('shopId', '==', shopId).get()
@@ -161,21 +115,13 @@ export const createMedia = async ({ user, shopId, data: { data } }) => {
     }
 }
 
-export const updateMediaUrlById = async ({
-    newMediaUrl,
-    idDoc,
-    dataOfIdDoc: { data = [] },
-    idMedia,
-}) => {
+export const updateMediaUrlById = async ({ newMediaUrl, idDoc, dataOfIdDoc: { data = [] } }) => {
     try {
         const dataMeida = data.map((doc) => {
-            if (doc.id === idMedia) {
-                return {
-                    ...doc,
-                    newMediaUrl,
-                }
+            return {
+                ...doc,
+                media_url: newMediaUrl,
             }
-            return doc
         })
 
         const media = await mediaRef.doc(idDoc).update({

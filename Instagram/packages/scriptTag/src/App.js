@@ -18,7 +18,13 @@ const App = () => {
                 {setting?.title}
             </h1>
 
-            {loading ? <Loading /> : <FeedItem data={media} valueSettings={setting} />}
+            {loading ? (
+                <Loading />
+            ) : media.length ? (
+                <FeedItem data={data} valueSettings={setting} />
+            ) : (
+                <p>No data</p>
+            )}
         </>
     )
 }

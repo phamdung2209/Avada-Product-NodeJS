@@ -78,13 +78,12 @@ export const updateFeedSettings = async (
 
 export const asyncSettings = async (shopId) => {
     try {
+        // alway only one user
         const users = await getUsers()
 
-        users.forEach(async (user) => {
-            await settingsRef.doc('' + user.id).set({
-                ...SETTING,
-                shopId,
-            })
+        await settingsRef.doc('' + users[0].id).set({
+            ...SETTING,
+            shopId,
         })
 
         return {

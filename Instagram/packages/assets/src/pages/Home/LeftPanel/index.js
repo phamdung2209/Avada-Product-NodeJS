@@ -10,7 +10,11 @@ import useCreateApi from '@assets/hooks/api/useCreateApi'
 import useLogin from '@assets/hooks/ig/useLogin'
 
 const LeftPanel = ({ getMedia, loading }) => {
-    const { isConnectIG, setIsConnectIG } = useAppContext()
+    const {
+        state: { isConnectIG },
+        setState,
+    } = useAppContext()
+
     const { data: me, loading: loadingIgMe, fetchApi } = useFetchApi({
         url: '/auth',
         defaultData: null,
@@ -49,7 +53,10 @@ const LeftPanel = ({ getMedia, loading }) => {
 
     const handleDisconnect = useCallback(async () => {
         await handleCreate()
-        setIsConnectIG(false)
+        setState((prevState) => ({
+            ...prevState,
+            isConnectIG: false,
+        }))
     }, [])
 
     const handleSync = async () => {
