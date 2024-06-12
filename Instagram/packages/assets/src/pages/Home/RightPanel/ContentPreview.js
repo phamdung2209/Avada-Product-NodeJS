@@ -41,7 +41,7 @@ const ContentPreview = ({ data, loading, isConnectIG }) => {
 
 ContentPreview.displayName = 'ContentPreview'
 ContentPreview.propTypes = {
-    data: PropTypes.array,
+    data: PropTypes.object,
     loading: PropTypes.bool,
     isConnectIG: PropTypes.bool,
 }

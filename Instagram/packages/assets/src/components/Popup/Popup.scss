@@ -29,7 +29,7 @@
     opacity: 1;
 
     .popup__content {
-        animation: scaleIn 0.2s ease-in;
+        animation: scaleIn 0.2s ease-in forwards;
     }
 }
 
@@ -38,7 +38,8 @@
     pointer-events: none;
 
     .popup__content {
-        animation: scaleOut 0.2s ease-in;
+        animation: scaleOut 0.2s ease-in forwards;
+
     }
 }
 

@@ -13,12 +13,10 @@ const Home = () => {
 
     const { loading, data, fetchApi: getMedia } = useFetchApi({
         url: '/media',
-        defaultData: [],
+        defaultData: {},
         allowFetch: isConnectIG,
         isResetData: !isConnectIG,
     })
-
-    console.log('data', data)
 
     return (
         <Page fullWidth title="Main feed">

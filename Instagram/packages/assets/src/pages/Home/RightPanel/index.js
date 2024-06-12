@@ -14,7 +14,7 @@ const RightPanel = ({ data, loading, isConnectIG }) => {
 
 RightPanel.displayName = 'RightPanel'
 RightPanel.propTypes = {
-    data: PropTypes.array,
+    data: PropTypes.object,
     loading: PropTypes.bool,
     isConnectIG: PropTypes.bool,
 }
