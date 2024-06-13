@@ -39,6 +39,18 @@ module.exports = {
                 test: /\.scss$/,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
+            {
+                test: /\.(png|jpe?g|gif|svg)$/i,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 8192, // Nếu file nhỏ hơn 8kb, sẽ được inline dưới dạng base64
+                            name: '[path][name].[ext]', // Giữ nguyên tên và đường dẫn file
+                        },
+                    },
+                ],
+            },
         ],
     },
     stats: {

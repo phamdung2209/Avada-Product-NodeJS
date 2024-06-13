@@ -1,22 +1,10 @@
-
-
-<div class="ig-component">
-    <h1>Example App Block</h1>
-    <p>{{ settings.example_text }}</p>
-</div>
-
-
-
 {% schema %}
 {
-  "name": "Example App Block",
-  "target": "section",
-  "settings": [
-    {
-      "type": "text",
-      "id": "example_text",
-      "label": "Example Text"
-    }
-  ]
+    "name": "Vite",
+    "target": "section",
+    "javascript": "vite-app.js",
+    "settings": []
 }
 {% endschema %}
+
+<div id="app-vite" style="background-color: white; width: 100%; transition: all 0.3s ease-in-out; padding: 20px;"></div>

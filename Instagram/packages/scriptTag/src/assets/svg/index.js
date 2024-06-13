@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 
-export const Loading = () => (
+export const Loading = memo(() => (
     <svg
         preserveAspectRatio="none"
         viewBox="0 0 200 200"
@@ -79,4 +79,4 @@ export const Loading = () => (
             }}
         ></circle>
     </svg>
-)
+))

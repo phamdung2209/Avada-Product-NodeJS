@@ -52,6 +52,8 @@ const LeftPanel = ({ getMedia, loading }) => {
     }, [])
 
     const handleDisconnect = useCallback(async () => {
+        'use server'
+
         await handleCreate()
         setState((prevState) => ({
             ...prevState,
@@ -59,11 +61,13 @@ const LeftPanel = ({ getMedia, loading }) => {
         }))
     }, [])
 
-    const handleSync = async () => {
+    const handleSync = useCallback(async () => {
+        'use server'
+
         await handleSyncMedia()
         await getMedia()
         // await Promise.all([handleSyncMedia(), getMedia()]) => async
-    }
+    }, [])
 
     return (
         <>

@@ -1,3 +1,5 @@
+'use client'
+
 import moment from 'moment'
 import React, { memo, useCallback, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
