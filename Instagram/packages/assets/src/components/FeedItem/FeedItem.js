@@ -16,12 +16,8 @@ const FeedItem = ({ data, valueSettings }) => {
 
     const quantityData = useMemo(() => {
         const quantity = valueSettings.numberRows * valueSettings.numberColumns
-        if (dataMemo.length < quantity) {
-            return dataMemo.length
-        }
-
-        return quantity
-    }, [valueSettings.numberRows, valueSettings.numberColumns])
+        return dataMemo.length < quantity ? dataMemo.length : quantity
+    }, [dataMemo.length, valueSettings.numberRows, valueSettings.numberColumns])
 
     const handleOpenFeedPreview = useCallback((item) => {
         setItemData(item)
@@ -45,7 +41,7 @@ const FeedItem = ({ data, valueSettings }) => {
                 visible={isOpenPreview}
                 onClickOutside={handleCloseFeedPreview}
             >
-                {dataMemo.slice(0, quantityData ?? 1).map((item) => (
+                {dataMemo.slice(0, quantityData).map((item) => (
                     <div
                         key={item.id}
                         className="feed-item__item"
@@ -55,10 +51,9 @@ const FeedItem = ({ data, valueSettings }) => {
                             src={item.media_url}
                             height={200}
                             className="feed-item__image"
-                            alt={item.caption}
-                            style={{
-                                width: '100%',
-                            }}
+                            alt=""
+                            style={{ width: '100%' }}
+                            loading="lazy"
                         />
 
                         <div className="feed-item__image--hover">
@@ -77,7 +72,16 @@ const FeedItem = ({ data, valueSettings }) => {
 
 FeedItem.displayName = 'FeedItem'
 FeedItem.propTypes = {
-    data: PropTypes.object,
+    data: PropTypes.shape({
+        media: PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.string,
+                media_url: PropTypes.string,
+                timestamp: PropTypes.string,
+            }),
+        ).isRequired,
+        user: PropTypes.object.isRequired,
+    }).isRequired,
     valueSettings: PropTypes.object,
 }
 

@@ -15,7 +15,7 @@ const App = () => {
                     margin: '1.2rem 0',
                 }}
             >
-                {setting?.title}
+                {setting?.title ?? 'Instagram Feeds'}
             </h1>
 
             {loading ? (
@@ -23,7 +23,7 @@ const App = () => {
             ) : media.length ? (
                 <FeedItem data={data} valueSettings={setting} />
             ) : (
-                <p>No data</p>
+                <p>No media found</p>
             )}
         </>
     )

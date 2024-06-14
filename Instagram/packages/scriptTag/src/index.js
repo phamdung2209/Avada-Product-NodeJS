@@ -8,11 +8,10 @@ import { AppContextProvider } from '~/assets/src/context/AppContext'
 
 ReactDOM.createRoot(document.querySelector('.ig-component')).render(
     // <React.StrictMode>
-    <AppContextProvider>
-        <Suspense fallback={<div className="loading">Loading...</div>}>
+    <Suspense fallback={<div className="loading">Loading...</div>}>
+        <AppContextProvider>
             <App />
-            {/* okkkkkkkkkkkkkk */}
-        </Suspense>
-    </AppContextProvider>,
+        </AppContextProvider>
+    </Suspense>,
     // </React.StrictMode>,
 )

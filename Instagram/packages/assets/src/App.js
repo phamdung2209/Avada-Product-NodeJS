@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { Router } from 'react-router-dom'
 import ReactRouterLink from '@assets/components/ReactRouterLink'
 import { AppProvider } from '@shopify/polaris'
@@ -18,6 +18,14 @@ import PropTypes from 'prop-types'
  * @constructor
  */
 export default function App({ isEmbedApp = true }) {
+    useEffect(() => {
+        // add favicon
+        const link = document.createElement('link')
+        link.rel = 'icon'
+        link.href = 'https://www.instagram.com/favicon.ico'
+        document.head.appendChild(link)
+    }, [])
+
     if (isEmbedApp) {
         return (
             <AppProvider i18n={translations} linkComponent={ReactRouterLink}>

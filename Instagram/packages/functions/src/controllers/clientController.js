@@ -18,15 +18,18 @@ export const getDataClient = async (ctx) => {
 
         const shopId = shopData.data.id
 
-        const setting = await getSettingByShopId(shopId)
+        const [setting, media] = await Promise.all([
+            getSettingByShopId(shopId),
+            getMediaByShopId(shopId),
+        ])
+
         if (setting.error) {
             throw new Error(setting.error)
         }
-
-        const media = await getMediaByShopId(shopId)
         if (media.error) {
             throw new Error(media.error)
         }
+
         const user_id = media.data[0].userId
         const user = await getUserById({ user_id })
         if (user.error) {
@@ -37,9 +40,7 @@ export const getDataClient = async (ctx) => {
             success: true,
             data: {
                 media: media.data.map((m) => m.data).flat(),
-                user: {
-                    username: user?.username,
-                },
+                user: { username: user?.username },
                 setting: setting.data,
             },
         }

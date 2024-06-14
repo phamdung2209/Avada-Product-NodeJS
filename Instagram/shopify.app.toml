@@ -2,7 +2,7 @@
 
 name = "instagram"
 client_id = "a185f2b72b360a900c149072accf83c1"
-application_url = "https://asbestos-opposed-intermediate-sea.trycloudflare.com/auth/shopify"
+application_url = "https://tu-matched-madonna-remarkable.trycloudflare.com/auth/shopify"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://asbestos-opposed-intermediate-sea.trycloudflare.com/auth/shopify/callback",
-  "https://asbestos-opposed-intermediate-sea.trycloudflare.com/authSa/shopify/callback",
-  "https://asbestos-opposed-intermediate-sea.trycloudflare.com/auth/shopify/embed/callback",
+  "https://tu-matched-madonna-remarkable.trycloudflare.com/auth/shopify/callback",
+  "https://tu-matched-madonna-remarkable.trycloudflare.com/authSa/shopify/callback",
+  "https://tu-matched-madonna-remarkable.trycloudflare.com/auth/shopify/embed/callback",
   "https://localhost:3000/auth/shopify/callback",
   "https://localhost:3000/authSa/shopify/callback",
   "https://localhost:3000/auth/shopify/embed/callback"

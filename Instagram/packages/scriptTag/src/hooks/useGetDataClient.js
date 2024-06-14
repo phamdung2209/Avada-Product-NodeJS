@@ -11,7 +11,8 @@ const useGetDataClient = () => {
 
     const getData = useCallback(async () => {
         setLoading(true)
-        const shopifyDomain = window.location.hostname
+        const shopifyDomain = window.Shopify.shop
+
         try {
             const res = await request.get('https://ig.local.com/client/data', {
                 params: {
