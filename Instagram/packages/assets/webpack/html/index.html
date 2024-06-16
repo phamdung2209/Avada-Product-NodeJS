@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8"/>
-    <meta
-            name="viewport"
-            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-    />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>MP Instagram & Tiktok Feed</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <!-- favicon -->
+    <link rel="icon"
+        href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png"
+        type="image/x-icon" />
+    <title>Instagram Feed</title>
     <style>
         html {
             /*font-size: 62.5% !important;*/
@@ -51,7 +55,7 @@
         .PreLoading p {
             font-weight: 700;
             font-family: -apple-system, BlinkMacSystemFont, San Francisco, Roboto,
-            Segoe UI, Helvetica Neue, sans-serif;
+                Segoe UI, Helvetica Neue, sans-serif;
             font-size: 1rem;
             color: #424242;
         }
@@ -256,33 +260,35 @@
         }
     </style>
 </head>
+
 <body>
-<div id="app"></div>
-<div id="PreLoading" class="PreLoading">
-    <img width="150px" height="150px"
-         src="https://cdn1.avada.io/logo/branding-2022/Logo%20n%E1%BB%81n%20transparent/Brandmark_PhienBanMauChinhTrenNenSang.png"
-         alt="Avada logo"/>
-    <img class="PreLoading-Loader"
-         src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNDQgNDQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE1LjU0MiAxLjQ4N0EyMS41MDcgMjEuNTA3IDAgMCAwIC41IDIyYzAgMTEuODc0IDkuNjI2IDIxLjUgMjEuNSAyMS41IDkuODQ3IDAgMTguMzY0LTYuNjc1IDIwLjgwOS0xNi4wNzJhMS41IDEuNSAwIDAgMC0yLjkwNC0uNzU2QzM3LjgwMyAzNC43NTUgMzAuNDczIDQwLjUgMjIgNDAuNSAxMS43ODMgNDAuNSAzLjUgMzIuMjE3IDMuNSAyMmMwLTguMTM3IDUuMy0xNS4yNDcgMTIuOTQyLTE3LjY1YTEuNSAxLjUgMCAxIDAtLjktMi44NjN6IiBmaWxsPSIjOTE5RUFCIi8+PC9zdmc+Cg=="
-         alt="Preloading" draggable="false" role="status"/>
-    <br/>
-    <div id="reload-notice" style="display: none">
-        <p style="font-size: 14px; font-weight: 400">
-            If this is still loading, try hard reload your browser with <span class="Polaris-Tag">
-            <span class="Polaris-Tag__TagText">Ctrl + F5</span>
-          </span> or <a target="_blank"
-                        href="https://go.crisp.chat/chat/embed/?website_id=a8100c36-4c44-4f41-9964-bf9c2b32de34"> Chat
-            with us </a>
-        </p>
+    <div id="app"></div>
+    <div id="PreLoading" class="PreLoading">
+        <img width="150px" height="150px"
+            src="https://cdn1.avada.io/logo/branding-2022/Logo%20n%E1%BB%81n%20transparent/Brandmark_PhienBanMauChinhTrenNenSang.png"
+            alt="Avada logo" />
+        <img class="PreLoading-Loader"
+            src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNDQgNDQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE1LjU0MiAxLjQ4N0EyMS41MDcgMjEuNTA3IDAgMCAwIC41IDIyYzAgMTEuODc0IDkuNjI2IDIxLjUgMjEuNSAyMS41IDkuODQ3IDAgMTguMzY0LTYuNjc1IDIwLjgwOS0xNi4wNzJhMS41IDEuNSAwIDAgMC0yLjkwNC0uNzU2QzM3LjgwMyAzNC43NTUgMzAuNDczIDQwLjUgMjIgNDAuNSAxMS43ODMgNDAuNSAzLjUgMzIuMjE3IDMuNSAyMmMwLTguMTM3IDUuMy0xNS4yNDcgMTIuOTQyLTE3LjY1YTEuNSAxLjUgMCAxIDAtLjktMi44NjN6IiBmaWxsPSIjOTE5RUFCIi8+PC9zdmc+Cg=="
+            alt="Preloading" draggable="false" role="status" />
+        <br />
+        <div id="reload-notice" style="display: none">
+            <p style="font-size: 14px; font-weight: 400">
+                If this is still loading, try hard reload your browser with <span class="Polaris-Tag">
+                    <span class="Polaris-Tag__TagText">Ctrl + F5</span>
+                </span> or <a target="_blank"
+                    href="https://go.crisp.chat/chat/embed/?website_id=a8100c36-4c44-4f41-9964-bf9c2b32de34"> Chat
+                    with us </a>
+            </p>
+        </div>
     </div>
-</div>
-<script>
-    setTimeout(() => {
-        const loading = document.getElementById('PreLoading');
-        if (loading) {
-            document.querySelector('#reload-notice').style.display = 'block';
-        }
-    }, 7000)
-</script>
+    <script>
+        setTimeout(() => {
+            const loading = document.getElementById('PreLoading');
+            if (loading) {
+                document.querySelector('#reload-notice').style.display = 'block';
+            }
+        }, 7000)
+    </script>
 </body>
+
 </html>

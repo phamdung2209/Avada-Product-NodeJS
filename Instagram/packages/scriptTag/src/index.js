@@ -1,6 +1,5 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
-import '@shopify/polaris/build/esm/styles.css'
 import './app.scss'
 
 import App from './App'
@@ -8,10 +7,8 @@ import { AppContextProvider } from '~/assets/src/context/AppContext'
 
 ReactDOM.createRoot(document.querySelector('.ig-component')).render(
     // <React.StrictMode>
-    <Suspense fallback={<div className="loading">Loading...</div>}>
-        <AppContextProvider>
-            <App />
-        </AppContextProvider>
-    </Suspense>,
+    <AppContextProvider>
+        <App />
+    </AppContextProvider>,
     // </React.StrictMode>,
 )

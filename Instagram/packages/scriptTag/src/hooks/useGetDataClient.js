@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import * as request from '~/assets/src/helpers/utils/httpRequest'
 import { SETTING } from '~/functions/src/config/settingDefault'
 
@@ -11,12 +11,11 @@ const useGetDataClient = () => {
 
     const getData = useCallback(async () => {
         setLoading(true)
-        const shopifyDomain = window.Shopify.shop
 
         try {
             const res = await request.get('https://ig.local.com/client/data', {
                 params: {
-                    shopifyDomain,
+                    shopifyDomain: window.Shopify.shop,
                 },
             })
 
@@ -30,7 +29,7 @@ const useGetDataClient = () => {
         }
     }, [])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         getData()
     }, [])
 

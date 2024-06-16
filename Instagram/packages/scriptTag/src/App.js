@@ -1,7 +1,8 @@
-import React, { memo } from 'react'
+import React, { Suspense, lazy, memo } from 'react'
+
 import useGetDataClient from './hooks/useGetDataClient'
-import FeedItem from '~/assets/src/components/FeedItem'
 import { Loading } from './assets/svg'
+const FeedItem = lazy(() => import('~/assets/src/components/FeedItem'))
 
 const App = () => {
     const { loading, data } = useGetDataClient()
@@ -9,19 +10,14 @@ const App = () => {
 
     return (
         <>
-            <h1
-                style={{
-                    fontSize: '2.3rem',
-                    margin: '1.2rem 0',
-                }}
-            >
-                {setting?.title ?? 'Instagram Feeds'}
-            </h1>
+            <h1 style={{ fontSize: '2.3rem', margin: '1.2rem 0' }}> {setting.title} </h1>
 
             {loading ? (
                 <Loading />
             ) : media.length ? (
-                <FeedItem data={data} valueSettings={setting} />
+                <Suspense fallback={''}>
+                    <FeedItem data={data} valueSettings={setting} />
+                </Suspense>
             ) : (
                 <p>No media found</p>
             )}

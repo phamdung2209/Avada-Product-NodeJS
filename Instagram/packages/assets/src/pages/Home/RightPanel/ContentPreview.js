@@ -1,11 +1,11 @@
 import { SkeletonBodyText, SkeletonDisplayText, TextContainer } from '@shopify/polaris'
-import React, { memo, useLayoutEffect } from 'react'
+import React, { Suspense, lazy, memo, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import { useAppContext } from '@assets/context/AppContext'
 import { SETTINGS } from '@assets/helpers/constants'
-import FeedItem from '@assets/components/FeedItem'
 import useFetchApi from '@assets/hooks/api/useFetchApi'
+const FeedItem = lazy(() => import('@assets/components/FeedItem'))
 
 const ContentPreview = ({ data, loading, isConnectIG }) => {
     const { data: dataSettings } = useFetchApi({
@@ -35,7 +35,9 @@ const ContentPreview = ({ data, loading, isConnectIG }) => {
     return loading ? (
         <SuspenseContentPreview />
     ) : data?.media?.length ? (
-        <FeedItem data={data} valueSettings={valueSettings} />
+        <Suspense fallback={<SuspenseContentPreview />}>
+            <FeedItem data={data} valueSettings={valueSettings} />
+        </Suspense>
     ) : null
 }
 
@@ -48,7 +50,7 @@ ContentPreview.propTypes = {
 
 export default memo(ContentPreview)
 
-const SuspenseContentPreview = memo(() => (
+export const SuspenseContentPreview = memo(() => (
     <TextContainer>
         <SkeletonDisplayText size="small" />
         <SkeletonBodyText />

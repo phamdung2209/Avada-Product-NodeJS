@@ -3,7 +3,7 @@
 
     const scriptElement = document.createElement('script')
     scriptElement.type = 'text/javascript'
-    // scriptElement.async = true
+    scriptElement.async = true
     scriptElement.defer = true
     scriptElement.src = `${BASE_URL}/index.min.js?v=${new Date().getTime()}`
 

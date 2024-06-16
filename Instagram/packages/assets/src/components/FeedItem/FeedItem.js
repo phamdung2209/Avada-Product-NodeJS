@@ -1,23 +1,23 @@
 'use client'
 
-import moment from 'moment'
 import React, { memo, useCallback, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import './FeedItem.scss'
-import { ViewIcon } from '@assets/resources/icons'
 import FeedPreview from '../FeedPreview'
 import Popup from '../Popup'
+import ImagePreview from './ImagePreview'
 
-const FeedItem = ({ data, valueSettings }) => {
-    const dataMemo = useMemo(() => data.media, [data.media])
+const FeedItem = ({ data: { user, media }, valueSettings }) => {
+    const dataMemo = useMemo(() => media, [media])
     const [isOpenPreview, setIsOpenPreview] = useState(false)
     const [itemData, setItemData] = useState(dataMemo[0])
 
     const quantityData = useMemo(() => {
-        const quantity = valueSettings.numberRows * valueSettings.numberColumns
-        return dataMemo.length < quantity ? dataMemo.length : quantity
-    }, [dataMemo.length, valueSettings.numberRows, valueSettings.numberColumns])
+        const { numberRows, numberColumns } = valueSettings
+        const quantity = numberRows * numberColumns
+        return Math.min(dataMemo.length, quantity)
+    }, [dataMemo.length, valueSettings])
 
     const handleOpenFeedPreview = useCallback((item) => {
         setItemData(item)
@@ -28,6 +28,20 @@ const FeedItem = ({ data, valueSettings }) => {
         setIsOpenPreview(false)
     }, [])
 
+    const renderImagePreviews = useMemo(
+        () =>
+            dataMemo
+                .slice(0, quantityData)
+                .map((item) => (
+                    <ImagePreview
+                        item={item}
+                        key={item.id}
+                        onClick={() => handleOpenFeedPreview(item)}
+                    />
+                )),
+        [dataMemo, quantityData],
+    )
+
     return (
         <div
             className="feed-item__container"
@@ -37,34 +51,11 @@ const FeedItem = ({ data, valueSettings }) => {
             }}
         >
             <Popup
-                render={<FeedPreview data={itemData} feedOwner={data.user} />}
+                render={<FeedPreview data={itemData} feedOwner={user} />}
                 visible={isOpenPreview}
                 onClickOutside={handleCloseFeedPreview}
             >
-                {dataMemo.slice(0, quantityData).map((item) => (
-                    <div
-                        key={item.id}
-                        className="feed-item__item"
-                        onClick={() => handleOpenFeedPreview(item)}
-                    >
-                        <img
-                            src={item.media_url}
-                            height={200}
-                            className="feed-item__image"
-                            alt=""
-                            style={{ width: '100%' }}
-                            loading="lazy"
-                        />
-
-                        <div className="feed-item__image--hover">
-                            <p className="feed-item__text">
-                                {moment(item.timestamp).format('LLL')}
-                            </p>
-
-                            <ViewIcon className="feed-item__icon" />
-                        </div>
-                    </div>
-                ))}
+                {renderImagePreviews}
             </Popup>
         </div>
     )
