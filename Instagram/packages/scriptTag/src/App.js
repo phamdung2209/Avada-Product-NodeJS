@@ -5,18 +5,19 @@ import { Loading } from './assets/svg'
 const FeedItem = lazy(() => import('~/assets/src/components/FeedItem'))
 
 const App = () => {
-    const { loading, data } = useGetDataClient()
-    const { media, setting } = data
+    const {
+        loading,
+        data: { media, setting, user },
+    } = useGetDataClient()
 
     return (
         <>
-            <h1 style={{ fontSize: '2.3rem', margin: '1.2rem 0' }}> {setting.title} </h1>
-
+            <h1 style={{ fontSize: '2.3rem', margin: '1.2rem 0' }}>{setting.title}</h1>
             {loading ? (
                 <Loading />
             ) : media.length ? (
-                <Suspense fallback={''}>
-                    <FeedItem data={data} valueSettings={setting} />
+                <Suspense fallback={<Loading />}>
+                    <FeedItem data={{ media, setting, user }} valueSettings={setting} />
                 </Suspense>
             ) : (
                 <p>No media found</p>

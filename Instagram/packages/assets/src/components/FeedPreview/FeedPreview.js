@@ -6,8 +6,6 @@ import './FeedPreview.scss'
 import verified from '@assets/resources/images/verified.png'
 
 const FeedPreview = ({ data, feedOwner }) => {
-    console.log('preview render')
-
     return (
         <div className="feed-preview__container">
             <section className="feed-preview__image">

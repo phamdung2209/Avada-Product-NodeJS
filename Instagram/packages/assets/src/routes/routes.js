@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { Route, Switch } from 'react-router-dom'
+
 import NotFound from '@assets/loadables/NotFound'
 import { routePrefix } from '@assets/config/app'
-import Home from '@assets/pages/Home'
+const Home = lazy(() => import('@assets/pages/Home'))
 
 // eslint-disable-next-line react/prop-types
 const Routes = ({ prefix = routePrefix }) => (

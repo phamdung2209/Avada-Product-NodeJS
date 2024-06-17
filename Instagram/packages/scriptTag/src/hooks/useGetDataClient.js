@@ -1,13 +1,11 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+
 import * as request from '~/assets/src/helpers/utils/httpRequest'
 import { SETTING } from '~/functions/src/config/settingDefault'
 
 const useGetDataClient = () => {
     const [loading, setLoading] = useState(false)
-    const [data, setData] = useState({
-        media: [],
-        setting: SETTING,
-    })
+    const [data, setData] = useState({ media: [], setting: SETTING })
 
     const getData = useCallback(async () => {
         setLoading(true)
@@ -24,12 +22,13 @@ const useGetDataClient = () => {
             setData(res.data)
         } catch (error) {
             console.error('Error in getData', error.message)
+            // Optionally set error state here
         } finally {
             setLoading(false)
         }
     }, [])
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         getData()
     }, [])
 

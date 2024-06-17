@@ -1,23 +1,21 @@
 'use client'
 
-import React, { memo, useCallback, useMemo, useState } from 'react'
+import React, { Suspense, lazy, memo, useCallback, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import './FeedItem.scss'
 import FeedPreview from '../FeedPreview'
-import Popup from '../Popup'
-import ImagePreview from './ImagePreview'
+const ImagePreview = lazy(() => import('./ImagePreview'))
+const Popup = lazy(() => import('../Popup'))
 
 const FeedItem = ({ data: { user, media }, valueSettings }) => {
-    const dataMemo = useMemo(() => media, [media])
     const [isOpenPreview, setIsOpenPreview] = useState(false)
-    const [itemData, setItemData] = useState(dataMemo[0])
+    const [itemData, setItemData] = useState(media[0])
 
     const quantityData = useMemo(() => {
         const { numberRows, numberColumns } = valueSettings
-        const quantity = numberRows * numberColumns
-        return Math.min(dataMemo.length, quantity)
-    }, [dataMemo.length, valueSettings])
+        return Math.min(media.length, numberRows * numberColumns)
+    }, [media.length, valueSettings])
 
     const handleOpenFeedPreview = useCallback((item) => {
         setItemData(item)
@@ -30,16 +28,16 @@ const FeedItem = ({ data: { user, media }, valueSettings }) => {
 
     const renderImagePreviews = useMemo(
         () =>
-            dataMemo
+            media
                 .slice(0, quantityData)
                 .map((item) => (
                     <ImagePreview
-                        item={item}
                         key={item.id}
+                        item={item}
                         onClick={() => handleOpenFeedPreview(item)}
                     />
                 )),
-        [dataMemo, quantityData],
+        [media, quantityData, handleOpenFeedPreview],
     )
 
     return (
@@ -50,19 +48,18 @@ const FeedItem = ({ data: { user, media }, valueSettings }) => {
                 gap: `${valueSettings.spacing}px`,
             }}
         >
+            <Suspense fallback="Loading...">{renderImagePreviews}</Suspense>
             <Popup
                 render={<FeedPreview data={itemData} feedOwner={user} />}
                 visible={isOpenPreview}
                 onClickOutside={handleCloseFeedPreview}
-            >
-                {renderImagePreviews}
-            </Popup>
+            />
         </div>
     )
 }
 
 FeedItem.displayName = 'FeedItem'
-FeedItem.propTypes = {
+FeedItem.prototype = {
     data: PropTypes.shape({
         media: PropTypes.arrayOf(
             PropTypes.shape({
