@@ -8,9 +8,6 @@ import firebase from 'firebase-admin'
 import appConfig from '../config/app'
 import * as errorService from '../services/errorService'
 import createErrorHandler from '../middleware/errorHandler'
-import * as uninstallationService from '../services/uninstallationService'
-import * as installationService from '../services/installationService'
-// import serviceAccount from '../../serviceAccountKey.json'
 
 if (firebase.apps.length === 0) {
     firebase.initializeApp()

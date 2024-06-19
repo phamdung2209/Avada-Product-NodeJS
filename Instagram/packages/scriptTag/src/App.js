@@ -10,20 +10,19 @@ const App = () => {
         data: { media, setting, user },
     } = useGetDataClient()
 
-    return (
-        <>
-            <h1 style={{ fontSize: '2.3rem', margin: '1.2rem 0' }}>{setting.title}</h1>
-            {loading ? (
-                <Loading />
-            ) : media.length ? (
-                <Suspense fallback={<Loading />}>
-                    <FeedItem data={{ media, setting, user }} valueSettings={setting} />
-                </Suspense>
-            ) : (
-                <p>No media found</p>
-            )}
-        </>
-    )
+    if (loading) {
+        return <Loading />
+    }
+
+    if (media.length) {
+        return (
+            <Suspense fallback={<Loading />}>
+                <FeedItem data={{ media, setting, user }} valueSettings={setting} />
+            </Suspense>
+        )
+    }
+
+    return <p style={{ height: '100%' }}>No media found</p>
 }
 
 App.displayName = 'App'

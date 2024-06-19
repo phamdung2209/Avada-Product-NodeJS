@@ -10,7 +10,6 @@ import firebase from 'firebase-admin'
 import appConfig from '../config/app'
 import * as installationService from '../services/installationService'
 import * as uninstallationService from '../services/uninstallationService'
-// import serviceAccount from '../../serviceAccountKey.json'
 
 if (firebase.apps.length === 0) {
     firebase.initializeApp()

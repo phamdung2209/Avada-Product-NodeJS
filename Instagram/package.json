@@ -6,6 +6,7 @@
     "workspaces": [
         "packages/*"
     ],
+    "license": "MIT",
     "scripts": {
         "deploy": "firebase deploy",
         "serve": "concurrently \"firebase serve\" \"yarn start\"",

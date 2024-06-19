@@ -27,7 +27,8 @@ firebase use --add
     "shopify": {
         "api_key": "<Shopify API Key>",
         "secret": "<Shopify Secret>",
-        "firebase_api_key": "<Firebase API Key>"
+        "firebase_api_key": "<Firebase API Key>",
+        "access_token_key": "avada"
     },
     "app": {
         "base_url": ""

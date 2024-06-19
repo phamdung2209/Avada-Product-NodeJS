@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Suspense, lazy, memo, useCallback, useMemo, useState } from 'react'
+import React, { Suspense, forwardRef, lazy, memo, useCallback, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import './FeedItem.scss'
