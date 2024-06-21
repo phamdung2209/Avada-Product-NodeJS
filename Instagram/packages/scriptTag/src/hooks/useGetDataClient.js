@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { sleep } from '~/assets/src/helpers/utils/functions'
 
 import * as request from '~/assets/src/helpers/utils/httpRequest'
 import { SETTING } from '~/functions/src/config/settingDefault'
@@ -9,6 +10,8 @@ const useGetDataClient = () => {
 
     const getData = useCallback(async () => {
         setLoading(true)
+
+        // await sleep(2000)
 
         try {
             const res = await request.get('https://ig.local.com/client/data', {

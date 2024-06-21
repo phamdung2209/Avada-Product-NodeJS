@@ -24,6 +24,18 @@ export async function updateMetaField(shopId, changeAccount = false) {
     ])
 }
 
+export const upsertMetaField = async ({ shopId, namespace, value, key }) => {
+    const shop = await getShopById(shopId, false)
+    const shopify = initShopify(shop)
+
+    await createOrUpdateMetaField({
+        shopify,
+        namespace,
+        key,
+        value,
+    })
+}
+
 /**
  *
  * @param namespace

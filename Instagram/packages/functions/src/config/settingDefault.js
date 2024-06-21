@@ -4,7 +4,7 @@ export const SETTING = {
     title: 'Instagram Feeds',
     layout: SETTING_LAYOUT,
     spacing: 10,
-    numberRows: 3,
-    numberColumns: 4,
+    numberRows: 1,
+    numberColumns: 24,
     shopId: '',
 }

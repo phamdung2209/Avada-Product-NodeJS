@@ -1,5 +1,6 @@
 import { SETTING } from '@functions/config/settingDefault'
 import { getUsers } from './userRepository'
+import { upsertMetaField } from '@functions/services/shopify/shopifyMetaFieldService'
 
 const { Firestore } = require('@google-cloud/firestore')
 
@@ -51,6 +52,7 @@ export const updateFeedSettings = async (
     userId,
     shopId,
 ) => {
+    console.log('-------------------------------------------')
     try {
         const batch = firestore.batch()
         batch.set(settingsRef.doc('' + userId), {
@@ -62,6 +64,20 @@ export const updateFeedSettings = async (
             shopId,
         })
         await batch.commit()
+
+        // UPDATE SHOPIFY META FIELD HERE
+        await upsertMetaField({
+            shopId,
+            namespace: 'instagram',
+            key: 'setting',
+            value: {
+                title,
+                layout,
+                spacing,
+                numberRows,
+                numberColumns,
+            },
+        })
 
         return {
             success: true,
@@ -84,6 +100,14 @@ export const asyncSettings = async (shopId) => {
         await settingsRef.doc('' + users[0].id).set({
             ...SETTING,
             shopId,
+        })
+
+        // UPDATE SHOPIFY META FIELD HERE
+        await upsertMetaField({
+            shopId,
+            namespace: 'instagram',
+            key: 'setting',
+            value: SETTING,
         })
 
         return {

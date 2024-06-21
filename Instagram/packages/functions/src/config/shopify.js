@@ -9,4 +9,5 @@ export default {
     accessTokenKey: shopify.access_token_key,
     embedAppId: shopify.embed_app_id,
     scopes: shopify.scopes?.split(',') || ['read_themes', 'write_themes'],
+    host: 'https://instagram-dungpv.web.app',
 }

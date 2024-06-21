@@ -1,0 +1,26 @@
+{% schema %}
+{
+    "name": "MetaField",
+    "settings": [
+        {
+            "type": "text",
+            "id": "feed",
+            "label": "Feed",
+            "default": "feedMedia"
+        }
+    ],
+    "target": "section"
+}
+{% endschema %}
+
+{% assign feed = shop.metafields.feedMedia.feed.value %}
+
+<div>
+    <h1>MetaFiled</h1>
+      Type: {{ shop.metafields.feedMedia.feed.value[0].type }}
+    <div>
+      Feed:  {{ feed[0].type }}
+    </div>
+
+    <p>Metafield: {{ shop.metafields.users.users.value.username }}</p>
+</div>

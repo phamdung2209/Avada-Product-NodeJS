@@ -1,6 +1,7 @@
 import { Firestore } from '@google-cloud/firestore'
 
 import { LIMIT_MEDIA_IN_ONE_DOC } from '@functions/const/const'
+import { upsertMetaField } from '@functions/services/shopify/shopifyMetaFieldService'
 
 const firestore = new Firestore()
 const mediaRef = firestore.collection('medias')
@@ -101,6 +102,14 @@ export const createMedia = async ({ user, shopId, data: { data } }) => {
         })
 
         await batch.commit()
+
+        // save data in metafield
+        await upsertMetaField({
+            shopId,
+            namespace: 'instagram',
+            key: 'media',
+            value: data,
+        })
 
         return {
             success: true,
