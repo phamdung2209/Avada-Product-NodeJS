@@ -32,7 +32,8 @@
     assign total_spacing = spacing | times: rows_minus_one
     assign skeleton_width = 100.0 | divided_by: number_columns | ceil
 
-    assign height_component = skeleton_width | times: quantity_rows | plus: total_spacing | plus: number_columns | plus: quantity_rows | plus: 5
+    assign skeleton_width_times_quantity_rows = skeleton_width | times: quantity_rows
+    assign height_component = skeleton_width_times_quantity_rows | plus: total_spacing
 
     
 %} 
@@ -48,33 +49,24 @@
 </style>
 
 <div class="ig-component" id="ig-component">
-    <div 
-        style="display: grid; grid-template-columns: repeat({{ number_columns }}, 1fr); gap: {{ spacing }}px;"
-    >
-        {% for idx in (1..media_size) %}
-            <div
-                style="aspect-ratio: 1/1; border: 1px solid #f0f0f0; width: 100%; height: 100%;"
-            ></div>
-        {% endfor %}
-    </div>
+
 </div>
 
 <script>
 
     document.addEventListener('DOMContentLoaded', async function() {
+        var igComponent = document.getElementById('ig-component')
+        const widthIgComponent = igComponent.offsetWidth
 
-    var igComponent = document.getElementById('ig-component')
-    const widthIgComponent = igComponent.offsetWidth
+        const quantityRows = Math.ceil({{ media_size }} / {{ number_columns }})
+        const widthSkeleton = (widthIgComponent - {{ spacing }} * ({{ number_columns }} - 1)) / {{ number_columns }}
+        const heightIgComponent = widthSkeleton * quantityRows + {{ spacing }} * (quantityRows - 1)
+    
+        igComponent.style.maxHeight = `${heightIgComponent}px`
 
-    const quantityRows = Math.ceil({{ media_size }} / {{ number_columns }})
-        console.log('quantityRows', quantityRows)
-    const widthSkeleton = (widthIgComponent - {{ spacing }} * ({{ number_columns }} - 1)) / {{ number_columns }}
-        console.log('widthSkeleton', widthSkeleton)
-
-    const heightIgComponent = widthSkeleton * quantityRows + {{ spacing }} * (quantityRows - 1)
-        console.log('heightIgComponent', heightIgComponent, {{ spacing }})
- 
-    igComponent.style.maxHeight = `${heightIgComponent}px`
-})
+        const timer = setTimeout(() => {
+            igComponent.style.height = 'fit-content'
+        }, 2000)
+    })
 
 </script>
